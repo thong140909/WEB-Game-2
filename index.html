@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASIER</title>
+    <link rel="icon" type="image/png" href="./img/icon.png">
+    <!-- Tích hợp FontAwesome cho icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=VT323&family=Caveat:wght@600&family=Inter:wght@400;500;600&family=Outfit:wght@500;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Thư viện Google Model Viewer để render 3D model thật -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
+    <!-- Tích hợp Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        retro: ['VT323', 'monospace'],
+                        handwriting: ['Caveat', 'cursive'],
+                    },
+                    colors: {
+                        dark: '#111111',
+                        brutalYellow: '#ffde59',
+                        brutalBlue: '#5e96ff',
+                        brutalPink: '#ff77e9',
+                        brutalGreen: '#61e07b',
+                        nokiaScreen: '#a3c13b'
+                    },
+                    boxShadow: {
+                        'brutal': '4px 4px 0px 0px rgba(0,0,0,1)',
+                        'brutal-lg': '8px 8px 0px 0px rgba(0,0,0,1)',
+                        'brutal-white': '4px 4px 0px 0px rgba(255,255,255,1)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Tùy chỉnh hiệu ứng đàn hồi (spring animation) giống Apple */
+        .island-transition {
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Thêm thuộc tính visibility để tránh tràn chữ khi thu gọn */
+        .content-transition {
+            transition: opacity 0.25s ease, transform 0.35s ease, visibility 0.25s ease;
+        }
+
+        /* Nền giấy ô ly cho phần Testimonial và FAQ */
+        .bg-grid-paper {
+            background-color: #f8f8f8;
+            background-image:
+                linear-gradient(rgba(0, 0, 0, .1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, .1) 1px, transparent 1px);
+            background-size: 25px 25px;
+        }
+
+        /* Ẩn scrollbar cho mượt */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+
+        /* Hiệu ứng accordion FAQ */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        /* Hình dạng ghim giấy (Paperclip) bằng CSS cơ bản */
+        .paperclip {
+            width: 16px;
+            height: 50px;
+            border: 3px solid #666;
+            border-radius: 10px;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: transparent;
+            z-index: 10;
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Hiệu ứng đường kẻ trượt xuống cho nút scroll-down */
+        @keyframes scroll-down {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(200%);
+            }
+        }
+
+        /* CẤU HÌNH HIỆU ỨNG VIỀN LED ELECTRIC CARD */
+        .electric-card {
+            position: relative;
+            background: #181818;
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s ease;
+            box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.7);
+        }
+
+        .electric-card::before {
+            content: '';
+            position: absolute;
+            width: 160%;
+            height: 160%;
+            background: conic-gradient(from 0deg,
+                    transparent 30%,
+                    var(--glow-color-1, #5e96ff) 45%,
+                    var(--glow-color-2, #ff77e9) 55%,
+                    transparent 70%);
+            animation: rotate-electric 4s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes rotate-electric {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .electric-inner {
+            position: relative;
+            background: rgba(17, 17, 17, 0.95);
+            width: calc(100% - 4px);
+            height: calc(100% - 4px);
+            border-radius: 22px;
+            z-index: 2;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px;
+            transition: background 0.3s ease;
+        }
+
+        .electric-card:hover {
+            transform: translateY(-12px) scale(1.02) rotateX(2deg) rotateY(1deg);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9),
+                0 0 35px 2px var(--glow-shadow, rgba(94, 150, 255, 0.25));
+        }
+
+        .electric-card:hover::before {
+            animation-duration: 1.5s;
+        }
+
+        .electric-card:hover .electric-inner {
+            background: rgba(22, 22, 22, 0.9);
+        }
+
+        .electric-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.08),
+                    transparent);
+            transform: skewX(-20deg);
+            transition: 0.75s;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .electric-card:hover::after {
+            left: 150%;
+        }
+
+        /* PHẦN 3D */
+        .service-card {
+            background-color: #111111;
+            border: 1px solid #222;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            position: relative;
+            perspective: 1000px;
+            transition: border-color 0.3s ease;
+        }
+
+        .service-card:hover {
+            border-color: #444;
+        }
+
+        .image-container {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            transform-style: preserve-3d;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            outline: none;
+            --poster-color: transparent;
+        }
+
+        /* =========================================================
+           CSS CHO PHẦN THẺ 3D PARALLAX
+           ========================================================= */
+        #premium-3d-portfolio {
+            font-family: 'Inter', sans-serif;
+        }
+
+        #premium-3d-portfolio h1,
+        #premium-3d-portfolio h2,
+        #premium-3d-portfolio h3,
+        #premium-3d-portfolio .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .project-card-wrapper {
+            perspective: 1200px;
+            transform-style: preserve-3d;
+        }
+
+        .project-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease, box-shadow 0.4s ease;
+            will-change: transform;
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
+        }
+
+        .project-card.resetting {
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .layer-bg {
+            transform: translateZ(-20px) scale(1.05);
+            transition: all 0.5s ease;
+        }
+
+        .layer-character {
+            transform: translateZ(20px) translateX(-50%) scale(1);
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), filter 0.5s ease;
+            filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.5));
+            transform-origin: bottom center;
+        }
+
+        .layer-content {
+            transform: translateZ(40px);
+            transition: transform 0.5s ease;
+        }
+
+        .project-card-wrapper:hover .layer-character {
+            transform: translateZ(70px) translateX(-50%) scale(1.08) translateY(-10px);
+            filter: drop-shadow(0px 20px 30px rgba(0, 0, 0, 0.7));
+        }
+
+        .project-card-wrapper:hover .layer-bg {
+            transform: translateZ(-30px) scale(1.1);
+        }
+
+        .project-card-wrapper:hover .layer-content {
+            transform: translateZ(60px);
+        }
+
+        .bg-animate {
+            background-size: 200% 200%;
+            animation: gradientMove 10s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body class="bg-dark text-white font-sans overflow-x-hidden">
+
+    <!-- NAVBAR (PUMPKIN STYLE) -->
+    <nav id="dynamic-island" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-[#1a1a1e]/90 backdrop-blur-xl border border-white/10 overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.5)] island-transition flex items-center justify-center w-[90%] md:w-[750px] h-[72px] rounded-5xl" style="border-radius: 50px;">
+
+        <!-- Trạng thái MỞ RỘNG (Expanded) -->
+        <div id="expanded-content" class="absolute w-full px-4 md:px-8 flex items-center justify-between content-transition opacity-100 scale-100">
+            <!-- Logo (Tích hợp bé Bí Ngô và ASIER) -->
+            <div onclick="showPage('home')" class="flex items-center gap-2 text-2xl font-bold tracking-tight text-white cursor-pointer hover:opacity-80 transition-opacity select-none" style="font-family: 'VT323', monospace;">
+                <span id="nav-pumpkin" class="text-3xl pumpkin-idle transition-transform inline-block">🎃</span>
+                ASIER
+            </div>
+
+            <!-- Menu (ẩn trên mobile) -->
+            <div class="hidden md:flex space-x-8 text-sm font-bold">
+                <a href="index.html" onclick="showPage('home')" class="hover:text-orange-400 transition-colors">HOME</a>
+                <a href="store.html" onclick="showPage('home')" class="hover:text-orange-400 transition-colors">STORE</a>
+                <a href="#faq" class="hover:text-orange-400 transition-colors">Hỏi đáp</a>
+            </div>
+
+            <!-- Giỏ hàng & Avatar -->
+            <div class="flex items-center gap-4">
+                <!-- Giỏ hàng Icon -->
+                <button onclick="showPage('cart')" class="relative p-2 text-gray-300 hover:text-orange-500 transition-colors cursor-pointer group">
+                    <i data-lucide="shopping-cart" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+                    <!-- Chấm đỏ số lượng -->
+                    <span id="cart-badge" class="absolute top-0 right-0 w-4 h-4 bg-orange-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center hidden shadow-lg shadow-orange-500/50">0</span>
+                </button>
+
+                <!-- Avatar -->
+                <a href="#contact" class="inline-block w-10 h-10 rounded-full bg-white hover:shadow-[0_0_15px_rgba(249,115,22,0.5)] transition-all border-2 border-[#333] overflow-hidden">
+                    <img src="./img/account/wk.png" class="w-full h-full object-cover" alt="Avatar" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150'">
+                </a>
+            </div>
+        </div>
+
+        <!-- Trạng thái THU GỌN (Collapsed - Chỉ hiện 1 con pumpkin nhún nhảy) -->
+        <div id="collapsed-content" class="absolute flex items-center justify-center content-transition opacity-0 scale-75 pointer-events-none invisible">
+            <span class="text-2xl animate-bounce">🎃</span>
+        </div>
+    </nav>
+    <!-- NEW HERO SECTION (PARALLAX & SCROLL EXPAND) -->
+    <section id="hero" class="relative w-full h-[200vh] bg-dark">
+        <!-- Vùng cố định trên màn hình trong quá trình cuộn -->
+        <div
+            class="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-dark pt-10">
+
+            <!-- Typography nền -->
+            <div id="hero-text"
+                class="absolute z-0 flex flex-col items-center text-center pointer-events-none transition-transform duration-75 ease-out w-full">
+                <h1
+                    class="text-[25vw] leading-none font-bold text-white uppercase tracking-tighter mix-blend-overlay opacity-80">
+                    UNIQUE
+                </h1>
+                <h1 class="text-[20vw] leading-none font-bold text-transparent uppercase tracking-tighter"
+                    style="-webkit-text-stroke: 1.5px rgba(255,255,255,0.3);">
+                    ARTIST
+                </h1>
+            </div>
+
+            <!-- Khối ảnh sẽ phóng to khi cuộn -->
+            <div id="hero-image-wrapper"
+                class="relative z-10 w-[85vw] md:w-[45vw] h-[45vh] md:h-[55vh] rounded-[2rem] overflow-hidden shadow-2xl will-change-[width,height,border-radius,filter] transition-all duration-75 ease-out mt-12">
+                <img src="./img/spd.jpg" alt="Hero Background" class="absolute inset-0 w-full h-full object-cover">
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div id="scroll-indicator"
+                class="absolute bottom-8 z-20 flex flex-col items-center gap-4 text-white/80 transition-opacity">
+                <span class="text-[11px] tracking-[0.25em] uppercase font-semibold font-mono">Scroll to explore</span>
+                <div class="w-[1px] h-12 bg-white/20 relative overflow-hidden">
+                    <div
+                        class="absolute top-0 left-0 w-full h-1/2 bg-white animate-[scroll-down_1.5s_ease-in-out_infinite]">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PHẦN CHÈN MỚI: PORTFOLIO 3D PARALLAX CỦA BẠN SẼ NẰM Ở ĐÂY -->
+    <!-- ===================================================================== -->
+    <section id="premium-3d-portfolio" class="relative z-20 bg-dark pt-12 pb-12">
+        <header class="max-w-7xl mx-auto px-6 pt-12 pb-12 reveal-up">
+            <p class="text-gray-400 uppercase tracking-widest text-sm font-semibold mb-2">Selected Works</p>
+            <h1
+                class="text-5xl md:text-7xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-500">
+                Game Categories
+            </h1>
+        </header>
+
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Bố cục Grid: 12 cột. Mobile chiếm 12, Tablet chiếm 6, Desktop chiếm tùy thẻ -->
+            <div class="grid grid-cols-12 gap-6 md:gap-8">
+
+                <!-- ================= THẺ 1: HALF (Trái) ================= -->
+                <a href="#"
+                    class="project-card-wrapper col-span-12 md:col-span-6 h-[500px] md:h-[600px] block reveal-up"
+                    style="transition-delay: 0.1s;">
+                    <div
+                        class="project-card relative w-full h-full rounded-3xl overflow-hidden cursor-pointer shadow-2xl border border-white/10 bg-[#111]">
+
+                        <div
+                            class="layer-bg bg-animate absolute inset-0 z-0 bg-gradient-to-br from-[#a61d36] via-[#7a1326] to-[#3a0711]">
+                        </div>
+                        <div class="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
+                        </div>
+
+                        <img src="./img/gow.png"
+                            class="layer-character absolute bottom-0 left-1/2 h-[90%] w-auto object-contain z-20 pointer-events-none"
+                            style="mix-blend-mode: hard-light;" alt="Zupitar">
+
+                        <div class="layer-content absolute inset-0 z-30 p-8 flex flex-col justify-end">
+                            <div class="flex justify-between items-end w-full">
+                                <div>
+                                    <h3 class="font-heading text-4xl font-bold text-white mb-4 drop-shadow-lg">
+                                        Adventure
+                                    </h3>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span
+                                            class="px-4 py-1.5 rounded-full text-xs font-medium text-white bg-white/10 backdrop-blur-md border border-white/20">Open
+                                            world</span>
+                                        <span
+                                            class="px-4 py-1.5 rounded-full text-xs font-medium text-white bg-white/10 backdrop-blur-md border border-white/20">Adventure</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="2.5" stroke="currentColor" class="w-5 h-5 -rotate-45">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- ================= THẺ 2: HALF (Phải) ================= -->
+                <a href="#"
+                    class="project-card-wrapper col-span-12 md:col-span-6 h-[500px] md:h-[600px] block reveal-up"
+                    style="transition-delay: 0.2s;">
+                    <div
+                        class="project-card relative w-full h-full rounded-3xl overflow-hidden cursor-pointer shadow-2xl border border-white/10 bg-[#111]">
+
+                        <div
+                            class="layer-bg bg-animate absolute inset-0 z-0 bg-gradient-to-br from-[#ff7a00] via-[#c25100] to-[#592200]">
+                        </div>
+                        <div class="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/10 to-transparent">
+                        </div>
+
+                        <img src="./img/mtcb.png"
+                            class="layer-character absolute bottom-0 left-1/2 h-[95%] w-auto object-contain z-20 pointer-events-none grayscale opacity-80 mix-blend-screen"
+                            alt="Nexora">
+
+                        <div class="layer-content absolute inset-0 z-30 p-8 flex flex-col justify-end">
+                            <div class="flex justify-between items-end w-full">
+                                <div>
+                                    <h3 class="font-heading text-4xl font-bold text-white mb-4 drop-shadow-lg">Action
+                                    </h3>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span
+                                            class="px-4 py-1.5 rounded-full text-xs font-medium text-white bg-white/10 backdrop-blur-md border border-white/20">
+                                            Fighting</span>
+                                        <span
+                                            class="px-4 py-1.5 rounded-full text-xs font-medium text-white bg-white/10 backdrop-blur-md border border-white/20">3D</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="2.5" stroke="currentColor" class="w-5 h-5 -rotate-45">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- ================= THẺ 3: FULL (Toàn màn hình) ================= -->
+                <a href="#" class="project-card-wrapper col-span-12 h-[500px] block reveal-up"
+                    style="transition-delay: 0.1s;">
+                    <div
+                        class="project-card relative w-full h-full rounded-3xl overflow-hidden cursor-pointer shadow-2xl border border-white/10 bg-[#111]">
+
+                        <div
+                            class="layer-bg bg-animate absolute inset-0 z-0 bg-gradient-to-r from-[#800000] via-[#cc0000] to-[#ff4d4d]">
+                        </div>
+                        <div class="absolute inset-0 z-0 opacity-20"
+                            style="background-image: radial-gradient(circle at center, #ffffff 1px, transparent 1px); background-size: 30px 30px;">
+                        </div>
+                        <div class="absolute inset-0 z-10 bg-gradient-to-r from-black/90 via-black/40 to-transparent">
+                        </div>
+
+                        <img src="./img/ntd.png"
+                            class="layer-character absolute bottom-0 left-[75%] h-[120%] w-auto object-contain z-20 pointer-events-none mix-blend-lighten"
+                            alt="Nirvana">
+
+                        <div class="layer-content absolute inset-0 z-30 p-10 flex flex-col justify-center max-w-2xl">
+                            <h3 class="font-heading text-5xl md:text-6xl font-black text-white mb-6 drop-shadow-2xl">
+                                Nintendo</h3>
+                            <h3 class="font-heading text-5xl md:text-6xl font-black text-white mb-6 drop-shadow-2xl">
+                                Games</h3>
+                            <!-- <p class="text-gray-300 text-lg mb-8 drop-shadow-md">A revolutionary AI-powered solution
+                                bridging the gap between imagination and digital reality.</p> -->
+                            <div class="flex flex-wrap gap-3">
+                                <span
+                                    class="px-5 py-2 rounded-full text-sm font-semibold text-black bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)]">View
+                                    more</span>
+                                <span
+                                    class="px-5 py-2 rounded-full text-sm font-medium text-white bg-white/10 backdrop-blur-md border border-white/20">
+                                    Role-playing game
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- ================= THẺ 4: THIRD ================= -->
+                <a href="#"
+                    class="project-card-wrapper col-span-12 md:col-span-6 lg:col-span-4 h-[400px] block reveal-up"
+                    style="transition-delay: 0.1s;">
+                    <div
+                        class="project-card relative w-full h-full rounded-3xl overflow-hidden cursor-pointer shadow-lg border border-white/10 bg-[#111]">
+                        <div class="layer-bg absolute inset-0 z-0 bg-gradient-to-t from-[#001f54] to-[#3a7bd5]"></div>
+                        <div class="absolute inset-0 z-10 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <img src="img/prmt.png"
+                            class="layer-character absolute bottom-0 left-1/2 h-[80%] w-auto object-contain z-20 mix-blend-screen"
+                            alt="Fanoos">
+                        <div class="layer-content absolute inset-0 z-30 p-6 flex flex-col justify-end">
+                            <h3 class="font-heading text-2xl font-bold text-white mb-2"> Sci-Fi</h3>
+                            <div class="flex gap-2"><span
+                                    class="px-3 py-1 rounded-full text-[10px] text-white bg-white/20 backdrop-blur-md">
+                                    Pragmata</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- ================= THẺ 5: THIRD ================= -->
+                <a href="#"
+                    class="project-card-wrapper col-span-12 md:col-span-6 lg:col-span-4 h-[400px] block reveal-up"
+                    style="transition-delay: 0.2s;">
+                    <div
+                        class="project-card relative w-full h-full rounded-3xl overflow-hidden cursor-pointer shadow-lg border border-white/10 bg-[#111]">
+                        <div class="layer-bg absolute inset-0 z-0 bg-gradient-to-br from-[#202836] to-[#4b355c]"></div>
+                        <div class="absolute inset-0 z-10 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <img src="./img/rd.png"
+                            class="layer-character absolute bottom-0 left-1/2 h-[80%] w-auto object-contain z-20 mix-blend-screen"
+                            alt="Aurora">
+                        <div class="layer-content absolute inset-0 z-30 p-6 flex flex-col justify-end">
+                            <h3 class="font-heading text-2xl font-bold text-white mb-2">Western</h3>
+                            <div class="flex gap-2"><span
+                                    class="px-3 py-1 rounded-full text-[10px] text-white bg-white/20 backdrop-blur-md">Red
+                                    Dead Redemption 2</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- ================= THẺ 6: THIRD ================= -->
+                <a href="#"
+                    class="project-card-wrapper col-span-12 md:col-span-6 lg:col-span-4 md:col-start-4 lg:col-start-9 h-[400px] block reveal-up"
+                    style="transition-delay: 0.3s;">
+                    <div
+                        class="project-card relative w-full h-full rounded-3xl overflow-hidden cursor-pointer shadow-lg border border-white/10 bg-[#111]">
+                        <div class="layer-bg absolute inset-0 z-0 bg-gradient-to-tl from-[#0a2e38] to-[#16a085]"></div>
+                        <div class="absolute inset-0 z-10 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <img src="./img/g.png"
+                            class="layer-character absolute bottom-0 left-1/2 h-[80%] w-auto object-contain z-20 mix-blend-screen"
+                            alt="Staurn">
+                        <div class="layer-content absolute inset-0 z-30 p-6 flex flex-col justify-end">
+                            <h3 class="font-heading text-2xl font-bold text-white mb-2"> Mythology</h3>
+                            <div class="flex gap-2"><span
+                                    class="px-3 py-1 rounded-full text-[10px] text-white bg-white/20 backdrop-blur-md">God
+                                    of War Ragnarök</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+    <!-- ===================================================================== -->
+    <!-- KẾT THÚC PHẦN CHÈN PORTFOLIO 3D -->
+    <!-- ===================================================================== -->
+    <section class="text-white min-h-screen p-4 md:p-12 lg:p-20">
+
+        <div class="max-w-7xl mx-auto mt-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-12 tracking-tight">Our Products</h1>
+
+            <!-- Lưới chứa các thẻ -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Thẻ 1 -->
+                <div class="service-card cursor-pointer group">
+                    <div class="image-container">
+                        <!-- BẠN THAY LINK FILE .glb CỦA BẠN VÀO THUỘC TÍNH 'src' BÊN DƯỚI -->
+                        <!-- auto-rotate: tự động quay, rotation-per-second: tốc độ quay -->
+                        <model-viewer src="./3D/xbox controller.glb" alt="3D Model Strategy" auto-rotate
+                            rotation-per-second="30deg" camera-controls disable-zoom shadow-intensity="1">
+                        </model-viewer>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <h3 class="text-2xl font-semibold mb-3">XBOX</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Xbox is Microsoft's premier gaming brand, famous for its powerful consoles and the
+                            "Netflix-for-games" Xbox Game Pass service.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Thẻ 2 -->
+                <div class="service-card cursor-pointer group">
+                    <div class="image-container">
+                        <model-viewer src="./3D/ps5_controller.glb" alt="3D Model Design" auto-rotate
+                            rotation-per-second="30deg" camera-controls disable-zoom shadow-intensity="1">
+                        </model-viewer>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <h3 class="text-2xl font-semibold mb-3">PS5</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            The PS5 is Sony's flagship next-gen console, famous for its lightning-fast loading speeds,
+                            and immersive DualSense controller.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Thẻ 3 (ĐÃ ĐƯỢC SỬA LINK) -->
+                <div class="service-card cursor-pointer group">
+                    <div class="image-container">
+                        <model-viewer src="./3D/vr.glb" alt="3D Model Development" auto-rotate
+                            orientation="0deg 0deg -120deg" rotation-per-second="30deg" camera-controls disable-zoom
+                            shadow-intensity="1">
+                        </model-viewer>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <h3 class="text-2xl font-semibold mb-3">VR</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            The PlayStation VR (PSVR) is Sony's virtual reality headset lineup, 360-degree gaming
+                            experiences directly on PlayStation consoles.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Thẻ 4 (ĐÃ ĐƯỢC SỬA LINK) -->
+                <div class="service-card cursor-pointer group">
+                    <div class="image-container">
+                        <model-viewer src="./3D/nintendo_switch.glb" alt="3D Model AI" auto-rotate
+                            rotation-per-second="30deg" camera-controls disable-zoom shadow-intensity="1">
+                        </model-viewer>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <h3 class="text-2xl font-semibold mb-3">Nintendo Switch </h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            The Nintendo Switch is a groundbreaking hybrid console that seamlessly transforms from a
+                            home system to a portable handheld, famous for its family-friendly multiplayer games.
+                    </div>
+                </div>
+
+                <!-- Thẻ 5 -->
+                <div class="service-card cursor-pointer group">
+                    <div class="image-container">
+                        <model-viewer src="./3D/steam_deck_console.glb" alt="3D Model Motion" auto-rotate
+                            rotation-per-second="30deg" camera-controls disable-zoom shadow-intensity="1">
+                        </model-viewer>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <h3 class="text-2xl font-semibold mb-3">Steam Deck</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            The Steam Deck is a powerful handheld gaming PC developed by Valve, allowing players to take
+                            their entire Steam game library on the go with console-like convenience.
+                        </p>
+                    </div>
+                </div>
+                <div class="service-card cursor-pointer group">
+                    <div class="image-container">
+                        <model-viewer src="./3D/ps4_controller.glb" alt="3D Model Motion" auto-rotate
+                            rotation-per-second="30deg" camera-controls disable-zoom shadow-intensity="1">
+                        </model-viewer>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <h3 class="text-2xl font-semibold mb-3">PS4</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            The PS4 is Sony's highly successful eighth-generation console, legendary for its massive
+                            game library and iconic blockbusters like God of War, Spider-Man, and The Last of Us Part
+                            II.
+                        </p>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS (ELECTRIC ANIMATED CARDS) SECTION -->
+    <section id=""
+        class="max-w-7xl mx-auto relative z-20 bg-dark py-12 px-6 rounded-3xl border border-white/5 shadow-2xl">
+
+        <!-- Header Section -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-4">
+            <h2 class="text-4xl font-extrabold flex items-center gap-4 text-white">
+                <span
+                    class="inline-block w-3.5 h-9 bg-brutalBlue rounded-full shadow-[0_0_15px_rgba(94,150,255,0.6)]"></span>
+                HOT Games
+            </h2>
+            <p class="text-gray-400 text-sm max-w-md">
+                Bộ sưu tập các ý tưởng thiết kế giao diện sáng tạo độc bản với phong cách điện tử tương lai và chất liệu
+                thô mộc.
+            </p>
+        </div>
+
+        <!-- Grid Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 min-h-[500px]">
+
+            <!-- Thẻ Electric 1 (Retro '98) -->
+            <div class="electric-card h-[480px] group"
+                style="--glow-color-1: #5e96ff; --glow-color-2: #ff77e9; --glow-shadow: rgba(94, 150, 255, 0.35);">
+                <div class="electric-inner">
+                    <!-- Ảnh nền bao phủ toàn bộ thẻ -->
+                    <img src="./img/wk.jpg" alt="Retro 98 Cover"
+                        class="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 ease-out group-hover:scale-110 "
+                        onerror="this.src='https://www.pinterest.com/pin/32791903533020030/'">
+
+                    <!-- Lớp chuyển sắc phủ tối giúp tăng chiều sâu -->
+                    <div class="card-scrim"></div>
+
+                    <!-- Hộp nội dung nổi - Kính mờ cao cấp, Không viền -->
+                    <div class="relative z-20 m-4 p-5 rounded-2xl bg-grey/50  backdrop-blur-md border-0 transition-all duration-300 group-hover:bg-black/60 shadow-xl flex flex-col gap-4"
+                        style="
+                        width: 90%;
+                        height: 25%;
+                        ">
+
+
+                        <!-- Top Info (Badge & Đèn tín hiệu) -->
+                        <div class="flex justify-between items-center">
+                            <span
+                                class="bg-brutalBlue/20 text-brutalBlue border border-brutalBlue/30 text-[10px] px-3 py-1 rounded-full font-bold tracking-widest uppercase">
+                                PS5
+                            </span>
+                            <div class="relative flex h-2.5 w-2.5">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brutalBlue opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brutalBlue"></span>
+                            </div>
+                        </div>
+
+                        <!-- Mid Info (Tiêu đề & Mô tả) -->
+                        <div>
+                            <h3
+                                class="font-extrabold text-2xl text-white mb-2 tracking-wide group-hover:text-brutalBlue transition-colors duration-300">
+                                Black Myth Wukong
+                            </h3>
+                            <!-- <p class="text-sm text-gray-300 font-light leading-relaxed">
+                                Một dự án thiết kế giao diện mang cảm hứng thời kỳ đầu máy tính cá nhân lôi cuốn.
+                            </p> -->
+                        </div>
+
+                        <!-- Bottom Action (Liên kết điều hướng) -->
+                        <!-- <div class="pt-2 border-t border-white/5 flex items-center justify-between">
+                            <a href="#"
+                                class="inline-flex items-center gap-2 text-brutalBlue text-xs font-bold group/link">
+                                Khám phá dự án
+                                <i
+                                    class="fa-solid fa-arrow-right text-xs transition-transform group-hover/link:translate-x-1.5"></i>
+                            </a>
+                            <span class="text-[10px] font-mono text-gray-500">[ CRT_OS ]</span>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thẻ Electric 2 (PaperNote) -->
+            <div class="electric-card h-[480px] group"
+                style="--glow-color-1: #61e07b; --glow-color-2: #ffde59; --glow-shadow: rgba(97, 224, 123, 0.35);">
+                <div class="electric-inner">
+                    <!-- Ảnh nền bao phủ toàn bộ thẻ -->
+                    <img src="./img/zelda.jpg" alt="PaperNote Cover"
+                        class="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 ease-out group-hover:scale-110"
+                        onerror="this.src='https://placehold.co/600x480/1a1a24/61e07b?text=Productivity+App'">
+
+                    <!-- Lớp chuyển sắc phủ tối giúp tăng chiều sâu -->
+                    <div class="card-scrim"></div>
+
+                    <!-- Hộp nội dung nổi - Kính mờ cao cấp, Không viền -->
+                    <div class="relative z-20 m-4 p-5 rounded-2xl bg-grey/50  backdrop-blur-md border-0 transition-all duration-300 group-hover:bg-black/60 shadow-xl flex flex-col gap-4"
+                        style="
+                        width: 90%;
+                        height: 25%;
+                        ">
+                        <!-- Top Info (Badge & Đèn tín hiệu) -->
+                        <div class="flex justify-between items-center">
+                            <span
+                                class="bg-brutalGreen/20 text-brutalGreen border border-brutalGreen/30 text-[10px] px-3 py-1 rounded-full font-bold tracking-widest uppercase">
+                                Nintendo Switch
+                            </span>
+                            <div class="relative flex h-2.5 w-2.5">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brutalGreen opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brutalGreen"></span>
+                            </div>
+                        </div>
+
+                        <!-- Mid Info (Tiêu đề & Mô tả) -->
+                        <div>
+                            <h3
+                                class="font-extrabold text-2xl text-white mb-2 tracking-wide group-hover:text-brutalGreen transition-colors duration-300">
+                                The Legend of Zelda
+                            </h3>
+                            <!-- <p class="text-sm text-gray-300 font-light leading-relaxed">
+                                Ứng dụng web tối ưu hoá ghi chép cá nhân với phong cách thiết kế giấy kẻ ô ly độc đáo.
+                            </p> -->
+                        </div>
+
+                        <!-- Bottom Action (Liên kết điều hướng)
+                        <div class="pt-2 border-t border-white/5 flex items-center justify-between">
+                            <a href="#"
+                                class="inline-flex items-center gap-2 text-brutalGreen text-xs font-bold group/link">
+                                Khám phá dự án
+                                <i
+                                    class="fa-solid fa-arrow-right text-xs transition-transform group-hover/link:translate-x-1.5"></i>
+                            </a>
+                            <span class="text-[10px] font-mono text-gray-500">[ GRID_01 ]</span>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thẻ Electric 3 (Suprematism) -->
+            <div class="electric-card h-[480px] group"
+                style="--glow-color-1: #ff77e9; --glow-color-2: #ffde59; --glow-shadow: rgba(255, 119, 233, 0.35);">
+                <div class="electric-inner">
+                    <!-- Ảnh nền bao phủ toàn bộ thẻ -->
+                    <img src="./img/rd2.jpg" alt="Suprematism Cover"
+                        class="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 ease-out group-hover:scale-110"
+                        onerror="this.src='https://placehold.co/600x480/1a1a24/ff77e9?text=Digital+Art+Concept'">
+
+                    <!-- Lớp chuyển sắc phủ tối giúp tăng chiều sâu -->
+                    <div class="card-scrim"></div>
+
+                    <!-- Hộp nội dung nổi - Kính mờ cao cấp, Không viền -->
+                    <div class="relative z-20 m-4 p-5 rounded-2xl bg-grey/50 backdrop-blur-md border-0 transition-all duration-300 group-hover:bg-black/60 shadow-xl flex flex-col gap-4"
+                        style="
+                        width: 90%;
+                        height: 25%;
+                        ">
+
+                        <!-- Top Info (Badge & Đèn tín hiệu) -->
+                        <div class="flex justify-between items-center">
+                            <span
+                                class="bg-brutalPink/20 text-brutalPink border border-brutalPink/30 text-[10px] px-3 py-1 rounded-full font-bold tracking-widest uppercase">
+                                Steam
+                            </span>
+                            <div class="relative flex h-2.5 w-2.5">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brutalPink opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brutalPink"></span>
+                            </div>
+                        </div>
+
+                        <!-- Mid Info (Tiêu đề & Mô tả) -->
+                        <div>
+                            <h3
+                                class="font-extrabold text-2xl text-white mb-2 tracking-wide group-hover:text-brutalPink transition-colors duration-300">
+                                Red Dead Redeption
+                            </h3>
+                            <!-- <p class="text-sm text-gray-300 font-light leading-relaxed">
+                                Website trưng bày tranh nghệ thuật thô mộc kết hợp các khối hình học trừu tượng.
+                            </p> -->
+                        </div>
+
+                        <!-- Bottom Action (Liên kết điều hướng) -->
+                        <div class="pt-2 border-t border-white/5 flex items-center justify-between">
+                            <!-- <a href="#"
+                                class="inline-flex items-center gap-2 text-brutalPink text-xs font-bold group/link">
+                                Khám phá dự án
+                                <i
+                                    class="fa-solid fa-arrow-right text-xs transition-transform group-hover/link:translate-x-1.5"></i>
+                            </a> -->
+                            <span class="text-[10px] font-mono text-gray-500">[ SUPRE_20 ]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- STATS SECTION -->
+    <section class="border-y-2 border-gray-800 py-12 my-12 relative z-20 bg-dark">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center md:text-left">
+            <div>
+                <h2 class="text-6xl font-bold">5</h2>
+                <p class="text-gray-400 mt-2 uppercase tracking-widest text-sm">Năm Kinh Nghiệm</p>
+            </div>
+            <div>
+                <h2 class="text-6xl font-bold">200+</h2>
+                <p class="text-gray-400 mt-2 uppercase tracking-widest text-sm">Dự Án Hoàn Thành</p>
+            </div>
+            <div>
+                <h2 class="text-6xl font-bold">50+</h2>
+                <p class="text-gray-400 mt-2 uppercase tracking-widest text-sm">Khách Hàng Hài Lòng</p>
+            </div>
+            <div>
+                <h2 class="text-6xl font-bold">90%</h2>
+                <p class="text-gray-400 mt-2 uppercase tracking-widest text-sm">Khách Hàng Quay Lại</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES (STICKY NOTES) -->
+    <section id="services" class="py-16 px-4 max-w-7xl mx-auto relative z-20 bg-dark">
+        <h2 class="text-5xl font-bold text-center mb-16">Dịch vụ</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <!-- Ghi chú 1 -->
+            <div
+                class="bg-brutalYellow text-black p-8 border-4 border-black shadow-brutal transform -rotate-2 hover:rotate-0 transition-transform">
+                <h3 class="text-2xl font-bold mb-2">UI Design</h3>
+                <p class="text-sm font-handwriting text-gray-700 mb-6">từ</p>
+                <div class="text-6xl font-bold font-handwriting mb-6">$450</div>
+                <p class="text-lg">Tôi sẽ tạo ra một thiết kế UI tuỳ chỉnh phù hợp với doanh nghiệp của bạn, xây dựng từ
+                    đầu để có trải nghiệm người dùng tốt nhất.</p>
+            </div>
+
+            <!-- Ghi chú 2 -->
+            <div
+                class="bg-brutalYellow text-black p-8 border-4 border-black shadow-brutal transform rotate-1 hover:rotate-0 transition-transform">
+                <h3 class="text-2xl font-bold mb-2">Web Development</h3>
+                <p class="text-sm font-handwriting text-gray-700 mb-6">từ</p>
+                <div class="text-6xl font-bold font-handwriting mb-6">$850</div>
+                <p class="text-lg">Tôi sẽ lập trình trang web của bạn mượt mà và hiện đại, tối ưu hoá trên mọi thiết bị.
+                </p>
+            </div>
+
+            <!-- Ghi chú 3 -->
+            <div
+                class="bg-brutalYellow text-black p-8 border-4 border-black shadow-brutal transform -rotate-1 hover:rotate-0 transition-transform">
+                <h3 class="text-2xl font-bold mb-2">SEO Optimization</h3>
+                <p class="text-sm font-handwriting text-gray-700 mb-6">từ</p>
+                <div class="text-6xl font-bold font-handwriting mb-6">$1,400</div>
+                <p class="text-lg">Tôi sẽ tối ưu hoá trang web của bạn để đạt thứ hạng cao hơn trên các công cụ tìm
+                    kiếm.</p>
+            </div>
+        </div>
+        <p class="text-center text-gray-500 mt-12 text-sm max-w-2xl mx-auto">
+            *Giá liệt kê được ước tính dựa trên phạm vi dự án thông thường. Để nhận báo giá chính xác cho nhu cầu cụ thể
+            của bạn, vui lòng liên hệ với tôi qua email.
+        </p>
+    </section>
+
+    <!-- ABOUT ME -->
+    <section class="py-20 px-4 max-w-7xl mx-auto border-t-2 border-gray-800 relative z-20 bg-dark">
+        <h2 class="text-5xl font-bold text-center mb-16">Về Tôi</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+            <div class="text-gray-300 space-y-6">
+                <h3 class="text-white text-xl font-bold border-b border-gray-700 pb-2">Cuộc sống / Sở thích</h3>
+                <p>Ngoài công việc, tôi có niềm đam mê với công nghệ retro, nghệ thuật số và khám phá những ý tưởng sáng
+                    tạo. Tôi luôn tìm kiếm những góc nhìn mới mẻ để pha trộn nét hoài cổ với sự đổi mới.</p>
+                <p>Tôi tin rằng sáng tạo không chỉ nằm ở vẻ bề ngoài - <strong class="text-white">mà là về cách giải
+                        quyết vấn đề theo những cách độc đáo.</strong></p>
+            </div>
+
+            <!-- Khung ảnh Polaroid -->
+            <div class="bg-white p-4 border-4 border-black shadow-brutal-white transform rotate-2">
+                <div
+                    class="w-full aspect-square bg-gray-200 border-2 border-black flex items-center justify-center overflow-hidden">
+                    <span class="text-gray-500 text-center">[Hình ảnh: Chân dung của bạn]</span>
+                    <!-- <img src="link_anh_cua_ban.jpg" alt="About Me" class="w-full h-full object-cover"> -->
+                </div>
+                <p class="text-black font-handwriting text-2xl text-center mt-4">Vâng, đó là tôi</p>
+            </div>
+
+            <div class="text-gray-300 space-y-6">
+                <h3 class="text-white text-xl font-bold border-b border-gray-700 pb-2">Kỹ năng / Công cụ</h3>
+                <p>Tôi tập trung vào UI/UX design, web development và SEO, đảm bảo mọi trang web tôi xây dựng đều hấp
+                    dẫn về mặt thị giác và hoạt động hoàn hảo.</p>
+                <p>Công cụ yêu thích: <strong class="text-white">Figma, Framer, Webflow, Tailwind CSS,
+                        JavaScript.</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS (GRID PAPER BACKGROUND) -->
+    <section class="bg-grid-paper text-black py-20 px-4 relative overflow-hidden border-y-4 border-black z-20">
+        <div class="max-w-7xl mx-auto">
+            <h2
+                class="text-5xl font-bold text-center mb-20 bg-black text-white inline-block px-6 py-2 transform -rotate-1 shadow-brutal">
+                Khách hàng nói gì</h2>
+
+            <div class="flex flex-col md:flex-row justify-center items-center gap-12 md:gap-8">
+
+                <!-- Polaroid 1 -->
+                <div class="relative bg-white p-4 border-4 border-black shadow-brutal transform -rotate-3 w-72">
+                    <div class="paperclip"></div>
+                    <div
+                        class="w-full h-48 bg-gray-200 border-2 border-black flex items-center justify-center overflow-hidden mb-4">
+                        <span class="text-gray-500">[Hình: Khách 1]</span>
+                    </div>
+                    <h4 class="font-bold text-xl text-center">John Doe</h4>
+                    <p class="text-sm text-center text-gray-600">Chủ cửa hàng quần áo</p>
+                </div>
+
+                <!-- Lời trích dẫn -->
+                <div class="bg-white p-8 border-4 border-black shadow-brutal max-w-lg z-10">
+                    <div class="flex justify-center text-brutalYellow text-2xl mb-4">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="font-handwriting text-3xl text-center leading-tight">
+                        "Việc thiết kế lại trang web này đã thay đổi công việc kinh doanh của tôi. Doanh số bán hàng
+                        trực tuyến tăng gấp đôi trong vòng ba tháng, và khách hàng luôn khen ngợi việc mua sắm dễ dàng
+                        như thế nào!"
+                    </p>
+                </div>
+
+                <!-- Polaroid 2 (Làm nền) -->
+                <div
+                    class="relative bg-white p-4 border-4 border-black shadow-brutal transform rotate-6 w-72 mt-10 md:mt-0 opacity-50 hidden md:block">
+                    <div class="paperclip"></div>
+                    <div
+                        class="w-full h-48 bg-gray-200 border-2 border-black flex items-center justify-center overflow-hidden mb-4">
+                        <span class="text-gray-500">[Hình: Khách 2]</span>
+                    </div>
+                    <h4 class="font-bold text-xl text-center">David</h4>
+                    <p class="text-sm text-center text-gray-600">Startup Founder</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- WORKFLOW SECTION -->
+    <section class="py-20 px-4 max-w-7xl mx-auto relative z-20 bg-dark">
+        <h2 class="text-5xl font-bold text-center mb-6">Quy trình làm việc</h2>
+        <p class="text-center text-gray-400 mb-16 max-w-2xl mx-auto">Một quy trình có cấu trúc tốt sẽ dẫn đến kết quả
+            tốt hơn. Quy trình của tôi đảm bảo mọi dự án đều diễn ra suôn sẻ từ ý tưởng đến khi hoàn thiện.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-black">
+            <!-- Bước 1 -->
+            <div class="bg-brutalYellow p-6 border-4 border-black shadow-brutal">
+                <h1 class="text-6xl font-bold mb-4 border-b-4 border-black pb-2">01.</h1>
+                <h3 class="text-xl font-bold mb-4">Khám phá</h3>
+                <p class="text-sm">Mọi dự án đều bắt đầu bằng một cuộc trò chuyện. Tôi dành thời gian để hiểu mục tiêu,
+                    đối tượng mục tiêu và tầm nhìn của bạn để tạo nền tảng vững chắc.</p>
+            </div>
+            <!-- Bước 2 -->
+            <div class="bg-brutalBlue p-6 border-4 border-black shadow-brutal mt-4 md:mt-8">
+                <h1 class="text-6xl font-bold mb-4 border-b-4 border-black pb-2">02.</h1>
+                <h3 class="text-xl font-bold mb-4">Nghiên cứu</h3>
+                <p class="text-sm">Thiết kế tốt được hỗ trợ bởi chiến lược. Tôi phân tích xu hướng ngành, đối thủ cạnh
+                    tranh và kỳ vọng của người dùng để đảm bảo trang web của bạn nổi bật.</p>
+            </div>
+            <!-- Bước 3 -->
+            <div class="bg-brutalPink p-6 border-4 border-black shadow-brutal mt-8 md:mt-16">
+                <h1 class="text-6xl font-bold mb-4 border-b-4 border-black pb-2">03.</h1>
+                <h3 class="text-xl font-bold mb-4">UI Design</h3>
+                <p class="text-sm">Với cách tiếp cận dựa trên nghiên cứu, tôi tạo ra một giao diện trực quan và hấp dẫn,
+                    đảm bảo trải nghiệm người dùng liền mạch phù hợp với thương hiệu.</p>
+            </div>
+            <!-- Bước 4 -->
+            <div class="bg-brutalGreen p-6 border-4 border-black shadow-brutal mt-12 md:mt-24">
+                <h1 class="text-6xl font-bold mb-4 border-b-4 border-black pb-2">04.</h1>
+                <h3 class="text-xl font-bold mb-4">Xây dựng</h3>
+                <p class="text-sm">Đã đến lúc biến tầm nhìn thành hiện thực! Tôi phát triển một trang web hoàn toàn phản
+                    hồi (responsive), đảm bảo tương tác mượt mà và tối ưu chức năng.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION (Sổ tay) -->
+    <section id="faq" class="py-20 px-4 max-w-4xl mx-auto relative z-20 bg-dark">
+        <h2 class="text-5xl font-bold text-center mb-12">Bạn có câu hỏi?</h2>
+
+        <div class="bg-grid-paper text-black p-8 md:p-12 border-4 border-black shadow-brutal rounded-lg">
+            <!-- FAQ Item 1 -->
+            <div class="border-b-2 border-black/20 pb-4 mb-4">
+                <button
+                    class="w-full text-left flex justify-between items-center font-handwriting text-3xl faq-btn focus:outline-none">
+                    <span>Bạn cung cấp những dịch vụ gì?</span>
+                    <i class="fa-solid fa-plus text-xl transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer font-sans text-lg mt-2 text-gray-700">
+                    <p>Tôi chuyên về thiết kế UI/UX, phát triển website, và tối ưu hoá SEO. Mục tiêu của tôi là giúp bạn
+                        tạo ra các trang web đẹp mắt trực quan hoạt động tốt và tiếp cận đúng đối tượng.</p>
+                </div>
+            </div>
+
+            <!-- FAQ Item 2 -->
+            <div class="border-b-2 border-black/20 pb-4 mb-4">
+                <button
+                    class="w-full text-left flex justify-between items-center font-handwriting text-3xl faq-btn focus:outline-none">
+                    <span>Thời gian hoàn thành dự án thường là bao lâu?</span>
+                    <i class="fa-solid fa-plus text-xl transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer font-sans text-lg mt-2 text-gray-700">
+                    <p>Tuỳ thuộc vào quy mô dự án. Thông thường một website tiêu chuẩn mất khoảng 2-4 tuần từ lúc thiết
+                        kế đến khi hoàn thiện code.</p>
+                </div>
+            </div>
+
+            <!-- FAQ Item 3 -->
+            <div class="border-b-2 border-black/20 pb-4 mb-4">
+                <button
+                    class="w-full text-left flex justify-between items-center font-handwriting text-3xl faq-btn focus:outline-none">
+                    <span>Bạn có hỗ trợ sau khi dự án hoàn thành không?</span>
+                    <i class="fa-solid fa-plus text-xl transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer font-sans text-lg mt-2 text-gray-700">
+                    <p>Có, tôi cung cấp gói bảo trì và hỗ trợ 30 ngày sau khi bàn giao để đảm bảo mọi thứ hoạt động trơn
+                        tru.</p>
+                </div>
+            </div>
+
+            <!-- Note bottom -->
+            <div class="mt-12 text-center font-handwriting text-2xl">
+                Vẫn còn câu hỏi? Vui lòng liên hệ tôi qua email:<br>
+                <a href="mailto:contact@email.com" class="text-blue-600 underline">contact@email.com</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT / FOOTER (Nokia Style) -->
+    <footer id="contact"
+        class="py-32 px-4 relative overflow-hidden bg-black flex justify-center items-center min-h-screen z-20">
+        <!-- Text nền lớn -->
+        <h1 class="absolute text-[25vw] font-bold text-gray-900 z-0 pointer-events-none select-none tracking-tighter">
+            LIÊN HỆ
+        </h1>
+
+        <!-- Giao diện điện thoại -->
+        <div
+            class="z-10 bg-[#1a1a1a] p-6 rounded-[3rem] border-8 border-[#333] shadow-2xl flex flex-col items-center w-[350px]">
+            <!-- Màn hình xanh retro -->
+            <div
+                class="bg-nokiaScreen w-full h-48 rounded-lg border-4 border-black p-4 flex flex-col justify-center items-center shadow-inner relative overflow-hidden">
+                <!-- Hiệu ứng scanline -->
+                <div
+                    class="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%)] bg-[length:100%_4px] pointer-events-none">
+                </div>
+
+                <div class="text-black font-retro text-2xl text-center z-10 w-full">
+                    <div class="flex justify-between text-sm mb-4">
+                        <span>2G <i class="fa-solid fa-signal"></i></span>
+                        <span id="clock">12:00</span>
+                    </div>
+                    <p class="mb-2">Liên hệ qua email:</p>
+                    <a href="mailto:hello@yoursite.com"
+                        class="font-bold underline text-blue-800 hover:text-black transition-colors block mt-2 text-xl">hello@yoursite.com</a>
+                </div>
+            </div>
+
+            <!-- Bàn phím điện thoại giả -->
+            <div class="mt-8 flex gap-4">
+                <button
+                    class="w-12 h-6 bg-gray-700 rounded-full border-b-4 border-gray-900 active:border-b-0 active:translate-y-1"></button>
+                <button
+                    class="w-16 h-6 bg-gray-700 rounded-full border-b-4 border-gray-900 active:border-b-0 active:translate-y-1"></button>
+                <button
+                    class="w-12 h-6 bg-gray-700 rounded-full border-b-4 border-gray-900 active:border-b-0 active:translate-y-1"></button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCIPTS TỔNG HỢP -->
+    <script>
+        const island = document.getElementById('dynamic-island');
+        const expandedContent = document.getElementById('expanded-content');
+        const collapsedContent = document.getElementById('collapsed-content');
+
+        let isCollapsed = false;
+        let lastScrollY = window.scrollY;
+
+        function collapseIsland() {
+            if (isCollapsed) return;
+            isCollapsed = true;
+            island.classList.remove('w-[90%]', 'md:w-[750px]', 'h-[72px]', 'rounded-2xl');
+            island.classList.add('w-[110px]', 'h-[44px]', 'rounded-full');
+            expandedContent.classList.remove('opacity-100', 'scale-100');
+            expandedContent.classList.add('opacity-0', 'scale-90', 'pointer-events-none');
+            collapsedContent.classList.remove('opacity-0', 'scale-75', 'pointer-events-none');
+            collapsedContent.classList.add('opacity-100', 'scale-100');
+        }
+
+        function expandIsland() {
+            if (!isCollapsed) return;
+            isCollapsed = false;
+            island.classList.remove('w-[110px]', 'h-[44px]', 'rounded-full');
+            island.classList.add('w-[90%]', 'md:w-[750px]', 'h-[72px]', 'rounded-2xl');
+            expandedContent.classList.remove('opacity-0', 'scale-90', 'pointer-events-none');
+            expandedContent.classList.add('opacity-100', 'scale-100');
+            collapsedContent.classList.remove('opacity-100', 'scale-100');
+            collapsedContent.classList.add('opacity-0', 'scale-75', 'pointer-events-none');
+        }
+        function toggleIsland(collapse) {
+            if (collapse === isCollapsed) return;
+            isCollapsed = collapse;
+            if (collapse) {
+                // Thu nhỏ thanh đảo
+                island.classList.remove('w-[90%]', 'md:w-[750px]', 'h-[72px]', 'rounded-2xl');
+                island.classList.add('w-[110px]', 'h-[44px]', 'rounded-full', 'bg-[#1a1a1e]');
+                
+                // Ẩn hoàn toàn tuyệt đối mọi thứ bên trong thanh mở rộng
+                expandedContent.classList.add('opacity-0', 'scale-90', 'pointer-events-none', 'invisible');
+                expandedContent.classList.remove('opacity-100', 'scale-100');
+                
+                // Hiện biểu tượng rút gọn
+                collapsedContent.classList.remove('opacity-0', 'scale-75', 'pointer-events-none', 'invisible');
+                collapsedContent.classList.add('opacity-100', 'scale-100');
+            } else {
+                // Mở rộng thanh đảo về ban đầu
+                island.classList.remove('w-[110px]', 'h-[44px]', 'rounded-full');
+                island.classList.add('w-[90%]', 'md:w-[750px]', 'h-[72px]', 'rounded-2xl', 'bg-[#1a1a1e]/90');
+                
+                // Hiện lại menu lớn
+                expandedContent.classList.remove('opacity-0', 'scale-90', 'pointer-events-none', 'invisible');
+                expandedContent.classList.add('opacity-100', 'scale-100');
+                
+                // Ẩn biểu tượng rút gọn
+                collapsedContent.classList.add('opacity-0', 'scale-75', 'pointer-events-none', 'invisible');
+                collapsedContent.classList.remove('opacity-100', 'scale-100');
+            }
+        }
+         // ==========================================
+        // HIỆU ỨNG PUMPKIN & GIỎ HÀNG (MỚI)
+        // ==========================================
+        function triggerPumpkinAnimation() {
+            const pumpkin = document.getElementById('nav-pumpkin');
+            if(!pumpkin) return;
+            
+            // Xóa/Thêm lại class để tái khởi động animation nhảy nhót
+            pumpkin.classList.remove('pumpkin-excited');
+            void pumpkin.offsetWidth; 
+            pumpkin.classList.add('pumpkin-excited');
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cart-badge');
+            if (cart.length > 0) {
+                badge.textContent = cart.length;
+                badge.classList.remove('hidden');
+                badge.classList.add('animate-bounce'); // Nhảy nhẹ báo giỏ hàng mới
+                setTimeout(() => badge.classList.remove('animate-bounce'), 1000);
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function quickAddToCart(gameId) {
+            const game = GAMES_DATA.find(g => g.id === gameId);
+            if (!game) return;
+
+            if (!cart.some(item => item.id === game.id)) {
+                cart.push(game);
+                triggerPumpkinAnimation();
+                updateCartBadge();
+                showPumpkinAlert("Tuyệt vời!", `Đã thêm ${game.title} vào giỏ hàng của bạn.`, 'success');
+            } else {
+                showPumpkinAlert("Chú ý", `${game.title} đã có sẵn trong giỏ hàng.`, 'info');
+            }
+        }
+
+        function addToCartAndBuy() {
+            const game = GAMES_DATA.find(g => g.id === currentGameId);
+            if (!game) return;
+
+            if (!cart.some(item => item.id === game.id)) {
+                cart.push(game);
+                triggerPumpkinAnimation();
+                updateCartBadge();
+            }
+            showPage('cart');
+            showPumpkinAlert("Giỏ hàng", `Bé bí ngô đã giữ ${game.title} cho bạn!`, 'success');
+        }
+
+        function showCart() {
+            const listContainer = document.getElementById('cart-items-list');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const totalEl = document.getElementById('cart-total');
+
+            if (!listContainer) return;
+            listContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-16 bg-[#18181c] rounded-xl border border-[#202020] space-y-4">
+                        <div class="text-6xl filter drop-shadow-md opacity-50 mb-4">👻</div>
+                        <p class="text-gray-400 text-lg">Huhu... Giỏ hàng trống vắng quá.</p>
+                        <button onclick="showPage('home')" class="mt-4 px-6 py-2.5 bg-orange-600/20 text-orange-500 font-semibold rounded-lg border border-orange-500/50 hover:bg-orange-500 hover:text-white transition-colors">
+                            Đi săn game ngay!
+                        </button>
+                    </div>
+                `;
+                if (subtotalEl) subtotalEl.textContent = "0 đ";
+                if (totalEl) totalEl.textContent = "0 đ";
+            } else {
+                let totalVal = 0;
+                cart.forEach(game => {
+                    totalVal += game.price;
+                    const item = document.createElement('div');
+                    item.className = "flex items-center justify-between p-4 bg-[#18181c] rounded-xl border border-[#202020] gap-4 hover:border-orange-500/30 transition-colors";
+                    item.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <img src="${game.coverImage}" class="w-16 h-20 rounded-md object-cover shadow-md">
+                            <div>
+                                <h4 class="font-bold text-white text-md hover:text-orange-400 cursor-pointer" onclick="viewGameDetail(${game.id})">${game.title}</h4>
+                                <span class="text-xs px-2 py-0.5 bg-[#25252b] text-gray-400 rounded mt-1 inline-block">${game.genre}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 md:gap-8">
+                            <span class="font-bold text-orange-400">${game.price === 0 ? "Miễn phí" : game.priceText}</span>
+                            <button onclick="removeFromCart(${game.id})" class="p-2 text-gray-500 bg-[#25252b] rounded-lg hover:text-red-500 hover:bg-red-500/10 transition-colors">
+                                <i data-lucide="trash-2" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    `;
+                    listContainer.appendChild(item);
+                });
+
+                if (subtotalEl) subtotalEl.textContent = formatCurrency(totalVal);
+                if (totalEl) totalEl.textContent = formatCurrency(totalVal);
+            }
+
+            lucide.createIcons();
+        }
+
+        function removeFromCart(gameId) {
+            cart = cart.filter(item => item.id !== gameId);
+            updateCartBadge();
+            showCart();
+            showPumpkinAlert("Đã xóa", "Sản phẩm đã rời khỏi giỏ hàng.", 'error');
+        }
+
+        function checkout() {
+            if (cart.length === 0) return;
+            showPumpkinAlert("Thành công!", "Bé bí ngô cảm ơn bạn đã mua sắm! Chúc bạn chơi vui vẻ.", 'success');
+            cart = [];
+            updateCartBadge();
+            showPage('home');
+        }
+
+        function showPage(pageId) {
+            const pages = ['page-home', 'page-detail', 'page-cart'];
+
+            pages.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+
+            const activePage = document.getElementById(`page-${pageId}`);
+            if (activePage) {
+                activePage.classList.remove('hidden');
+            }
+
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+
+            if (pageId === 'cart') {
+                showCart();
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > 100 && currentScrollY > lastScrollY) {
+                collapseIsland();
+            } else {
+                expandIsland();
+            }
+            lastScrollY = currentScrollY;
+        });
+
+        island.addEventListener('mouseenter', expandIsland);
+        island.addEventListener('mouseleave', () => {
+            if (window.scrollY > 100) {
+                collapseIsland();
+            }
+        });
+        // ----------------------------------------------------
+        // 1. Đồng hồ Nokia phần Footer
+        // ----------------------------------------------------
+        function updateClock() {
+            const now = new Date();
+            let h = now.getHours().toString().padStart(2, '0');
+            let m = now.getMinutes().toString().padStart(2, '0');
+            const clockEl = document.getElementById('clock');
+            if (clockEl) {
+                clockEl.textContent = h + ':' + m;
+            }
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // ----------------------------------------------------
+        // 2. Logic FAQ Accordion
+        // ----------------------------------------------------
+        document.querySelectorAll('.faq-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const answer = button.nextElementSibling;
+                const icon = button.querySelector('i');
+
+                if (answer.style.maxHeight) {
+                    answer.style.maxHeight = null;
+                    icon.classList.replace('fa-minus', 'fa-plus');
+                } else {
+                    answer.style.maxHeight = answer.scrollHeight + "px";
+                    icon.classList.replace('fa-plus', 'fa-minus');
+                }
+            });
+        });
+
+        // ----------------------------------------------------
+        // 3. HIỆU ỨNG 3D PARALLAX CHO THẺ PORTFOLIO MỚI THÊM
+        // ----------------------------------------------------
+        const wrappers = document.querySelectorAll('.project-card-wrapper');
+
+        wrappers.forEach(wrapper => {
+            const card = wrapper.querySelector('.project-card');
+
+            wrapper.addEventListener('mousemove', (e) => {
+                card.classList.remove('resetting');
+
+                const rect = wrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -12;
+                const rotateY = ((x - centerX) / centerX) * 12;
+
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            wrapper.addEventListener('mouseleave', () => {
+                card.classList.add('resetting');
+                card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            });
+        });
+
+        // ----------------------------------------------------
+        // 4. HIỆU ỨNG SCROLL REVEAL (Cho phần 3D Portfolio)
+        // ----------------------------------------------------
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-up').forEach(element => {
+            observer.observe(element);
+        });
+
+        // ----------------------------------------------------
+        // 5. ĐÃ SỬA LỖI: HIỆU ỨNG HERO SCROLL EXPAND
+        // Lỗi cũ "kéo không trượt xuống" xảy ra do thiếu đoạn code này,
+        // khiến khung ảnh bị "kẹt" lại ở trạng thái sticky thay vì phóng to.
+        // ----------------------------------------------------
+        const heroSection = document.getElementById('hero');
+        const heroImage = document.getElementById('hero-image-wrapper');
+        const heroText = document.getElementById('hero-text');
+        const scrollIndicator = document.getElementById('scroll-indicator');
+
+        if (heroSection && heroImage) {
+            window.addEventListener('scroll', () => {
+                const scrollPos = window.scrollY;
+                // Vùng cuộn để hiệu ứng hoàn thành (bằng đúng 1 chiều cao màn hình)
+                const maxScroll = window.innerHeight;
+                let progress = scrollPos / maxScroll;
+
+                // Giới hạn giá trị từ 0 đến 1
+                if (progress > 1) progress = 1;
+                if (progress < 0) progress = 0;
+
+                // Cấu hình tỷ lệ phóng to dựa vào thiết bị
+                const isMobile = window.innerWidth < 768;
+                const startWidth = isMobile ? 85 : 45;
+                const startHeight = isMobile ? 45 : 55;
+
+                // Tính toán thay đổi kích thước và bo góc
+                const currentWidth = startWidth + (100 - startWidth) * progress;
+                const currentHeight = startHeight + (100 - startHeight) * progress;
+                const currentRadius = 2 * (1 - progress); // Từ 2rem về 0rem
+
+                // Áp dụng CSS
+                heroImage.style.width = `${currentWidth}vw`;
+                heroImage.style.height = `${currentHeight}vh`;
+                heroImage.style.borderRadius = `${currentRadius}rem`;
+
+                // Làm mờ dần chữ và biểu tượng cuộn phía sau
+                if (heroText) {
+                    heroText.style.opacity = 1 - (progress * 1.5);
+                    heroText.style.transform = `translateY(${progress * 50}px)`;
+                }
+                if (scrollIndicator) {
+                    scrollIndicator.style.opacity = 1 - (progress * 2);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

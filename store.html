@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASIER STORE</title>
+    <!-- Favicon bí ngô cực chất -->
+    <link class="rounded-full" rel="icon" type="image/png" href="./img/logo.jpg">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons để dùng các biểu tượng cao cấp -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=VT323&family=Caveat:wght@600&family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #f5f5f5;
+        }
+
+        /* Tối ưu hóa thanh cuộn */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3f3f3f;
+        }
+
+        .island-transition {
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Thêm thuộc tính visibility để tránh tràn chữ khi thu gọn */
+        .content-transition {
+            transition: opacity 0.25s ease, transform 0.35s ease, visibility 0.25s ease;
+        }
+
+        /* HIỆU ỨNG CHO BÉ BÍ NGÔ */
+        @keyframes floatIdle {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-4px) rotate(3deg);
+            }
+        }
+
+        .pumpkin-idle {
+            display: inline-block;
+            animation: floatIdle 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.4));
+        }
+
+        @keyframes happyJump {
+            0% {
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
+
+            20% {
+                transform: translateY(-15px) scale(1.2) rotate(-10deg);
+            }
+
+            40% {
+                transform: translateY(0) scale(0.9) rotate(10deg);
+            }
+
+            60% {
+                transform: translateY(-8px) scale(1.1) rotate(-5deg);
+            }
+
+            80% {
+                transform: translateY(0) scale(0.95) rotate(5deg);
+            }
+
+            100% {
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
+        }
+
+        .pumpkin-excited {
+            animation: happyJump 0.8s cubic-bezier(0.28, 0.84, 0.42, 1) !important;
+            filter: drop-shadow(0 0 15px rgba(249, 115, 22, 0.8)) !important;
+        }
+
+        .glow-text-orange {
+            text-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col selection:bg-orange-500 selection:text-white">
+
+    <!-- HEADER / NAVIGATION BAR (DYNAMIC ISLAND) -->
+    <nav id="dynamic-island"
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-[#1a1a1e]/90 backdrop-blur-xl border border-white/10 overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.5)] island-transition flex items-center justify-center w-[90%] md:w-[750px] h-[72px] rounded-5xl"
+        style="border-radius: 50px;">
+
+        <!-- Trạng thái MỞ RỘNG (Expanded) -->
+        <div id="expanded-content"
+            class="absolute w-full px-4 md:px-8 flex items-center justify-between content-transition opacity-100 scale-100">
+            <!-- Logo (Tích hợp bé Bí Ngô và ASIER) -->
+            <div onclick="showPage('home')"
+                class="flex items-center gap-2 text-2xl font-bold tracking-tight text-white cursor-pointer hover:opacity-80 transition-opacity select-none"
+                style="font-family: 'VT323', monospace;">
+                <span id="nav-pumpkin" class="text-3xl pumpkin-idle transition-transform inline-block">🎃</span>
+                ASIER
+            </div>
+
+            <!-- Menu (ẩn trên mobile) -->
+            <div class="hidden md:flex space-x-8 text-sm font-bold">
+                <a href="index.html" onclick="showPage('home')" class="hover:text-orange-400 transition-colors">HOME</a>
+                <a href="store.html" onclick="showPage('home')"
+                    class="hover:text-orange-400 transition-colors">STORE</a>
+                <a href="#faq" class="hover:text-orange-400 transition-colors">Hỏi đáp</a>
+            </div>
+
+            <!-- Giỏ hàng & Avatar -->
+            <div class="flex items-center gap-4">
+                <!-- Giỏ hàng Icon -->
+                <button onclick="showPage('cart')"
+                    class="relative p-2 text-gray-300 hover:text-orange-500 transition-colors cursor-pointer group">
+                    <i data-lucide="shopping-cart" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+                    <!-- Chấm đỏ số lượng -->
+                    <span id="cart-badge"
+                        class="absolute top-0 right-0 w-4 h-4 bg-orange-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center hidden shadow-lg shadow-orange-500/50">0</span>
+                </button>
+
+                <!-- Avatar -->
+                <a href="#contact"
+                    class="inline-block w-10 h-10 rounded-full bg-white hover:shadow-[0_0_15px_rgba(249,115,22,0.5)] transition-all border-2 border-[#333] overflow-hidden">
+                    <img src="./img/account/wk.png" class="w-full h-full object-cover" alt="Avatar"
+                        onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150'">
+                </a>
+            </div>
+        </div>
+
+        <!-- Trạng thái THU GỌN (Collapsed - Chỉ hiện 1 con pumpkin nhún nhảy) -->
+        <div id="collapsed-content"
+            class="absolute flex items-center justify-center content-transition opacity-0 scale-75 pointer-events-none invisible">
+            <span class="text-2xl animate-bounce">🎃</span>
+        </div>
+    </nav>
+
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-[1600px] w-full mx-auto px-4 lg:px-12 py-8" style="margin-top: 70px;">
+
+        <!-- ================= PAGE: HOME (DISCOVER) ================= -->
+        <section id="page-home" class="space-y-12">
+
+            <!-- Hero banner slider -->
+            <div
+                class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-neutral-900 to-neutral-950 border border-[#202020] h-[320px] md:h-[450px] flex items-center">
+                <div class="absolute inset-0 z-0 bg-cover bg-center opacity-40 transition-all duration-700" id="hero-bg"
+                    style="background-image: url('./img/store/wk.jpg');">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent z-0"></div>
+
+                <div class="relative z-10 px-6 md:px-12 max-w-2xl space-y-4">
+                    <span
+                        class="px-3 py-1 bg-orange-500/20 text-orange-400 text-xs font-semibold rounded-full uppercase tracking-wider border border-orange-500/30 glow-text-orange">Tiêu
+                        điểm</span>
+                    <h2 class="text-3xl md:text-5xl font-black tracking-tight" id="hero-title">Crimson Desert</h2>
+                    <p class="text-sm md:text-base text-gray-300 line-clamp-3" id="hero-desc">Một tựa game nhập vai
+                        phiêu lưu hành động thế giới mở thế hệ mới cực đỉnh từ nhà phát triển Pearl Abyss. Khám phá lục
+                        địa Pywel đầy rẫy nguy hiểm.</p>
+                    <div class="flex items-center gap-4 pt-2">
+                        <button onclick="viewGameDetail(1)"
+                            class="px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition text-sm flex items-center gap-2">
+                            Xem Ngay <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                        <span class="text-lg font-bold text-white glow-text-orange" id="hero-price">1.390.000 đ</span>
+                    </div>
+                </div>
+
+                <!-- Hero Navigation Indicators -->
+                <div class="absolute bottom-6 right-6 z-10 flex gap-2">
+                    <button onclick="setHero(0)" class="w-3 h-3 rounded-full bg-white/40 transition-all duration-300"
+                        id="hero-dot-0"></button>
+                    <button onclick="setHero(1)" class="w-3 h-3 rounded-full bg-white transition-all duration-300"
+                        id="hero-dot-1"></button>
+                    <button onclick="setHero(2)" class="w-3 h-3 rounded-full bg-white/40 transition-all duration-300"
+                        id="hero-dot-2"></button>
+                </div>
+            </div>
+
+            <!-- SECTION: MỚI PHÁT HÀNH HÀNG ĐẦU -->
+            <div class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <h3
+                            class="text-xl md:text-2xl font-bold tracking-tight hover:text-orange-400 transition cursor-pointer">
+                            Mới phát hành hàng đầu
+                        </h3>
+                        <i data-lucide="flame" class="w-6 h-6 text-orange-500 animate-pulse"></i>
+                    </div>
+                    <!-- Navigation Buttons -->
+                    <div class="flex items-center gap-2">
+                        <button
+                            class="w-9 h-9 rounded-full bg-[#202020] hover:bg-orange-500 hover:text-white flex items-center justify-center transition border border-[#2a2a2a]"
+                            onclick="scrollGames(-1)">
+                            <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                        </button>
+                        <button
+                            class="w-9 h-9 rounded-full bg-[#202020] hover:bg-orange-500 hover:text-white flex items-center justify-center transition border border-[#2a2a2a]"
+                            onclick="scrollGames(1)">
+                            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Game Grid/List Container -->
+                <div id="game-list-container"
+                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 overflow-x-auto pb-4 transition-all duration-300">
+                    <!-- Trình JS sẽ tự động tạo danh sách game ở đây -->
+                </div>
+            </div>
+
+            <!-- SECTION: GỢI Ý THÊM CHO BẠN -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                <div
+                    class="bg-[#18181c] p-6 rounded-2xl border border-[#232329] flex flex-col justify-between hover:border-orange-500/50 transition group">
+                    <div class="space-y-3">
+                        <span class="text-xs font-bold uppercase tracking-widest text-emerald-400">Sắp Ra Mắt</span>
+                        <h4 class="text-xl font-bold group-hover:text-orange-400 transition">Warhammer Skulls Festival
+                        </h4>
+                        <p class="text-sm text-gray-400">Sự kiện lễ hội game lớn nhất năm với hàng loạt ưu đãi cực khủng
+                            lên đến 80% cho toàn bộ dòng game Warhammer.</p>
+                    </div>
+                    <button onclick="viewGameDetail(6)"
+                        class="mt-6 flex items-center gap-2 text-sm font-semibold text-white group-hover:translate-x-2 transition-transform">
+                        Khám phá ngay <i data-lucide="arrow-right" class="w-4 h-4 text-orange-400"></i>
+                    </button>
+                </div>
+
+                <div
+                    class="bg-[#18181c] p-6 rounded-2xl border border-[#232329] flex flex-col justify-between hover:border-orange-500/50 transition group">
+                    <div class="space-y-3">
+                        <span class="text-xs font-bold uppercase tracking-widest text-purple-400">Bản Thử Nghiệm</span>
+                        <h4 class="text-xl font-bold group-hover:text-orange-400 transition">Screamer Demo</h4>
+                        <p class="text-sm text-gray-400">Trải nghiệm miễn phí chế độ đua xe tốc độ cao siêu nảy lửa.
+                            Đánh bại kỷ lục thế giới ngay hôm nay.</p>
+                    </div>
+                    <button onclick="viewGameDetail(7)"
+                        class="mt-6 flex items-center gap-2 text-sm font-semibold text-white group-hover:translate-x-2 transition-transform">
+                        Tải Demo Miễn Phí <i data-lucide="arrow-right" class="w-4 h-4 text-orange-400"></i>
+                    </button>
+                </div>
+
+                <div
+                    class="bg-[#18181c] p-6 rounded-2xl border border-[#232329] flex flex-col justify-between hover:border-orange-500/50 transition group">
+                    <div class="space-y-3">
+                        <span class="text-xs font-bold uppercase tracking-widest text-blue-400">Mới Nhất</span>
+                        <h4 class="text-xl font-bold group-hover:text-orange-400 transition">Blades of Fire</h4>
+                        <p class="text-sm text-gray-400">Sự kết hợp hoàn hảo giữa thể loại chặt chém màn hình ngang và
+                            cốt truyện huyền thoại Bắc Âu cổ điển.</p>
+                    </div>
+                    <button onclick="viewGameDetail(8)"
+                        class="mt-6 flex items-center gap-2 text-sm font-semibold text-white group-hover:translate-x-2 transition-transform">
+                        Xem chi tiết <i data-lucide="arrow-right" class="w-4 h-4 text-orange-400"></i>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= PAGE: GAME DETAILS ================= -->
+        <section id="page-detail" class="hidden space-y-8 animate-fade-in">
+
+            <!-- Breadcrumbs / Quay lại -->
+            <div class="flex items-center gap-2 text-sm text-gray-400">
+                <button onclick="showPage('home')" class="hover:text-orange-400 transition flex items-center gap-1">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i> Cửa hàng
+                </button>
+                <span>/</span>
+                <span class="text-white" id="detail-breadcrumb-name">Crimson Desert</span>
+            </div>
+
+            <!-- Tên game & Đánh giá nhanh -->
+            <div class="space-y-2">
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight" id="detail-title">Crimson Desert</h1>
+                <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+                    <div class="flex items-center gap-1 text-yellow-500">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <span class="text-white font-bold" id="detail-rating">4.8</span>
+                    </div>
+                    <span>•</span>
+                    <span class="flex items-center gap-1"><i data-lucide="award" class="w-4 h-4 text-orange-400"></i>
+                        Siêu phẩm</span>
+                </div>
+            </div>
+
+            <!-- Layout chính -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <!-- Cột trái: Media Slideshow & Tab thông tin -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Ảnh to / Video Frame chính -->
+                    <div class="relative aspect-video rounded-xl overflow-hidden bg-[#18181c] border border-[#202020]">
+                        <img id="detail-main-media" src="" alt="Main gameplay preview"
+                            class="w-full h-full object-cover transition-all duration-300">
+                    </div>
+
+                    <!-- Danh sách ảnh con (Thumbnail) để đổi ảnh -->
+                    <div class="grid grid-cols-5 gap-2 sm:gap-3" id="detail-thumbnails">
+                        <!-- Tự động thêm qua JS -->
+                    </div>
+
+                    <!-- Tabs Mô tả -->
+                    <div class="bg-[#18181c] p-6 rounded-xl border border-[#202020] space-y-4">
+                        <div class="flex border-b border-[#2a2a2a] pb-3 gap-6">
+                            <button class="text-white font-semibold border-b-2 border-orange-500 pb-3 -mb-4">Sơ
+                                lược</button>
+                        </div>
+
+                        <div class="pt-4 space-y-4">
+                            <h3 class="text-xl font-bold">Mô tả sản phẩm</h3>
+                            <p class="text-gray-300 leading-relaxed text-sm md:text-base" id="detail-long-desc">
+                                Crimson Desert là một game thế giới mở phiêu lưu hành động sắp ra mắt được phát triển và
+                                xuất bản bởi Pearl Abyss...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cột phải: Bảng mua game & Nhà phát triển -->
+                <div class="space-y-6">
+
+                    <!-- Bảng mua sắm -->
+                    <div class="bg-[#18181c] p-6 rounded-xl border border-[#202020] space-y-6 relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-orange-600/20 blur-3xl rounded-full"></div>
+
+                        <!-- Logo Game/Icon thu nhỏ -->
+                        <div class="flex items-center gap-4 relative z-10">
+                            <img id="detail-mini-logo" src="" alt="Mini logo"
+                                class="w-16 h-16 rounded-lg object-cover bg-gray-800 border border-gray-700">
+                            <div>
+                                <h3 class="font-bold text-lg leading-tight" id="detail-title-sidebar">Crimson Desert
+                                </h3>
+                                <span class="text-xs px-2 py-0.5 bg-[#2a2a2e] text-orange-400 rounded uppercase"
+                                    id="detail-genre-tag">Hành động</span>
+                            </div>
+                        </div>
+
+                        <!-- Giá game -->
+                        <div class="space-y-1">
+                            <div class="flex items-baseline justify-between">
+                                <span class="text-gray-400 text-sm">Tổng cộng:</span>
+                                <span class="text-3xl font-black text-white glow-text-orange"
+                                    id="detail-price">1.390.000 đ</span>
+                            </div>
+                        </div>
+
+                        <!-- Các nút mua hàng chính -->
+                        <div class="space-y-3">
+                            <button onclick="addToCartAndBuy()"
+                                class="w-full py-4 bg-orange-600 hover:bg-orange-500 text-white font-bold rounded-lg transition duration-200 transform active:scale-95 flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(249,115,22,0.4)] hover:shadow-[0_4px_25px_rgba(249,115,22,0.6)]">
+                                <i data-lucide="shopping-cart" class="w-5 h-5"></i> THÊM VÀO GIỎ HÀNG
+                            </button>
+
+                            <button onclick="toggleWishlist()" id="btn-wishlist"
+                                class="w-full py-3.5 bg-[#202024] hover:bg-[#2e2e35] text-white font-semibold rounded-lg transition duration-200 border border-[#2d2d33] flex items-center justify-center gap-2">
+                                <i data-lucide="heart" class="w-5 h-5"></i> DANH SÁCH MONG MUỐN
+                            </button>
+                        </div>
+
+                        <!-- Các điều khoản phụ -->
+                        <div class="space-y-2 pt-4 border-t border-[#2a2a2a] text-xs text-gray-400">
+                            <div class="flex justify-between">
+                                <span>Nhà phát hành</span>
+                                <span class="text-white font-semibold" id="detail-publisher">Pearl Abyss</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Nhà phát triển</span>
+                                <span class="text-white font-semibold" id="detail-developer">Pearl Abyss</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Ngày phát hành</span>
+                                <span class="text-white font-semibold" id="detail-release-date">Sắp ra mắt</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================= PAGE: GIỎ HÀNG ================= -->
+        <section id="page-cart" class="hidden space-y-8 animate-fade-in">
+            <h1 class="text-3xl font-bold flex items-center gap-3">
+                <span class="text-4xl filter drop-shadow-md">🎃</span> Giỏ hàng của Pumpkin
+            </h1>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Danh sách sản phẩm trong giỏ -->
+                <div class="lg:col-span-2 space-y-4" id="cart-items-list">
+                    <!-- Sẽ render qua JS -->
+                </div>
+
+                <!-- Bảng tính tiền -->
+                <div
+                    class="bg-[#18181c] p-6 rounded-xl border border-orange-500/30 h-fit space-y-6 relative overflow-hidden shadow-[0_0_20px_rgba(249,115,22,0.1)]">
+                    <h3 class="text-lg font-bold text-orange-400 border-b border-[#2a2a2a] pb-3">Tóm tắt đơn hàng</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between text-gray-400">
+                            <span>Tạm tính</span>
+                            <span id="cart-subtotal" class="text-white">0 đ</span>
+                        </div>
+                        <div class="flex justify-between text-gray-400">
+                            <span>Thuế VAT</span>
+                            <span class="text-white">Đã bao gồm</span>
+                        </div>
+                        <div class="border-t border-[#2a2a2a] pt-3 flex justify-between font-bold text-xl">
+                            <span>Tổng thanh toán</span>
+                            <span id="cart-total" class="text-orange-500 glow-text-orange">0 đ</span>
+                        </div>
+                    </div>
+                    <button onclick="checkout()"
+                        class="w-full py-4 bg-orange-600 hover:bg-orange-500 text-white font-bold rounded-lg transition shadow-lg shadow-orange-600/30 transform active:scale-95">
+                        XÁC NHẬN THANH TOÁN
+                    </button>
+                    <button onclick="showPage('home')"
+                        class="w-full text-center text-sm text-gray-400 hover:text-orange-400 transition">
+                        Tiếp tục mua sắm
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#121212] border-t border-[#202020] mt-12 py-12 px-4 lg:px-12 text-sm text-gray-500">
+        <div class="max-w-[1600px] mx-auto space-y-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <svg class="w-8 h-8 fill-current text-white" viewBox="0 0 32 32">
+                        <path
+                            d="M16 0L0 6v20l16 6 16-6V6L16 0zm13.1 24.8L16 29.7l-13.1-4.9V7.2L16 2.3l13.1 4.9v17.6z" />
+                    </svg>
+                    <span class="font-bold text-white text-md tracking-wider">ASIER STORE CO.</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- POPUP THÔNG BÁO TÙY CHỈNH (PUMPKIN THEME) -->
+    <div id="custom-alert"
+        class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 max-w-sm w-full bg-[#1a0f0a] border border-orange-500 rounded-xl p-4 shadow-[0_5px_30px_rgba(249,115,22,0.2)] flex items-start gap-3">
+        <div class="p-2 bg-orange-500/20 text-orange-500 rounded-lg text-2xl flex items-center justify-center w-12 h-12"
+            id="alert-icon-wrapper">
+            🎃
+        </div>
+        <div class="flex-grow space-y-1">
+            <h4 class="font-bold text-orange-400 text-base" id="alert-title">Thông báo</h4>
+            <p class="text-sm text-gray-300" id="alert-message">Đã thêm thành công sản phẩm.</p>
+        </div>
+        <button onclick="closeAlert()" class="text-gray-400 hover:text-orange-400 transition-colors">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+    </div>
+
+    <!-- JS CHỨC NĂNG CHUYỂN TRANG, DỮ LIỆU, XEM GAME -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        retro: ['VT323', 'monospace'],
+                        handwriting: ['Caveat', 'cursive'],
+                    },
+                    colors: {
+                        dark: '#111111',
+                        brutalYellow: '#ffde59',
+                        brutalBlue: '#5e96ff',
+                        brutalPink: '#ff77e9',
+                        brutalGreen: '#61e07b',
+                        nokiaScreen: '#a3c13b'
+                    },
+                    boxShadow: {
+                        'brutal': '4px 4px 0px 0px rgba(0,0,0,1)',
+                        'brutal-lg': '8px 8px 0px 0px rgba(0,0,0,1)',
+                        'brutal-white': '4px 4px 0px 0px rgba(255,255,255,1)',
+                    }
+                }
+            }
+        }
+
+        // DỮ LIỆU GAME (Mô phỏng chuẩn ảnh chụp màn hình của bạn)
+        const GAMES_DATA = [
+            {
+                id: 0,
+                title: "Red Dead Redemption 2",
+                genre: "Hành động / Phiêu lưu",
+                price: 595000,
+                priceText: "595.000 đ",
+                rating: 4.7,
+                tag: "Tiêu điểm",
+                developer: "Rockstar Games",
+                publisher: "Rockstar Games",
+                releaseDate: "2018",
+                coverImage: "https://i.pinimg.com/736x/ee/7c/96/ee7c96bf60a67636e431b323f81a4fae.jpg",
+                images: [
+                    "https://i.pinimg.com/1200x/bc/34/29/bc34292035a215fe68431ff1a1050df7.jpg",
+                    "https://i.pinimg.com/1200x/3e/bd/fb/3ebdfbd3a077337f7ccfc86ac3784c79.jpg",
+                    "https://i.pinimg.com/736x/36/ab/12/36ab125c854fb0510c7177fe54e55661.jpg"
+                ],
+                desc: "Nhập vai vào Arthur Morgan, một kẻ ngoài vòng pháp luật thuộc băng đảng Van der Linde khét tiếng. Trải nghiệm thế giới mở chân thực và hoành tráng nhất miền Viễn Tây hoang dã Hoa Kỳ."
+            },
+            {
+                id: 1,
+                title: "Black Myth Wukong",
+                genre: "Hành động / Nhập vai",
+                price: 1390000,
+                priceText: "1.390.000 đ",
+                rating: 4.9,
+                tag: "Bán chạy nhất",
+                developer: "Game Science",
+                publisher: "Game Science",
+                releaseDate: "2024",
+                coverImage: "https://i.pinimg.com/1200x/db/02/5a/db025ad68ff1b5e25e50882e113b2506.jpg",
+                images: [
+                    "https://i.pinimg.com/736x/1f/0d/38/1f0d38faca473fff76413099f564cb65.jpg",
+                    "https://i.pinimg.com/1200x/f6/78/23/f67823bf2e732fea5bd803596f94252b.jpg",
+                    "https://i.pinimg.com/1200x/a2/c1/50/a2c150c2ae96c61fe45c2d0e3cc1c277.jpg"
+                ],
+                desc: "Lấy cảm hứng từ danh tác Tây Du Ký. Bạn sẽ hóa thân thành Thiên Mệnh Nhân, dấn thân vào hành trình phiêu lưu đầy thử thách qua các vùng đất thần thoại đầy rẫy yêu ma quỷ quái để tìm lại lục căn bị phong ấn."
+            },
+            {
+                id: 2,
+                title: "Pragmata",
+                genre: "Hành động / Viễn tưởng",
+                price: 1490000,
+                priceText: "1.490.000 đ",
+                rating: 4.6,
+                tag: "Sắp Ra Mắt",
+                developer: "Capcom",
+                publisher: "Capcom",
+                releaseDate: "2026",
+                coverImage: "https://i.pinimg.com/736x/9f/ca/01/9fca0185f1d534dacccff3c3d661c46e.jpg",
+                images: [
+                    "https://i.pinimg.com/736x/da/7f/3a/da7f3a3deacc4570d90efc4176e48664.jpg",
+                    "https://i.pinimg.com/736x/e3/a1/49/e3a14917f8e0f0dec879d46e68214832.jpg",
+                    "https://i.pinimg.com/736x/ba/d1/16/bad116a344fbf0b9f212a446862e24ca.jpg"
+                ],
+                desc: "Siêu phẩm phiêu lưu khoa học viễn tưởng thế hệ tiếp theo từ Capcom. Đồng hành cùng một phi hành gia giáp sắt và cô bé bí ẩn trên hành trình khám phá Mặt Trăng đổ nát."
+            },
+            {
+                id: 3,
+                title: "Lego Batman: Legacy",
+                genre: "Hành động / Phiêu lưu",
+                price: 1450000,
+                priceText: "1.450.000 đ",
+                rating: 4.8,
+                tag: "Mới nhất",
+                developer: "TT Games",
+                publisher: "Warner Bros.",
+                releaseDate: "2026",
+                coverImage: "https://i.pinimg.com/736x/b7/31/c5/b731c5853d21e3994ba7b2dab48fba26.jpg",
+                images: [
+                    "https://i.pinimg.com/736x/b7/31/c5/b731c5853d21e3994ba7b2dab48fba26.jpg",
+                    "https://legobatmangame.com/_astro/origin.DSZma2rC_2hKTV2.webp",
+                    "https://gameinformer.com/sites/default/files/styles/content_header_l/public/2025/12/11/3b33c028/legobatman04.jpg.webp"
+                ],
+                desc: "Lego Batman quay trở lại với hành trình giải cứu Gotham kịch tính và hài hước. Tự do tùy biến trang bị, bắt tay cùng Robin bảo vệ thành phố khỏi Joker và hội ác nhân."
+            },
+            {
+                id: 4,
+                title: "Marvel's Spider-Man 2",
+                genre: "Hành động / Phiêu lưu / Thế giới mở",
+                price: 1399000,
+                priceText: "1.399.000 đ",
+                rating: 4.8,
+                tag: "Bán Chạy",
+                developer: "Insomniac Games",
+                publisher: "PlayStation Publishing LLC",
+                releaseDate: "2025",
+                coverImage: "https://i.pinimg.com/1200x/4b/94/d5/4b94d5168bb2ab4311076369169cc441.jpg",
+                images: [
+                    "https://i.pinimg.com/1200x/4b/94/d5/4b94d5168bb2ab4311076369169cc441.jpg",
+                    "https://i.pinimg.com/736x/65/90/0f/65900f5d183334f5eb6c4840a890cd6d.jpg",
+                    "https://i.pinimg.com/1200x/4b/94/d5/4b94d5168bb2ab4311076369169cc441.jpg"
+                ],
+                desc: "Đồng hành cùng Peter Parker và Miles Morales trong hành trình bảo vệ thành phố New York đầy kịch tính trước những phản diện sừng sỏ như Venom và Kraven."
+            },
+            {
+                id: 5,
+                title: "Subnautica 2",
+                genre: "Sinh tồn / Phiêu lưu / Khám phá",
+                price: 450000,
+                priceText: "450.000 đ",
+                rating: 4.7,
+                tag: "Mới Nhất",
+                developer: "Unknown Worlds Entertainment",
+                publisher: "Krafton",
+                releaseDate: "2026",
+                coverImage: "https://i.pinimg.com/736x/3e/58/80/3e588022ed4c89a1086f885248a81399.jpg",
+                images: [
+                    "https://i.pinimg.com/1200x/da/e1/f8/dae1f828098726bc4c9c7dc3f39d28b9.jpg",
+                    "https://i.pinimg.com/1200x/4e/c6/19/4ec619fc46c5dadd5961c48ced681dee.jpg",
+                    "https://i.pinimg.com/1200x/7e/81/7b/7e817b8dcb154165c95c2c81cd63a4da.jpg"
+                ],
+                desc: "Trở lại thế giới đại dương xa lạ đầy nguy hiểm với tính năng chơi co-op 4 người hoàn toàn mới, xây dựng căn cứ, chế tạo phương tiện và khám phá những bí ẩn sâu thẳm."
+            },
+            {
+                id: 6,
+                title: "Battlefield™ 6",
+                genre: "Bắn súng / Hành động / Góc nhìn thứ nhất",
+                price: 1400000,
+                priceText: "1.400.000 đ",
+                rating: 4.2,
+                tag: "Hot",
+                developer: "Battlefield Studios (DICE)",
+                publisher: "Electronic Arts",
+                releaseDate: "2025",
+                coverImage: "https://i.pinimg.com/1200x/4b/4a/e1/4b4ae18cd89a5bf5dd543dde345d2046.jpg",
+                images: [
+                    "https://i.pinimg.com/1200x/2b/e9/ef/2be9ef3d4c9cdadd50b9f449265f1541.jpg",
+                    "https://i.pinimg.com/1200x/c2/68/51/c26851de11012debab0c0254c5f36f8d.jpg",
+                    "https://i.pinimg.com/1200x/17/56/0b/17560b89d66003bf5f68d1e49e94f8a3.jpg"
+                ],
+                desc: "Trải nghiệm những trận chiến quân sự hiện đại quy mô cực lớn với đồ họa Frostbite đỉnh cao, môi trường bị tàn phá chân thực và lối chơi đồng đội đầy khốc liệt."
+            },
+            {
+                id: 7,
+                title: "Hogwarts Legacy: Digital Deluxe Edition",
+                genre: "Nhập vai / Hành động / Thế giới mở",
+                price: 1399000,
+                priceText: "1.399.000 đ",
+                rating: 4.6,
+                tag: "Yêu Thích",
+                developer: "Avalanche Software",
+                publisher: "Warner Bros. Games",
+                releaseDate: "2023",
+                coverImage: "https://i.pinimg.com/1200x/fa/24/4a/fa244a66e651525e6e67dda0382bc190.jpg",
+                images: [
+                    "https://i.pinimg.com/1200x/f0/46/b4/f046b48e713a161fd47c8f8cd1b87071.jpg",
+                    "https://i.pinimg.com/1200x/77/09/5f/77095f64e8be66dc6db69b7d4aace448.jpg",
+                    "https://i.pinimg.com/1200x/d9/fb/4a/d9fb4a225a97ca09fbb2257521b7c92d.jpg"
+                ],
+                desc: "Trở thành một học sinh tại học viện pháp thuật Hogwarts thế kỷ 19, tự viết nên câu chuyện của riêng bạn, học bùa chú và ngăn chặn âm mưu hắc ám đe dọa thế giới phù thủy."
+            },
+            {
+                id: 8,
+                title: "EA SPORTS FC™ 26 Standard Edition",
+                genre: "Thể thao / Mô phỏng / Bóng đá",
+                price: 1090000,
+                priceText: "1.090.000 đ",
+                rating: 4.3,
+                tag: "Mới Nhất",
+                developer: "EA Canada / EA Romania",
+                publisher: "Electronic Arts",
+                releaseDate: "2025",
+                coverImage: "https://i.pinimg.com/736x/d3/42/55/d342550518b5258220389fb72fda8365.jpg",
+                images: [
+                    "https://i.pinimg.com/736x/62/2d/ae/622daecf117deb935b16e142c2d6b549.jpg",
+                    "https://i.pinimg.com/1200x/e9/52/59/e9525918d15e3bc8ee3ec799f29e8372.jpg",
+                    "https://i.pinimg.com/736x/cf/0f/5c/cf0f5ce9fc3485a81172312624103973.jpg"
+                ],
+                desc: "Trải nghiệm bóng đá đỉnh cao thế giới với công nghệ mô phỏng chân thực nâng cấp, cập nhật đầy đủ các giải đấu hàng đầu cùng các chế độ Career Mode và Ultimate Team kinh điển."
+            },
+            {
+                id: 9,
+                title: "Grand Theft Auto V Enhanced",
+                genre: "Hành động / Phiêu lưu / Thế giới mở",
+                price: 450000,
+                priceText: "450.000 đ",
+                rating: 4.8,
+                tag: "Kinh Điển",
+                developer: "Rockstar North",
+                publisher: "Rockstar Games",
+                releaseDate: "2025",
+                coverImage: "https://i.pinimg.com/736x/4b/65/af/4b65af5f05779610c6b9f3786a699d89.jpg",
+                images: [
+                    "https://i.pinimg.com/736x/c3/fc/95/c3fc957ec66924ba7254acd2794d811a.jpg",
+                    "https://i.pinimg.com/1200x/15/6f/e3/156fe328b7d00789170d4e470b1aaab9.jpg",
+                    "https://i.pinimg.com/736x/91/b0/d3/91b0d3a0d20415deccb33e36dd85b172.jpg"
+                ],
+                desc: "Phiên bản nâng cấp tối ưu đồ họa thế hệ mới tại thành phố Los Santos với hiệu ứng Ray Tracing chân thực, tốc độ tải game siêu nhanh và tích hợp đầy đủ chế độ GTA Online sôi động."
+            }
+        ];
+
+        let currentGameId = 1;
+        let currentHeroIndex = 1;
+        const heroSlideIds = [0, 1, 2];
+        let cart = [];
+        let wishlist = [];
+
+        // Dynamic Island Navigation Logic
+        const island = document.getElementById('dynamic-island');
+        const expandedContent = document.getElementById('expanded-content');
+        const collapsedContent = document.getElementById('collapsed-content');
+        let isCollapsed = false;
+        let lastScrollY = window.scrollY;
+
+        function toggleIsland(collapse) {
+            if (collapse === isCollapsed) return;
+            isCollapsed = collapse;
+            if (collapse) {
+                // Thu nhỏ thanh đảo
+                island.classList.remove('w-[90%]', 'md:w-[750px]', 'h-[72px]', 'rounded-2xl');
+                island.classList.add('w-[110px]', 'h-[44px]', 'rounded-full', 'bg-[#1a1a1e]');
+
+                // Ẩn hoàn toàn tuyệt đối mọi thứ bên trong thanh mở rộng
+                expandedContent.classList.add('opacity-0', 'scale-90', 'pointer-events-none', 'invisible');
+                expandedContent.classList.remove('opacity-100', 'scale-100');
+
+                // Hiện biểu tượng rút gọn
+                collapsedContent.classList.remove('opacity-0', 'scale-75', 'pointer-events-none', 'invisible');
+                collapsedContent.classList.add('opacity-100', 'scale-100');
+            } else {
+                // Mở rộng thanh đảo về ban đầu
+                island.classList.remove('w-[110px]', 'h-[44px]', 'rounded-full');
+                island.classList.add('w-[90%]', 'md:w-[750px]', 'h-[72px]', 'rounded-2xl', 'bg-[#1a1a1e]/90');
+
+                // Hiện lại menu lớn
+                expandedContent.classList.remove('opacity-0', 'scale-90', 'pointer-events-none', 'invisible');
+                expandedContent.classList.add('opacity-100', 'scale-100');
+
+                // Ẩn biểu tượng rút gọn
+                collapsedContent.classList.add('opacity-0', 'scale-75', 'pointer-events-none', 'invisible');
+                collapsedContent.classList.remove('opacity-100', 'scale-100');
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            toggleIsland(currentScrollY > 100 && currentScrollY > lastScrollY);
+            lastScrollY = currentScrollY;
+        });
+
+        island.addEventListener('mouseenter', () => toggleIsland(false));
+        island.addEventListener('mouseleave', () => {
+            if (window.scrollY > 100) {
+                toggleIsland(true);
+            }
+        });
+
+        // KHI TRANG WEB TẢI XONG
+        let slideInterval;
+        window.onload = function () {
+            lucide.createIcons();
+            renderGameList(GAMES_DATA);
+            setHero(1);
+            startSlideShow();
+        }
+
+        function startSlideShow() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(() => {
+                let nextIndex = (currentHeroIndex + 1) % 3;
+                setHero(nextIndex);
+            }, 8000);
+        }
+
+        // VẼ DANH SÁCH GAME TRANG CHỦ
+        function renderGameList(games) {
+            const container = document.getElementById('game-list-container');
+            container.innerHTML = '';
+
+            games.forEach(game => {
+                const card = document.createElement('div');
+                card.className = "group flex flex-col cursor-pointer transition duration-300 transform hover:-translate-y-2 h-full justify-between bg-[#18181c] border border-[#202020] rounded-xl overflow-hidden p-3 shadow-lg hover:border-orange-500/50";
+                card.setAttribute('onclick', `viewGameDetail(${game.id})`);
+
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="aspect-[3/4] w-full rounded-lg overflow-hidden bg-neutral-900 border border-[#202020] relative">
+                            <img src="${game.coverImage || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800'}" alt="${game.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <button onclick="event.stopPropagation(); toggleWishlistSpecific(${game.id})" class="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 backdrop-blur-sm text-gray-300 hover:text-red-500 transition">
+                                <i data-lucide="heart" class="w-4 h-4 ${wishlist.includes(game.id) ? 'fill-current text-red-500' : ''}"></i>
+                            </button>
+                        </div>
+                        <div class="space-y-1">
+                            <span class="text-[10px] uppercase font-bold tracking-wider text-orange-500 bg-orange-500/10 px-2 py-0.5 rounded-sm inline-block">${game.tag}</span>
+                            <h4 class="font-bold text-sm text-gray-200 group-hover:text-orange-400 transition leading-tight line-clamp-1">${game.title}</h4>
+                        </div>
+                    </div>
+                    <div class="pt-2 flex items-center justify-between border-t border-[#202020] mt-3">
+                        <span class="font-bold text-sm text-white">${game.price === 0 ? "Miễn phí" : game.priceText}</span>
+                        <button onclick="event.stopPropagation(); quickAddToCart(${game.id})" class="p-2 bg-[#25252b] hover:bg-orange-600 text-gray-400 hover:text-white rounded-lg transition-colors group/btn">
+                            <i data-lucide="shopping-cart" class="w-4 h-4 group-hover/btn:scale-110 transition-transform"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // ==========================================
+        // 3. QUẢN LÝ CHUYỂN ĐỔI TRANG (PAGE NAVIGATION)
+        // ==========================================
+        function showPage(pageId) {
+            const pages = ['page-home', 'page-detail', 'page-cart'];
+
+            pages.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+
+            const activePage = document.getElementById(`page-${pageId}`);
+            if (activePage) {
+                activePage.classList.remove('hidden');
+            }
+
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+
+            if (pageId === 'cart') {
+                showCart();
+            }
+        }
+
+        // ==========================================
+        // 4. LOGIC XỬ LÝ BANNER SLIDER CHUẨN (HERO)
+        // ==========================================
+        function setHero(index) {
+            currentHeroIndex = index;
+            const targetGameId = heroSlideIds[index];
+            const game = GAMES_DATA.find(g => g.id === targetGameId);
+            if (!game) return;
+
+            // Cập nhật giao diện Slider
+            const bg = document.getElementById('hero-bg');
+            const title = document.getElementById('hero-title');
+            const desc = document.getElementById('hero-desc');
+            const price = document.getElementById('hero-price');
+            const viewBtn = document.querySelector('#page-home button[onclick^="viewGameDetail"]');
+
+            const displayBg = (game.images && game.images[0]) ? game.images[0] : game.coverImage;
+
+            if (bg && displayBg) bg.style.backgroundImage = `url('${displayBg}')`;
+            if (title) title.textContent = game.title;
+            if (desc) desc.textContent = game.desc;
+            if (price) price.textContent = game.price === 0 ? "Miễn phí" : game.priceText;
+
+            if (viewBtn) {
+                viewBtn.setAttribute('onclick', `viewGameDetail(${game.id})`);
+            }
+
+            // Cập nhật các dấu chấm hiển thị
+            for (let i = 0; i < 3; i++) {
+                const dot = document.getElementById(`hero-dot-${i}`);
+                if (dot) {
+                    if (i === index) {
+                        dot.className = "w-6 h-3 rounded-full bg-orange-500 transition-all duration-300";
+                    } else {
+                        dot.className = "w-3 h-3 rounded-full bg-white/40 hover:bg-white/70 transition-all duration-300 cursor-pointer";
+                    }
+                }
+            }
+        }
+
+        // XEM CHI TIẾT GAME
+        function viewGameDetail(gameId) {
+            const game = GAMES_DATA.find(g => g.id === gameId);
+            if (!game) return;
+
+            currentGameId = gameId;
+
+            document.getElementById('detail-breadcrumb-name').textContent = game.title;
+            document.getElementById('detail-title').textContent = game.title;
+            document.getElementById('detail-rating').textContent = game.rating;
+
+            document.getElementById('detail-mini-logo').src = game.coverImage || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800';
+            document.getElementById('detail-title-sidebar').textContent = game.title;
+            document.getElementById('detail-genre-tag').textContent = game.genre;
+            document.getElementById('detail-price').textContent = game.price === 0 ? "Miễn phí" : game.priceText;
+
+            document.getElementById('detail-publisher').textContent = game.publisher;
+            document.getElementById('detail-release-date').textContent = game.releaseDate;
+
+            document.getElementById('detail-long-desc').textContent = game.desc;
+
+            const mainMedia = document.getElementById('detail-main-media');
+            const allImages = game.images && game.images.length > 0 ? game.images : [game.coverImage];
+            mainMedia.src = sunriseImageValid(allImages[0]) ? allImages[0] : 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200';
+
+            const thumbnailsContainer = document.getElementById('detail-thumbnails');
+            thumbnailsContainer.innerHTML = '';
+
+            allImages.forEach((imgUrl, idx) => {
+                if (!imgUrl) return;
+                const thumb = document.createElement('div');
+                thumb.className = `aspect-video rounded-md overflow-hidden bg-neutral-800 border cursor-pointer transition ${idx === 0 ? 'border-orange-500 scale-95 opacity-100' : 'border-transparent opacity-50 hover:opacity-100'}`;
+                thumb.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover">`;
+
+                thumb.onclick = function () {
+                    mainMedia.src = imgUrl;
+                    Array.from(thumbnailsContainer.children).forEach(child => {
+                        child.className = 'aspect-video rounded-md overflow-hidden bg-neutral-800 border cursor-pointer transition border-transparent opacity-50 hover:opacity-100';
+                    });
+                    thumb.className = 'aspect-video rounded-md overflow-hidden bg-neutral-800 border cursor-pointer transition border-orange-500 scale-95 opacity-100';
+                }
+                thumbnailsContainer.appendChild(thumb);
+            });
+
+            updateWishlistButtonState();
+            showPage('detail');
+        }
+
+        function sunriseImageValid(url) {
+            return url && url.trim() !== "";
+        }
+
+        // SLIDE GAME LƯỚT QUA TRÁI / PHẢI Ở TRANG CHỦ
+        function scrollGames(direction) {
+            const container = document.getElementById('game-list-container');
+            const scrollAmount = 400;
+            container.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+
+        // ==========================================
+        // HIỆU ỨNG PUMPKIN & GIỎ HÀNG (MỚI)
+        // ==========================================
+        function triggerPumpkinAnimation() {
+            const pumpkin = document.getElementById('nav-pumpkin');
+            if (!pumpkin) return;
+
+            // Xóa/Thêm lại class để tái khởi động animation nhảy nhót
+            pumpkin.classList.remove('pumpkin-excited');
+            void pumpkin.offsetWidth;
+            pumpkin.classList.add('pumpkin-excited');
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cart-badge');
+            if (cart.length > 0) {
+                badge.textContent = cart.length;
+                badge.classList.remove('hidden');
+                badge.classList.add('animate-bounce'); // Nhảy nhẹ báo giỏ hàng mới
+                setTimeout(() => badge.classList.remove('animate-bounce'), 1000);
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function quickAddToCart(gameId) {
+            const game = GAMES_DATA.find(g => g.id === gameId);
+            if (!game) return;
+
+            if (!cart.some(item => item.id === game.id)) {
+                cart.push(game);
+                triggerPumpkinAnimation();
+                updateCartBadge();
+                showPumpkinAlert("Tuyệt vời!", `Đã thêm ${game.title} vào giỏ hàng của bạn.`, 'success');
+            } else {
+                showPumpkinAlert("Chú ý", `${game.title} đã có sẵn trong giỏ hàng.`, 'info');
+            }
+        }
+
+        function addToCartAndBuy() {
+            const game = GAMES_DATA.find(g => g.id === currentGameId);
+            if (!game) return;
+
+            if (!cart.some(item => item.id === game.id)) {
+                cart.push(game);
+                triggerPumpkinAnimation();
+                updateCartBadge();
+            }
+            showPage('cart');
+            showPumpkinAlert("Giỏ hàng", `Bé bí ngô đã giữ ${game.title} cho bạn!`, 'success');
+        }
+
+        function showCart() {
+            const listContainer = document.getElementById('cart-items-list');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const totalEl = document.getElementById('cart-total');
+
+            if (!listContainer) return;
+            listContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-16 bg-[#18181c] rounded-xl border border-[#202020] space-y-4">
+                        <div class="text-6xl filter drop-shadow-md opacity-50 mb-4">👻</div>
+                        <p class="text-gray-400 text-lg">Huhu... Giỏ hàng trống vắng quá.</p>
+                        <button onclick="showPage('home')" class="mt-4 px-6 py-2.5 bg-orange-600/20 text-orange-500 font-semibold rounded-lg border border-orange-500/50 hover:bg-orange-500 hover:text-white transition-colors">
+                            Đi săn game ngay!
+                        </button>
+                    </div>
+                `;
+                if (subtotalEl) subtotalEl.textContent = "0 đ";
+                if (totalEl) totalEl.textContent = "0 đ";
+            } else {
+                let totalVal = 0;
+                cart.forEach(game => {
+                    totalVal += game.price;
+                    const item = document.createElement('div');
+                    item.className = "flex items-center justify-between p-4 bg-[#18181c] rounded-xl border border-[#202020] gap-4 hover:border-orange-500/30 transition-colors";
+                    item.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <img src="${game.coverImage}" class="w-16 h-20 rounded-md object-cover shadow-md">
+                            <div>
+                                <h4 class="font-bold text-white text-md hover:text-orange-400 cursor-pointer" onclick="viewGameDetail(${game.id})">${game.title}</h4>
+                                <span class="text-xs px-2 py-0.5 bg-[#25252b] text-gray-400 rounded mt-1 inline-block">${game.genre}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 md:gap-8">
+                            <span class="font-bold text-orange-400">${game.price === 0 ? "Miễn phí" : game.priceText}</span>
+                            <button onclick="removeFromCart(${game.id})" class="p-2 text-gray-500 bg-[#25252b] rounded-lg hover:text-red-500 hover:bg-red-500/10 transition-colors">
+                                <i data-lucide="trash-2" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    `;
+                    listContainer.appendChild(item);
+                });
+
+                if (subtotalEl) subtotalEl.textContent = formatCurrency(totalVal);
+                if (totalEl) totalEl.textContent = formatCurrency(totalVal);
+            }
+
+            lucide.createIcons();
+        }
+
+        function removeFromCart(gameId) {
+            cart = cart.filter(item => item.id !== gameId);
+            updateCartBadge();
+            showCart();
+            showPumpkinAlert("Đã xóa", "Sản phẩm đã rời khỏi giỏ hàng.", 'error');
+        }
+
+        function checkout() {
+            if (cart.length === 0) return;
+            showPumpkinAlert("Thành công!", "Bé bí ngô cảm ơn bạn đã mua sắm! Chúc bạn chơi vui vẻ.", 'success');
+            cart = [];
+            updateCartBadge();
+            showPage('home');
+        }
+
+        // TÙY CHỈNH ALERT PUMPKIN THEME
+        let alertTimeout;
+        function showPumpkinAlert(title, message, type = 'success') {
+            const alertBox = document.getElementById('custom-alert');
+            const wrapper = document.getElementById('alert-icon-wrapper');
+            const titleEl = document.getElementById('alert-title');
+            const msgEl = document.getElementById('alert-message');
+
+            if (!alertBox) return;
+
+            msgEl.textContent = message;
+            titleEl.textContent = title;
+
+            // Thiết lập màu sắc và icon tùy vào loại Alert
+            if (type === 'success') {
+                wrapper.innerHTML = '🎃';
+                wrapper.className = "p-2 bg-orange-500/20 text-orange-500 rounded-lg text-2xl flex items-center justify-center w-12 h-12";
+                titleEl.className = "font-bold text-orange-400 text-base";
+                alertBox.className = "fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 max-w-sm w-full bg-[#1a0f0a] border border-orange-500 rounded-xl p-4 shadow-[0_5px_30px_rgba(249,115,22,0.3)] flex items-start gap-3";
+            } else if (type === 'error') {
+                wrapper.innerHTML = '<i data-lucide="trash-2" class="w-6 h-6"></i>';
+                wrapper.className = "p-2 bg-red-500/20 text-red-500 rounded-lg flex items-center justify-center w-12 h-12";
+                titleEl.className = "font-bold text-red-400 text-base";
+                alertBox.className = "fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 max-w-sm w-full bg-neutral-900 border border-red-500 rounded-xl p-4 shadow-2xl flex items-start gap-3";
+            } else {
+                wrapper.innerHTML = '<i data-lucide="info" class="w-6 h-6"></i>';
+                wrapper.className = "p-2 bg-blue-500/20 text-blue-400 rounded-lg flex items-center justify-center w-12 h-12";
+                titleEl.className = "font-bold text-blue-400 text-base";
+                alertBox.className = "fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 max-w-sm w-full bg-neutral-900 border border-blue-500 rounded-xl p-4 shadow-2xl flex items-start gap-3";
+            }
+
+            lucide.createIcons();
+
+            clearTimeout(alertTimeout);
+            alertBox.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            alertBox.classList.add('translate-y-0', 'opacity-100');
+
+            alertTimeout = setTimeout(() => { closeAlert(); }, 4000);
+        }
+
+        function closeAlert() {
+            const alertBox = document.getElementById('custom-alert');
+            if (alertBox) {
+                alertBox.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+                alertBox.classList.remove('translate-y-0', 'opacity-100');
+            }
+        }
+
+        // DANH SÁCH MONG MUỐN (Wishlist)
+        function toggleWishlistSpecific(gameId) {
+            const game = GAMES_DATA.find(g => g.id === gameId);
+            if (!game) return;
+
+            const idx = wishlist.indexOf(gameId);
+            if (idx === -1) {
+                wishlist.push(gameId);
+                showPumpkinAlert("Wishlist", `Đã tim ${game.title} 💖`, 'success');
+            } else {
+                wishlist.splice(idx, 1);
+                showPumpkinAlert("Wishlist", `Đã bỏ tim ${game.title} 💔`, 'error');
+            }
+            renderGameList(GAMES_DATA); // Vẽ lại để cập nhật màu trái tim
+            if (currentGameId === gameId) updateWishlistButtonState();
+        }
+
+        function toggleWishlist() {
+            toggleWishlistSpecific(currentGameId);
+        }
+
+        function updateWishlistButtonState() {
+            const btn = document.getElementById('btn-wishlist');
+            if (!btn) return;
+            if (wishlist.includes(currentGameId)) {
+                btn.innerHTML = `<i data-lucide="heart" class="w-5 h-5 fill-current text-red-500"></i> ĐÃ THÍCH SẢN PHẨM`;
+                btn.classList.add('border-red-500/50', 'bg-red-500/10');
+            } else {
+                btn.innerHTML = `<i data-lucide="heart" class="w-5 h-5"></i> THÊM VÀO YÊU THÍCH`;
+                btn.classList.remove('border-red-500/50', 'bg-red-500/10');
+            }
+            lucide.createIcons();
+        }
+
+        function formatCurrency(number) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number).replace('₫', 'đ');
+        }
+    </script>
+</body>
+
+</html>
