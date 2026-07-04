@@ -330,12 +330,17 @@
 <body class="bg-dark text-white font-sans overflow-x-hidden">
 
     <!-- NAVBAR (PUMPKIN STYLE) -->
-    <nav id="dynamic-island" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-[#1a1a1e]/90 backdrop-blur-xl border border-white/10 overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.5)] island-transition flex items-center justify-center w-[90%] md:w-[750px] h-[72px] rounded-5xl" style="border-radius: 50px;">
+    <nav id="dynamic-island"
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-[#1a1a1e]/90 backdrop-blur-xl border border-white/10 overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.5)] island-transition flex items-center justify-center w-[90%] md:w-[750px] h-[72px] rounded-5xl"
+        style="border-radius: 50px;">
 
         <!-- Trạng thái MỞ RỘNG (Expanded) -->
-        <div id="expanded-content" class="absolute w-full px-4 md:px-8 flex items-center justify-between content-transition opacity-100 scale-100">
+        <div id="expanded-content"
+            class="absolute w-full px-4 md:px-8 flex items-center justify-between content-transition opacity-100 scale-100">
             <!-- Logo (Tích hợp bé Bí Ngô và ASIER) -->
-            <div onclick="showPage('home')" class="flex items-center gap-2 text-2xl font-bold tracking-tight text-white cursor-pointer hover:opacity-80 transition-opacity select-none" style="font-family: 'VT323', monospace;">
+            <div onclick="showPage('home')"
+                class="flex items-center gap-2 text-2xl font-bold tracking-tight text-white cursor-pointer hover:opacity-80 transition-opacity select-none"
+                style="font-family: 'VT323', monospace;">
                 <span id="nav-pumpkin" class="text-3xl pumpkin-idle transition-transform inline-block">🎃</span>
                 ASIER
             </div>
@@ -343,28 +348,36 @@
             <!-- Menu (ẩn trên mobile) -->
             <div class="hidden md:flex space-x-8 text-sm font-bold">
                 <a href="index.html" onclick="showPage('home')" class="hover:text-orange-400 transition-colors">HOME</a>
-                <a href="store.html" onclick="showPage('home')" class="hover:text-orange-400 transition-colors">STORE</a>
-                <a href="#faq" class="hover:text-orange-400 transition-colors">Hỏi đáp</a>
+                <a href="store.html" onclick="showPage('home')"
+                    class="hover:text-orange-400 transition-colors">STORE</a>
+                <a href="rank.html" class="hover:text-orange-400 transition-colors">RANK</a>
+                <a href="login.html" class="hover:text-orange-400 transition-colors">LOGIN </a>
+                
             </div>
 
             <!-- Giỏ hàng & Avatar -->
             <div class="flex items-center gap-4">
                 <!-- Giỏ hàng Icon -->
-                <button onclick="showPage('cart')" class="relative p-2 text-gray-300 hover:text-orange-500 transition-colors cursor-pointer group">
+                <button onclick="showPage('cart')"
+                    class="relative p-2 text-gray-300 hover:text-orange-500 transition-colors cursor-pointer group">
                     <i data-lucide="shopping-cart" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
                     <!-- Chấm đỏ số lượng -->
-                    <span id="cart-badge" class="absolute top-0 right-0 w-4 h-4 bg-orange-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center hidden shadow-lg shadow-orange-500/50">0</span>
+                    <span id="cart-badge"
+                        class="absolute top-0 right-0 w-4 h-4 bg-orange-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center hidden shadow-lg shadow-orange-500/50">0</span>
                 </button>
 
                 <!-- Avatar -->
-                <a href="#contact" class="inline-block w-10 h-10 rounded-full bg-white hover:shadow-[0_0_15px_rgba(249,115,22,0.5)] transition-all border-2 border-[#333] overflow-hidden">
-                    <img src="./img/account/wk.png" class="w-full h-full object-cover" alt="Avatar" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150'">
+                <a href="#contact"
+                    class="inline-block w-10 h-10 rounded-full bg-white hover:shadow-[0_0_15px_rgba(249,115,22,0.5)] transition-all border-2 border-[#333] overflow-hidden">
+                    <img src="./img/account/zd.png" class="w-full h-full object-cover" alt="Avatar"
+                        onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150'">
                 </a>
             </div>
         </div>
 
         <!-- Trạng thái THU GỌN (Collapsed - Chỉ hiện 1 con pumpkin nhún nhảy) -->
-        <div id="collapsed-content" class="absolute flex items-center justify-center content-transition opacity-0 scale-75 pointer-events-none invisible">
+        <div id="collapsed-content"
+            class="absolute flex items-center justify-center content-transition opacity-0 scale-75 pointer-events-none invisible">
             <span class="text-2xl animate-bounce">🎃</span>
         </div>
     </nav>
@@ -1238,11 +1251,11 @@
                 // Thu nhỏ thanh đảo
                 island.classList.remove('w-[90%]', 'md:w-[750px]', 'h-[72px]', 'rounded-2xl');
                 island.classList.add('w-[110px]', 'h-[44px]', 'rounded-full', 'bg-[#1a1a1e]');
-                
+
                 // Ẩn hoàn toàn tuyệt đối mọi thứ bên trong thanh mở rộng
                 expandedContent.classList.add('opacity-0', 'scale-90', 'pointer-events-none', 'invisible');
                 expandedContent.classList.remove('opacity-100', 'scale-100');
-                
+
                 // Hiện biểu tượng rút gọn
                 collapsedContent.classList.remove('opacity-0', 'scale-75', 'pointer-events-none', 'invisible');
                 collapsedContent.classList.add('opacity-100', 'scale-100');
@@ -1250,26 +1263,26 @@
                 // Mở rộng thanh đảo về ban đầu
                 island.classList.remove('w-[110px]', 'h-[44px]', 'rounded-full');
                 island.classList.add('w-[90%]', 'md:w-[750px]', 'h-[72px]', 'rounded-2xl', 'bg-[#1a1a1e]/90');
-                
+
                 // Hiện lại menu lớn
                 expandedContent.classList.remove('opacity-0', 'scale-90', 'pointer-events-none', 'invisible');
                 expandedContent.classList.add('opacity-100', 'scale-100');
-                
+
                 // Ẩn biểu tượng rút gọn
                 collapsedContent.classList.add('opacity-0', 'scale-75', 'pointer-events-none', 'invisible');
                 collapsedContent.classList.remove('opacity-100', 'scale-100');
             }
         }
-         // ==========================================
+        // ==========================================
         // HIỆU ỨNG PUMPKIN & GIỎ HÀNG (MỚI)
         // ==========================================
         function triggerPumpkinAnimation() {
             const pumpkin = document.getElementById('nav-pumpkin');
-            if(!pumpkin) return;
-            
+            if (!pumpkin) return;
+
             // Xóa/Thêm lại class để tái khởi động animation nhảy nhót
             pumpkin.classList.remove('pumpkin-excited');
-            void pumpkin.offsetWidth; 
+            void pumpkin.offsetWidth;
             pumpkin.classList.add('pumpkin-excited');
         }
 

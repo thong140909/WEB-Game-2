@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASIER STORE - Đăng nhập</title>
+    <!-- Favicon bí ngô -->
+    <link class="rounded-full" rel="icon" type="image/png"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎃</text></svg>">
+
+    <!-- Tailwind CSS & Lucide Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=VT323&family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0c;
+            color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        /* Hình nền Gradient Động */
+        .bg-animated {
+            background: radial-gradient(circle at 50% 50%, #2a1100 0%, #0a0a0c 60%);
+            background-size: 200% 200%;
+            animation: pulseBg 10s ease infinite;
+        }
+
+        @keyframes pulseBg {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Hiệu ứng Hào quang Neon */
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(249, 115, 22, 0.2), inset 0 0 10px rgba(249, 115, 22, 0.1);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 15px rgba(249, 115, 22, 0.6);
+        }
+
+        /* Bé Bí Ngô Bay Lơ Lửng */
+        @keyframes floatBig {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+        }
+
+        .pumpkin-float {
+            animation: floatBig 4s ease-in-out infinite;
+            filter: drop-shadow(0 15px 20px rgba(249, 115, 22, 0.4));
+        }
+
+        /* Hiệu ứng Rung khi thành công */
+        @keyframes successJump {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2) translateY(-20px);
+            }
+        }
+
+        .pumpkin-success {
+            animation: successJump 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* CSS Ẩn/Hiện Form mượt mà */
+        .form-container {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide-out-left {
+            transform: translateX(-120%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .slide-out-right {
+            transform: translateX(120%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .slide-in {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Custom Input Auto-fill style */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px #131316 inset !important;
+            -webkit-text-fill-color: white !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen bg-animated flex items-center justify-center p-4 selection:bg-orange-500 selection:text-white relative">
+
+    <div class="absolute inset-0 z-0 opacity-[0.03]"
+        style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 50px 50px;">
+    </div>
+
+    <!-- Nút quay lại trang chủ -->
+    <a href="store.html"
+        class="absolute top-6 left-6 z-50 flex items-center gap-2 text-gray-400 hover:text-orange-500 transition-colors bg-[#18181c]/50 p-2 pr-4 rounded-full backdrop-blur-md border border-white/5 hover:border-orange-500/50">
+        <div class="bg-black/50 p-1.5 rounded-full"><i data-lucide="arrow-left" class="w-4 h-4"></i></div>
+        <span class="text-sm font-bold">Về cửa hàng</span>
+    </a>
+
+    <!-- MAIN CARD -->
+    <div
+        class="w-full max-w-4xl bg-[#131316]/80 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row relative z-10 min-h-[550px] neon-glow">
+
+        <!-- ================= CỘT TRÁI: MASCOT & THƯƠNG HIỆU ================= -->
+        <div
+            class="w-full md:w-5/12 bg-gradient-to-b from-[#1a1a20] to-[#0c0c0f] border-r border-white/5 p-8 flex flex-col items-center justify-between relative overflow-hidden">
+            <!-- Đèn nền hắt từ dưới lên -->
+            <div
+                class="absolute -bottom-20 left-1/2 -translate-x-1/2 w-64 h-64 bg-orange-600/20 blur-[80px] rounded-full pointer-events-none">
+            </div>
+
+            <!-- Logo -->
+            <div class="w-full flex justify-center mt-4">
+                <div class="flex items-center gap-2 text-3xl font-bold tracking-tight text-white select-none"
+                    style="font-family: 'VT323', monospace;">
+                    <span class="text-orange-500">ASIER</span> STORE
+                </div>
+            </div>
+
+            <!-- Mascot Bí Ngô Tương Tác -->
+            <div class="flex-grow flex flex-col items-center justify-center text-center space-y-6 z-10 py-10">
+                <div id="mascot-emoji"
+                    class="text-8xl sm:text-9xl pumpkin-float select-none transition-transform duration-300">
+                    🎃
+                </div>
+                <div class="space-y-2">
+                    <h2 id="mascot-title" class="text-2xl font-bold text-white">Chào mừng trở lại!</h2>
+                    <p id="mascot-desc" class="text-sm text-gray-400 max-w-[250px] mx-auto">Đăng nhập để xem kho game và
+                        các ưu đãi đặc biệt dành riêng cho bạn.</p>
+                </div>
+            </div>
+
+            <div class="text-[10px] text-gray-600 font-medium tracking-widest uppercase mb-2">
+                Bảo mật bởi Asier Guard 2.0
+            </div>
+        </div>
+
+
+        <!-- ================= CỘT PHẢI: KHUNG CHỨA FORM ================= -->
+        <div class="w-full md:w-7/12 p-8 sm:p-12 relative overflow-hidden flex items-center justify-center">
+
+            <!-- 1. FORM ĐĂNG NHẬP -->
+            <form id="form-login" class="w-full max-w-sm form-container slide-in absolute"
+                onsubmit="handleLogin(event)">
+                <div class="space-y-2 mb-8">
+                    <h1 class="text-3xl font-black text-white">Đăng nhập</h1>
+                    <p class="text-sm text-gray-400">Tiếp tục hành trình chinh phục thế giới ảo.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Ô Nhập Email -->
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Email / Tài
+                            khoản</label>
+                        <div class="relative group">
+                            <div
+                                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within:text-orange-500 transition-colors">
+                                <i data-lucide="user" class="w-5 h-5"></i>
+                            </div>
+                            <input type="email" id="login-email" required
+                                class="w-full bg-[#1c1c22] border border-white/10 text-white text-sm rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 block pl-10 p-3.5 transition-all outline-none"
+                                placeholder="Nhập email của bạn">
+                        </div>
+                    </div>
+
+                    <!-- Ô Nhập Mật khẩu -->
+                    <div class="space-y-1">
+                        <div class="flex items-center justify-between ml-1">
+                            <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Mật khẩu</label>
+                            <a href="#"
+                                class="text-xs text-orange-500 hover:text-orange-400 font-semibold transition-colors">Quên
+                                mật khẩu?</a>
+                        </div>
+                        <div class="relative group">
+                            <div
+                                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within:text-orange-500 transition-colors">
+                                <i data-lucide="lock" class="w-5 h-5"></i>
+                            </div>
+                            <input type="password" id="login-password" required
+                                class="w-full bg-[#1c1c22] border border-white/10 text-white text-sm rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 block pl-10 pr-10 p-3.5 transition-all outline-none"
+                                placeholder="••••••••">
+                            <button type="button" onclick="togglePassword('login-password', 'eye-icon-login')"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-white transition-colors">
+                                <i data-lucide="eye" id="eye-icon-login" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Nút Đăng nhập -->
+                    <button type="submit" id="btn-login-submit"
+                        class="w-full py-4 mt-2 bg-orange-600 hover:bg-orange-500 text-white font-bold rounded-xl transition duration-300 transform active:scale-95 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_30px_rgba(249,115,22,0.5)]">
+                        <span>ĐĂNG NHẬP</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Đăng nhập bằng Mạng xã hội -->
+                <div class="mt-8 pt-6 border-t border-white/5 space-y-4">
+                    <p class="text-xs text-center text-gray-500 font-medium">HOẶC ĐĂNG NHẬP BẰNG</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button type="button"
+                            class="flex items-center justify-center gap-2 py-2.5 bg-[#1c1c22] hover:bg-[#25252d] border border-white/5 rounded-lg text-sm font-semibold text-white transition-colors">
+                            <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4"> Google
+                        </button>
+                        <button type="button"
+                            class="flex items-center justify-center gap-2 py-2.5 bg-[#1c1c22] hover:bg-[#25252d] border border-white/5 rounded-lg text-sm font-semibold text-white transition-colors">
+                            <img src="https://www.svgrepo.com/show/512120/facebook-176.svg" class="w-4 h-4"> Facebook
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chuyển sang Form Đăng ký -->
+                <p class="text-center text-sm text-gray-400 mt-8">
+                    Chưa có tài khoản?
+                    <button type="button" onclick="switchForm('register')"
+                        class="text-orange-500 font-bold hover:text-orange-400 hover:underline transition-all">Tạo tài
+                        khoản mới</button>
+                </p>
+            </form>
+
+
+            <!-- 2. FORM ĐĂNG KÝ -->
+            <form id="form-register" class="w-full max-w-sm form-container slide-out-right absolute"
+                onsubmit="handleRegister(event)">
+                <div class="space-y-2 mb-6">
+                    <h1 class="text-3xl font-black text-white">Gia nhập Asier</h1>
+                    <p class="text-sm text-gray-400">Trở thành thành viên VIP Pumpkin ngay hôm nay.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Ô Nhập Tên -->
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Tên hiển
+                            thị</label>
+                        <div class="relative group">
+                            <div
+                                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within:text-orange-500">
+                                <i data-lucide="badge" class="w-5 h-5"></i>
+                            </div>
+                            <input type="text" id="reg-name" required
+                                class="w-full bg-[#1c1c22] border border-white/10 text-white text-sm rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 block pl-10 p-3.5 transition-all outline-none"
+                                placeholder="VD: Thợ Săn Ma">
+                        </div>
+                    </div>
+
+                    <!-- Ô Nhập Email -->
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Email</label>
+                        <div class="relative group">
+                            <div
+                                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within:text-orange-500">
+                                <i data-lucide="mail" class="w-5 h-5"></i>
+                            </div>
+                            <input type="email" id="reg-email" required
+                                class="w-full bg-[#1c1c22] border border-white/10 text-white text-sm rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 block pl-10 p-3.5 transition-all outline-none"
+                                placeholder="Địa chỉ Email">
+                        </div>
+                    </div>
+
+                    <!-- Ô Nhập Mật khẩu -->
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Tạo Mật
+                            khẩu</label>
+                        <div class="relative group">
+                            <div
+                                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within:text-orange-500">
+                                <i data-lucide="shield" class="w-5 h-5"></i>
+                            </div>
+                            <input type="password" id="register-password" required
+                                class="w-full bg-[#1c1c22] border border-white/10 text-white text-sm rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 block pl-10 pr-10 p-3.5 transition-all outline-none"
+                                placeholder="Tối thiểu 6 ký tự">
+                            <button type="button" onclick="togglePassword('register-password', 'eye-icon-reg')"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-white transition-colors">
+                                <i data-lucide="eye" id="eye-icon-reg" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Nút Đăng ký -->
+                    <button type="submit" id="btn-reg-submit"
+                        class="w-full py-4 mt-4 bg-white hover:bg-gray-200 text-black font-bold rounded-xl transition duration-300 transform active:scale-95 flex items-center justify-center gap-2 shadow-lg">
+                        <span>ĐĂNG KÝ NGAY</span> <i data-lucide="sparkles" class="w-4 h-4 text-orange-600"></i>
+                    </button>
+                </div>
+
+                <!-- Chuyển sang Form Đăng nhập -->
+                <p class="text-center text-sm text-gray-400 mt-8">
+                    Đã là thành viên?
+                    <button type="button" onclick="switchForm('login')"
+                        class="text-orange-500 font-bold hover:text-orange-400 hover:underline transition-all">Đăng
+                        nhập</button>
+                </p>
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- POPUP THÔNG BÁO PUMPKIN -->
+    <div id="custom-alert"
+        class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 max-w-sm w-full bg-[#1a0f0a] border border-orange-500 rounded-xl p-4 shadow-[0_5px_30px_rgba(249,115,22,0.3)] flex items-start gap-3">
+        <div id="alert-icon-wrapper"
+            class="p-2 bg-orange-500/20 text-orange-500 rounded-lg text-2xl flex items-center justify-center w-12 h-12">
+            🎃
+        </div>
+        <div class="flex-grow space-y-1">
+            <h4 class="font-bold text-orange-400 text-base" id="alert-title">Thành công!</h4>
+            <p class="text-sm text-gray-300" id="alert-message">Đăng nhập thành công.</p>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- JAVASCRIPT KẾT NỐI FIRESTORE CHUẨN ES MODULES -->
+    <!-- ========================================================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import {
+            getFirestore,
+            doc,
+            getDoc,
+            setDoc
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            updateProfile,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // ==========================================
+        // CẤU HÌNH FIREBASE
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBf-zqRafienzl4BjMGOWbVcEcA81WbAOk",
+            authDomain: "asier-f2574.firebaseapp.com",
+            projectId: "asier-f2574",
+            storageBucket: "asier-f2574.firebasestorage.app",
+            messagingSenderId: "646116578464",
+            appId: "1:646116578464:web:8f49a7eba9ca7b236b65c5",
+            measurementId: "G-7Q8B97TLSS"
+        };
+
+        let db = null;
+        let auth = null;
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            console.log("✅ Firebase Auth + Firestore đã kết nối!");
+        } catch (err) {
+            console.error("❌ Lỗi khởi tạo Firebase:", err);
+        }
+
+        // ==========================================
+        // KIỂM TRA NẾU ĐÃ ĐĂNG NHẬP → CHUYỂN THẲNG VÀO STORE
+        // ==========================================
+        if (auth) {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    console.log("✅ Đã có session, chuyển vào store...");
+                    window.location.href = 'store.html';
+                }
+            });
+        }
+
+        // ==========================================
+        // KHỞI TẠO GIAO DIỆN
+        // ==========================================
+        const mascotEmoji = document.getElementById('mascot-emoji');
+        const mascotTitle = document.getElementById('mascot-title');
+        const mascotDesc = document.getElementById('mascot-desc');
+        const passInputs = document.querySelectorAll('input[type="password"]');
+
+        lucide.createIcons();
+
+        passInputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                mascotEmoji.textContent = '🫣';
+                mascotEmoji.classList.remove('pumpkin-float');
+                mascotEmoji.style.transform = 'scale(0.9) translateY(5px)';
+            });
+            input.addEventListener('blur', () => {
+                mascotEmoji.textContent = '🎃';
+                mascotEmoji.classList.add('pumpkin-float');
+                mascotEmoji.style.transform = '';
+            });
+        });
+
+        window.togglePassword = function (inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.setAttribute('data-lucide', 'eye-off');
+                if (document.activeElement === input) mascotEmoji.textContent = '🫢';
+            } else {
+                input.type = "password";
+                icon.setAttribute('data-lucide', 'eye');
+                if (document.activeElement === input) mascotEmoji.textContent = '🫣';
+            }
+            lucide.createIcons();
+        }
+
+        window.switchForm = function (targetForm) {
+            const loginForm = document.getElementById('form-login');
+            const regForm = document.getElementById('form-register');
+            if (targetForm === 'register') {
+                loginForm.classList.remove('slide-in');
+                loginForm.classList.add('slide-out-left');
+                regForm.classList.remove('slide-out-right');
+                regForm.classList.add('slide-in');
+                mascotTitle.textContent = "Gia nhập hội!";
+                mascotDesc.textContent = "Chỉ mất 1 phút để trở thành thợ săn game thực thụ cùng Asier.";
+            } else {
+                regForm.classList.remove('slide-in');
+                regForm.classList.add('slide-out-right');
+                loginForm.classList.remove('slide-out-left');
+                loginForm.classList.add('slide-in');
+                mascotTitle.textContent = "Chào mừng trở lại!";
+                mascotDesc.textContent = "Đăng nhập để xem kho game và các ưu đãi đặc biệt dành riêng cho bạn.";
+            }
+        }
+
+        // ==========================================
+        // ĐĂNG NHẬP — dùng Firebase Auth thực sự
+        // ==========================================
+        window.handleLogin = async function (e) {
+            e.preventDefault();
+            if (!auth) return;
+
+            const btn = document.getElementById('btn-login-submit');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto"></i>`;
+            lucide.createIcons();
+
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+
+            try {
+                // signInWithEmailAndPassword tạo session Firebase Auth
+                // → store.html sẽ tự đọc được uid qua onAuthStateChanged
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                mascotEmoji.textContent = '🤩';
+                mascotEmoji.classList.remove('pumpkin-float');
+                mascotEmoji.classList.add('pumpkin-success');
+
+                const displayName = user.displayName || email.split('@')[0];
+                showNotification("Thành công!", `Chào mừng quay trở lại, ${displayName}! 🎃`, 'success');
+
+                setTimeout(() => { window.location.href = 'store.html'; }, 1500);
+
+            } catch (err) {
+                btn.innerHTML = originalContent;
+                mascotEmoji.textContent = '🤨';
+                lucide.createIcons();
+
+                // Dịch mã lỗi Firebase sang tiếng Việt
+                const errorMap = {
+                    'auth/user-not-found': 'Không tìm thấy tài khoản với email này.',
+                    'auth/wrong-password': 'Mật khẩu không chính xác.',
+                    'auth/invalid-credential': 'Email hoặc mật khẩu không chính xác.',
+                    'auth/too-many-requests': 'Quá nhiều lần thử. Vui lòng thử lại sau.',
+                    'auth/invalid-email': 'Địa chỉ email không hợp lệ.',
+                };
+                const msg = errorMap[err.code] || 'Đã xảy ra lỗi. Vui lòng thử lại.';
+                showNotification("Đăng nhập thất bại", msg, 'error');
+                console.error("Login error:", err.code);
+            }
+        }
+
+        // ==========================================
+        // ĐĂNG KÝ — tạo tài khoản Firebase Auth + document Firestore
+        // ==========================================
+        window.handleRegister = async function (e) {
+            e.preventDefault();
+            if (!auth || !db) return;
+
+            const btn = document.getElementById('btn-reg-submit');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto text-orange-600"></i>`;
+            lucide.createIcons();
+
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('register-password').value;
+
+            if (password.length < 6) {
+                btn.innerHTML = originalContent;
+                showNotification("Lỗi", "Mật khẩu phải có ít nhất 6 ký tự.", 'error');
+                return;
+            }
+
+            const randomSeed = Math.random().toString(36).substring(7);
+            const defaultAvatar = `https://api.dicebear.com/7.x/adventurer/svg?seed=${randomSeed}`;
+
+            try {
+                // 1. Tạo tài khoản trong Firebase Auth
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // 2. Gắn displayName vào Auth profile
+                await updateProfile(user, { displayName: name, photoURL: defaultAvatar });
+
+                // 3. Tạo document trong Firestore theo đúng uid
+                const appId = firebaseConfig.projectId;
+                // → tạo path: artifacts/asier-f2574/public/data/profiles/{uid}
+                const userDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'profiles', user.uid);
+                await setDoc(userDocRef, {
+                    name: name,
+                    email: email,
+                    purchases: 0,
+                    points: 0,
+                    avatarUrl: defaultAvatar,
+                    createdAt: new Date().toISOString()
+                });
+
+                console.log("✅ Tài khoản tạo xong, uid:", user.uid);
+
+                mascotEmoji.textContent = '🥳';
+                mascotEmoji.classList.remove('pumpkin-float');
+                mascotEmoji.classList.add('pumpkin-success');
+                showNotification("Tuyệt vời!", `Chào mừng ${name} gia nhập Asier! 🎃`, 'success');
+
+                // Sau khi đăng ký xong → chuyển thẳng vào store (đã có session)
+                setTimeout(() => { window.location.href = 'store.html'; }, 1800);
+
+            } catch (err) {
+                btn.innerHTML = originalContent;
+                mascotEmoji.textContent = '😵';
+                lucide.createIcons();
+
+                const errorMap = {
+                    'auth/email-already-in-use': 'Email này đã được sử dụng rồi.',
+                    'auth/invalid-email': 'Địa chỉ email không hợp lệ.',
+                    'auth/weak-password': 'Mật khẩu quá yếu, cần ít nhất 6 ký tự.',
+                };
+                const msg = errorMap[err.code] || 'Không thể tạo tài khoản. Thử lại sau.';
+                showNotification("Đăng ký thất bại", msg, 'error');
+                console.error("Register error:", err.code);
+            }
+        }
+
+        // ==========================================
+        // THÔNG BÁO POPUP
+        // ==========================================
+        let alertTimeout;
+        function showNotification(title, message, type = 'success') {
+            const alertBox = document.getElementById('custom-alert');
+            const titleEl = document.getElementById('alert-title');
+            const msgEl = document.getElementById('alert-message');
+            const iconWrapper = document.getElementById('alert-icon-wrapper');
+
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+
+            if (type === 'success') {
+                iconWrapper.innerHTML = '🎃';
+                iconWrapper.className = "p-2 bg-orange-500/20 text-orange-500 rounded-lg text-2xl flex items-center justify-center w-12 h-12";
+                alertBox.className = "fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 max-w-sm w-full bg-[#1a0f0a] border border-orange-500 rounded-xl p-4 shadow-[0_5px_30px_rgba(249,115,22,0.3)] flex items-start gap-3";
+            } else {
+                iconWrapper.innerHTML = '💀';
+                iconWrapper.className = "p-2 bg-red-500/20 text-red-500 rounded-lg text-2xl flex items-center justify-center w-12 h-12";
+                alertBox.className = "fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 max-w-sm w-full bg-[#1c1212] border border-red-500 rounded-xl p-4 shadow-[0_5px_30px_rgba(220,38,38,0.3)] flex items-start gap-3";
+            }
+
+            alertBox.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            alertBox.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(alertTimeout);
+            alertTimeout = setTimeout(() => {
+                alertBox.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+    </script>
+</body>
+
+</html>

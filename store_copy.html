@@ -206,16 +206,14 @@
                     <span
                         class="px-3 py-1 bg-orange-500/20 text-orange-400 text-xs font-semibold rounded-full uppercase tracking-wider border border-orange-500/30 glow-text-orange">Tiêu
                         điểm</span>
-                    <h2 class="text-3xl md:text-5xl font-black tracking-tight" id="hero-title">Crimson Desert</h2>
-                    <p class="text-sm md:text-base text-gray-300 line-clamp-3" id="hero-desc">Một tựa game nhập vai
-                        phiêu lưu hành động thế giới mở thế hệ mới cực đỉnh từ nhà phát triển Pearl Abyss. Khám phá lục
-                        địa Pywel đầy rẫy nguy hiểm.</p>
+                    <h2 class="text-3xl md:text-5xl font-black tracking-tight" id="hero-title">Đang tải...</h2>
+                    <p class="text-sm md:text-base text-gray-300 line-clamp-3" id="hero-desc">Vui lòng chờ trong giây lát.</p>
                     <div class="flex items-center gap-4 pt-2">
                         <button onclick="viewGameDetail(1)"
                             class="px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition text-sm flex items-center gap-2">
                             Xem Ngay <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </button>
-                        <span class="text-lg font-bold text-white glow-text-orange" id="hero-price">1.390.000 đ</span>
+                        <span class="text-lg font-bold text-white glow-text-orange" id="hero-price">0 đ</span>
                     </div>
                 </div>
 
@@ -230,7 +228,7 @@
                 </div>
             </div>
 
-            <!-- SECTION: MỚI PHÁT HÀNH HÀNG ĐẦU -->
+            <!-- SECTION: MỚI PHÁT HÀNG ĐẦU -->
             <div class="space-y-6">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
@@ -316,12 +314,12 @@
                     <i data-lucide="chevron-left" class="w-4 h-4"></i> Cửa hàng
                 </button>
                 <span>/</span>
-                <span class="text-white" id="detail-breadcrumb-name">Crimson Desert</span>
+                <span class="text-white" id="detail-breadcrumb-name">Đang tải...</span>
             </div>
 
             <!-- Tên game & Đánh giá nhanh -->
             <div class="space-y-2">
-                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight" id="detail-title">Crimson Desert</h1>
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight" id="detail-title">Đang tải...</h1>
                 <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
                     <div class="flex items-center gap-1 text-yellow-500">
                         <i data-lucide="star" class="w-4 h-4 fill-current"></i>
@@ -359,8 +357,7 @@
                         <div class="pt-4 space-y-4">
                             <h3 class="text-xl font-bold">Mô tả sản phẩm</h3>
                             <p class="text-gray-300 leading-relaxed text-sm md:text-base" id="detail-long-desc">
-                                Crimson Desert là một game thế giới mở phiêu lưu hành động sắp ra mắt được phát triển và
-                                xuất bản bởi Pearl Abyss...
+                                Đang tải thông tin mô tả...
                             </p>
                         </div>
                     </div>
@@ -378,10 +375,10 @@
                             <img id="detail-mini-logo" src="" alt="Mini logo"
                                 class="w-16 h-16 rounded-lg object-cover bg-gray-800 border border-gray-700">
                             <div>
-                                <h3 class="font-bold text-lg leading-tight" id="detail-title-sidebar">Crimson Desert
+                                <h3 class="font-bold text-lg leading-tight" id="detail-title-sidebar">Đang tải...
                                 </h3>
                                 <span class="text-xs px-2 py-0.5 bg-[#2a2a2e] text-orange-400 rounded uppercase"
-                                    id="detail-genre-tag">Hành động</span>
+                                    id="detail-genre-tag">Thể loại</span>
                             </div>
                         </div>
 
@@ -390,7 +387,7 @@
                             <div class="flex items-baseline justify-between">
                                 <span class="text-gray-400 text-sm">Tổng cộng:</span>
                                 <span class="text-3xl font-black text-white glow-text-orange"
-                                    id="detail-price">1.390.000 đ</span>
+                                    id="detail-price">0 đ</span>
                             </div>
                         </div>
 
@@ -411,15 +408,15 @@
                         <div class="space-y-2 pt-4 border-t border-[#2a2a2a] text-xs text-gray-400">
                             <div class="flex justify-between">
                                 <span>Nhà phát hành</span>
-                                <span class="text-white font-semibold" id="detail-publisher">Pearl Abyss</span>
+                                <span class="text-white font-semibold" id="detail-publisher">Đang tải...</span>
                             </div>
                             <div class="flex justify-between">
                                 <span>Nhà phát triển</span>
-                                <span class="text-white font-semibold" id="detail-developer">Pearl Abyss</span>
+                                <span class="text-white font-semibold" id="detail-developer">Đang tải...</span>
                             </div>
                             <div class="flex justify-between">
                                 <span>Ngày phát hành</span>
-                                <span class="text-white font-semibold" id="detail-release-date">Sắp ra mắt</span>
+                                <span class="text-white font-semibold" id="detail-release-date">Đang tải...</span>
                             </div>
                         </div>
 
@@ -669,7 +666,7 @@
         };
 
         // ==========================================
-        // FIREBASE: Khởi tạo sạch (đã fix lỗi lồng nhau)
+        // FIREBASE: Khởi tạo sạch
         // ==========================================
 
         let db = null;
@@ -719,7 +716,6 @@
         async function loadUserProfile(uid) {
             if (!db) return;
             const currentAppId = firebaseConfig.projectId;
-            // FIX: Sử dụng collection profiles trong public data với id cố định là uid
             const userDocRef = doc(db, 'artifacts', currentAppId, 'public', 'data', 'profiles', uid);
             try {
                 const docSnap = await getDoc(userDocRef);
@@ -729,7 +725,6 @@
                     profileData = docSnap.data();
                     console.log("✅ Đã tải profile:", profileData);
                 } else {
-                    // Tạo profile mới với avatar random từ dicebear
                     console.log("ℹ️ Chưa có profile, tạo mới...");
                     const randomSeed = Math.random().toString(36).substring(7);
                     const defaultAvatar = `https://api.dicebear.com/7.x/adventurer/svg?seed=${randomSeed}`;
@@ -743,11 +738,8 @@
                     await setDoc(userDocRef, profileData);
                 }
 
-                // Cập nhật avatar navbar
                 const navAvatar = document.getElementById('nav-avatar');
                 if (navAvatar && profileData.avatarUrl) navAvatar.src = profileData.avatarUrl;
-
-                // Cập nhật trang Profile
                 populateProfilePage(profileData);
 
             } catch (error) {
@@ -771,200 +763,13 @@
             generateRandomAvatars();
         }
 
-        // DỮ LIỆU GAME (Mô phỏng chuẩn ảnh chụp màn hình của bạn)
-        const GAMES_DATA = [
-            {
-                id: 0,
-                title: "Red Dead Redemption 2",
-                genre: "Hành động / Phiêu lưu",
-                price: 595000,
-                priceText: "595.000 đ",
-                rating: 4.7,
-                tag: "Tiêu điểm",
-                developer: "Rockstar Games",
-                publisher: "Rockstar Games",
-                releaseDate: "2018",
-                coverImage: "https://i.pinimg.com/736x/ee/7c/96/ee7c96bf60a67636e431b323f81a4fae.jpg",
-                images: [
-                    "https://i.pinimg.com/1200x/bc/34/29/bc34292035a215fe68431ff1a1050df7.jpg",
-                    "https://i.pinimg.com/1200x/3e/bd/fb/3ebdfbd3a077337f7ccfc86ac3784c79.jpg",
-                    "https://i.pinimg.com/736x/36/ab/12/36ab125c854fb0510c7177fe54e55661.jpg"
-                ],
-                desc: "Nhập vai vào Arthur Morgan, một kẻ ngoài vòng pháp luật thuộc băng đảng Van der Linde khét tiếng. Trải nghiệm thế giới mở chân thực và hoành tráng nhất miền Viễn Tây hoang dã Hoa Kỳ."
-            },
-            {
-                id: 1,
-                title: "Black Myth Wukong",
-                genre: "Hành động / Nhập vai",
-                price: 1390000,
-                priceText: "1.390.000 đ",
-                rating: 4.9,
-                tag: "Bán chạy nhất",
-                developer: "Game Science",
-                publisher: "Game Science",
-                releaseDate: "2024",
-                coverImage: "https://i.pinimg.com/1200x/db/02/5a/db025ad68ff1b5e25e50882e113b2506.jpg",
-                images: [
-                    "https://i.pinimg.com/736x/1f/0d/38/1f0d38faca473fff76413099f564cb65.jpg",
-                    "https://i.pinimg.com/1200x/f6/78/23/f67823bf2e732fea5bd803596f94252b.jpg",
-                    "https://i.pinimg.com/1200x/a2/c1/50/a2c150c2ae96c61fe45c2d0e3cc1c277.jpg"
-                ],
-                desc: "Lấy cảm hứng từ danh tác Tây Du Ký. Bạn sẽ hóa thân thành Thiên Mệnh Nhân, dấn thân vào hành trình phiêu lưu đầy thử thách qua các vùng đất thần thoại đầy rẫy yêu ma quỷ quái để tìm lại lục căn bị phong ấn."
-            },
-            {
-                id: 2,
-                title: "Pragmata",
-                genre: "Hành động / Viễn tưởng",
-                price: 1490000,
-                priceText: "1.490.000 đ",
-                rating: 4.6,
-                tag: "Sắp Ra Mắt",
-                developer: "Capcom",
-                publisher: "Capcom",
-                releaseDate: "2026",
-                coverImage: "https://i.pinimg.com/736x/9f/ca/01/9fca0185f1d534dacccff3c3d661c46e.jpg",
-                images: [
-                    "https://i.pinimg.com/736x/da/7f/3a/da7f3a3deacc4570d90efc4176e48664.jpg",
-                    "https://i.pinimg.com/736x/e3/a1/49/e3a14917f8e0f0dec879d46e68214832.jpg",
-                    "https://i.pinimg.com/736x/ba/d1/16/bad116a344fbf0b9f212a446862e24ca.jpg"
-                ],
-                desc: "Siêu phẩm phiêu lưu khoa học viễn tưởng thế hệ tiếp theo từ Capcom. Đồng hành cùng một phi hành gia giáp sắt và cô bé bí ẩn trên hành trình khám phá Mặt Trăng đổ nát."
-            },
-            {
-                id: 3,
-                title: "Lego Batman: Legacy",
-                genre: "Hành động / Phiêu lưu",
-                price: 1450000,
-                priceText: "1.450.000 đ",
-                rating: 4.8,
-                tag: "Mới nhất",
-                developer: "TT Games",
-                publisher: "Warner Bros.",
-                releaseDate: "2026",
-                coverImage: "https://i.pinimg.com/736x/b7/31/c5/b731c5853d21e3994ba7b2dab48fba26.jpg",
-                images: [
-                    "https://i.pinimg.com/736x/b7/31/c5/b731c5853d21e3994ba7b2dab48fba26.jpg",
-                    "https://legobatmangame.com/_astro/origin.DSZma2rC_2hKTV2.webp",
-                    "https://gameinformer.com/sites/default/files/styles/content_header_l/public/2025/12/11/3b33c028/legobatman04.jpg.webp"
-                ],
-                desc: "Lego Batman quay trở lại với hành trình giải cứu Gotham kịch tính và hài hước. Tự do tùy biến trang bị, bắt tay cùng Robin bảo vệ thành phố khỏi Joker và hội ác nhân."
-            },
-            {
-                id: 4,
-                title: "Marvel's Spider-Man 2",
-                genre: "Hành động / Phiêu lưu / Thế giới mở",
-                price: 1399000,
-                priceText: "1.399.000 đ",
-                rating: 4.8,
-                tag: "Bán Chạy",
-                developer: "Insomniac Games",
-                publisher: "PlayStation Publishing LLC",
-                releaseDate: "2025",
-                coverImage: "https://i.pinimg.com/1200x/4b/94/d5/4b94d5168bb2ab4311076369169cc441.jpg",
-                images: [
-                    "https://i.pinimg.com/1200x/4b/94/d5/4b94d5168bb2ab4311076369169cc441.jpg",
-                    "https://i.pinimg.com/736x/65/90/0f/65900f5d183334f5eb6c4840a890cd6d.jpg",
-                    "https://i.pinimg.com/1200x/4b/94/d5/4b94d5168bb2ab4311076369169cc441.jpg"
-                ],
-                desc: "Đồng hành cùng Peter Parker và Miles Morales trong hành trình bảo vệ thành phố New York đầy kịch tính trước những phản diện sừng sỏ như Venom và Kraven."
-            },
-            {
-                id: 5,
-                title: "Subnautica 2",
-                genre: "Sinh tồn / Phiêu lưu / Khám phá",
-                price: 450000,
-                priceText: "450.000 đ",
-                rating: 4.7,
-                tag: "Mới Nhất",
-                developer: "Unknown Worlds Entertainment",
-                publisher: "Krafton",
-                releaseDate: "2026",
-                coverImage: "https://i.pinimg.com/736x/3e/58/80/3e588022ed4c89a1086f885248a81399.jpg",
-                images: [
-                    "https://i.pinimg.com/1200x/da/e1/f8/dae1f828098726bc4c9c7dc3f39d28b9.jpg",
-                    "https://i.pinimg.com/1200x/4e/c6/19/4ec619fc46c5dadd5961c48ced681dee.jpg",
-                    "https://i.pinimg.com/1200x/7e/81/7b/7e817b8dcb154165c95c2c81cd63a4da.jpg"
-                ],
-                desc: "Trở lại thế giới đại dương xa lạ đầy nguy hiểm với tính năng chơi co-op 4 người hoàn toàn mới, xây dựng căn cứ, chế tạo phương tiện và khám phá những bí ẩn sâu thẳm."
-            },
-            {
-                id: 6,
-                title: "Battlefield™ 6",
-                genre: "Bắn súng / Hành động / Góc nhìn thứ nhất",
-                price: 1400000,
-                priceText: "1.400.000 đ",
-                rating: 4.2,
-                tag: "Hot",
-                developer: "Battlefield Studios (DICE)",
-                publisher: "Electronic Arts",
-                releaseDate: "2025",
-                coverImage: "https://i.pinimg.com/1200x/4b/4a/e1/4b4ae18cd89a5bf5dd543dde345d2046.jpg",
-                images: [
-                    "https://i.pinimg.com/1200x/2b/e9/ef/2be9ef3d4c9cdadd50b9f449265f1541.jpg",
-                    "https://i.pinimg.com/1200x/c2/68/51/c26851de11012debab0c0254c5f36f8d.jpg",
-                    "https://i.pinimg.com/1200x/17/56/0b/17560b89d66003bf5f68d1e49e94f8a3.jpg"
-                ],
-                desc: "Trải nghiệm những trận chiến quân sự hiện đại quy quy mô cực lớn với đồ họa Frostbite đỉnh cao, môi trường bị tàn phá chân thực và lối chơi đồng đội đầy khốc liệt."
-            },
-            {
-                id: 7,
-                title: "Hogwarts Legacy: Digital Deluxe Edition",
-                genre: "Nhập vai / Hành động / Thế giới mở",
-                price: 1399000,
-                priceText: "1.399.000 đ",
-                rating: 4.6,
-                tag: "Yêu Thích",
-                developer: "Avalanche Software",
-                publisher: "Warner Bros. Games",
-                releaseDate: "2023",
-                coverImage: "https://i.pinimg.com/1200x/fa/24/4a/fa244a66e651525e6e67dda0382bc190.jpg",
-                images: [
-                    "https://i.pinimg.com/1200x/f0/46/b4/f046b48e713a161fd47c8f8cd1b87071.jpg",
-                    "https://i.pinimg.com/1200x/77/09/5f/77095f64e8be66dc6db69b7d4aace448.jpg",
-                    "https://i.pinimg.com/1200x/d9/fb/4a/d9fb4a225a97ca09fbb2257521b7c92d.jpg"
-                ],
-                desc: "Trở thành một học sinh tại học viện pháp thuật Hogwarts thế kỷ 19, tự viết nên câu chuyện của riêng bạn, học bùa chú và ngăn chặn âm mưu hắc ám đe dọa thế giới phù thủy."
-            },
-            {
-                id: 8,
-                title: "EA SPORTS FC™ 26 Standard Edition",
-                genre: "Thể thao / Mô phỏng / Bóng đá",
-                price: 1090000,
-                priceText: "1.090.000 đ",
-                rating: 4.3,
-                tag: "Mới Nhất",
-                developer: "EA Canada / EA Romania",
-                publisher: "Electronic Arts",
-                releaseDate: "2025",
-                coverImage: "https://i.pinimg.com/736x/d3/42/55/d342550518b5258220389fb72fda8365.jpg",
-                images: [
-                    "https://i.pinimg.com/736x/62/2d/ae/622daecf117deb935b16e142c2d6b549.jpg",
-                    "https://i.pinimg.com/1200x/e9/52/59/e9525918d15e3bc8ee3ec799f29e8372.jpg",
-                    "https://i.pinimg.com/736x/cf/0f/5c/cf0f5ce9fc3485a81172312624103973.jpg"
-                ],
-                desc: "Trải nghiệm bóng đá đỉnh cao thế giới với công nghệ mô phỏng chân thực nâng cấp, cập nhật đầy đủ các giải đấu hàng đầu cùng các chế độ Career Mode và Ultimate Team kinh điển."
-            },
-            {
-                id: 9,
-                title: "Grand Theft Auto V Enhanced",
-                genre: "Hành động / Phiêu lưu / Thế giới mở",
-                price: 450000,
-                priceText: "450.000 đ",
-                rating: 4.8,
-                tag: "Kinh Điển",
-                developer: "Rockstar North",
-                publisher: "Rockstar Games",
-                releaseDate: "2025",
-                coverImage: "https://i.pinimg.com/736x/4b/65/af/4b65af5f05779610c6b9f3786a699d89.jpg",
-                images: [
-                    "https://i.pinimg.com/736x/c3/fc/95/c3fc957ec66924ba7254acd2794d811a.jpg",
-                    "https://i.pinimg.com/1200x/15/6f/e3/156fe328b7d00789170d4e470b1aaab9.jpg",
-                    "https://i.pinimg.com/736x/91/b0/d3/91b0d3a0d20415deccb33e36dd85b172.jpg"
-                ],
-                desc: "Phiên bản nâng cấp tối ưu đồ họa thế hệ mới tại thành phố Los Santos với hiệu ứng Ray Tracing chân thực, tốc độ tải game siêu nhanh và tích hợp đầy đủ chế độ GTA Online sôi động."
-            }
-        ];
-        // DATA SẢN PHẨM CONSOLE
+        // ==========================================
+        // DỮ LIỆU GAME - ĐÃ CHUYỂN SANG FETCH TỪ FIRESTORE
+        // ==========================================
+        let GAMES_DATA = [];
+        let heroSlideIds = [];
+
+        // DATA SẢN PHẨM CONSOLE (Giữ nguyên tĩnh do không yêu cầu sửa)
         const CONSOLES_DATA = [
             {
                 id: 0,
@@ -1020,10 +825,9 @@
             },
         ];
 
-        let currentGameId = 1;
-        let currentHeroIndex = 1;
-        let currentHeroConsoleIndex = 0; // Thêm dòng này vào
-        const heroSlideIds = [0, 1, 2];
+        let currentGameId = null;
+        let currentHeroIndex = 0;
+        let currentHeroConsoleIndex = 0;
         let cart = [];
         let wishlist = [];
 
@@ -1038,27 +842,17 @@
             if (collapse === isCollapsed) return;
             isCollapsed = collapse;
             if (collapse) {
-                // Thu nhỏ thanh đảo
                 island.classList.remove('w-[90%]', 'md:w-[750px]', 'h-[72px]', 'rounded-2xl');
                 island.classList.add('w-[110px]', 'h-[44px]', 'rounded-full', 'bg-[#1a1a1e]');
-
-                // Ẩn hoàn toàn tuyệt đối mọi thứ bên trong thanh mở rộng
                 expandedContent.classList.add('opacity-0', 'scale-90', 'pointer-events-none', 'invisible');
                 expandedContent.classList.remove('opacity-100', 'scale-100');
-
-                // Hiện biểu tượng rút gọn
                 collapsedContent.classList.remove('opacity-0', 'scale-75', 'pointer-events-none', 'invisible');
                 collapsedContent.classList.add('opacity-100', 'scale-100');
             } else {
-                // Mở rộng thanh đảo về ban đầu
                 island.classList.remove('w-[110px]', 'h-[44px]', 'rounded-full');
                 island.classList.add('w-[90%]', 'md:w-[750px]', 'h-[72px]', 'rounded-2xl', 'bg-[#1a1a1e]/90');
-
-                // Hiện lại menu lớn
                 expandedContent.classList.remove('opacity-0', 'scale-90', 'pointer-events-none', 'invisible');
                 expandedContent.classList.add('opacity-100', 'scale-100');
-
-                // Ẩn biểu tượng rút gọn
                 collapsedContent.classList.add('opacity-0', 'scale-75', 'pointer-events-none', 'invisible');
                 collapsedContent.classList.remove('opacity-100', 'scale-100');
             }
@@ -1081,17 +875,57 @@
         let slideInterval;
         window.onload = function () {
             lucide.createIcons();
-            renderGameList(GAMES_DATA);
-            setHero(1);
             setHeroConsole(0);
-            startSlideShow();
+            
+            // Tải danh sách Game từ Database
+            if (isUsingFirebase) {
+                loadGames();
+            }
+        }
+
+        // HÀM TẢI GAME TỪ FIRESTORE VÀ HIỂN THỊ
+        async function loadGames() {
+            if (!db) return;
+            try {
+                const querySnapshot = await getDocs(collection(db, "games"));
+                GAMES_DATA = [];
+                querySnapshot.forEach((doc) => {
+                    GAMES_DATA.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+
+                if (GAMES_DATA.length > 0) {
+                    // Ưu tiên game có tag 'bán chạy', lấy bù game khác nếu thiếu
+                    heroSlideIds = pickHeroSlideIds(GAMES_DATA, 3);
+                    renderGameList(GAMES_DATA);
+                    setHero(0);
+                    startSlideShow();
+                } else {
+                    document.getElementById('game-list-container').innerHTML = '<p class="text-gray-400 p-4">Chưa có game nào trong cửa hàng của bạn.</p>';
+                }
+            } catch (error) {
+                console.error("Lỗi tải danh sách game:", error);
+            }
+        }
+
+        // CHỌN GAME CHO HERO SLIDER: ưu tiên tag chứa "bán chạy", thiếu thì lấy bù game khác
+        function pickHeroSlideIds(games, count = 3) {
+            const normalize = (s) => (s || '').toString().toLowerCase();
+            const bestSellers = games.filter(g => normalize(g.tag).includes('bán chạy'));
+            const others = games.filter(g => !normalize(g.tag).includes('bán chạy'));
+            const picked = [...bestSellers, ...others].slice(0, count);
+            return picked.map(g => g.id);
         }
 
         function startSlideShow() {
             clearInterval(slideInterval);
             slideInterval = setInterval(() => {
-                let nextIndex = (currentHeroIndex + 1) % 3;
-                setHero(nextIndex);
+                if (heroSlideIds.length > 0) {
+                    let nextIndex = (currentHeroIndex + 1) % heroSlideIds.length;
+                    setHero(nextIndex);
+                }
             }, 8000);
         }
 
@@ -1103,24 +937,24 @@
             games.forEach(game => {
                 const card = document.createElement('div');
                 card.className = "group flex flex-col cursor-pointer transition duration-300 transform hover:-translate-y-2 h-full justify-between bg-[#18181c] border border-[#202020] rounded-xl overflow-hidden p-3 shadow-lg hover:border-orange-500/50";
-                card.setAttribute('onclick', `viewGameDetail(${game.id})`);
+                card.setAttribute('onclick', `viewGameDetail('${game.id}')`);
 
                 card.innerHTML = `
                     <div class="space-y-3">
                         <div class="aspect-[3/4] w-full rounded-lg overflow-hidden bg-neutral-900 border border-[#202020] relative">
                             <img src="${game.coverImage || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800'}" alt="${game.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <button onclick="event.stopPropagation(); toggleWishlistSpecific(${game.id})" class="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 backdrop-blur-sm text-gray-300 hover:text-red-500 transition">
-                                <i data-lucide="heart" class="w-4 h-4 ${wishlist.includes(game.id) ? 'fill-current text-red-500' : ''}"></i>
+                            <button onclick="event.stopPropagation(); toggleWishlistSpecific('${game.id}')" class="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 backdrop-blur-sm text-gray-300 hover:text-red-500 transition">
+                                <i data-lucide="heart" class="w-4 h-4 ${wishlist.includes(String(game.id)) ? 'fill-current text-red-500' : ''}"></i>
                             </button>
                         </div>
                         <div class="space-y-1">
-                            <span class="text-[10px] uppercase font-bold tracking-wider text-orange-500 bg-orange-500/10 px-2 py-0.5 rounded-sm inline-block">${game.tag}</span>
+                            <span class="text-[10px] uppercase font-bold tracking-wider text-orange-500 bg-orange-500/10 px-2 py-0.5 rounded-sm inline-block">${game.tag || 'Game'}</span>
                             <h4 class="font-bold text-sm text-gray-200 group-hover:text-orange-400 transition leading-tight line-clamp-1">${game.title}</h4>
                         </div>
                     </div>
                     <div class="pt-2 flex items-center justify-between border-t border-[#202020] mt-3">
-                        <span class="font-bold text-sm text-white">${game.price === 0 ? "Miễn phí" : game.priceText}</span>
-                        <button onclick="event.stopPropagation(); quickAddToCart(${game.id})" class="p-2 bg-[#25252b] hover:bg-orange-600 text-gray-400 hover:text-white rounded-lg transition-colors group/btn">
+                        <span class="font-bold text-sm text-white">${game.price === 0 ? "Miễn phí" : (game.priceText || formatCurrency(game.price))}</span>
+                        <button onclick="event.stopPropagation(); quickAddToCart('${game.id}')" class="p-2 bg-[#25252b] hover:bg-orange-600 text-gray-400 hover:text-white rounded-lg transition-colors group/btn">
                             <i data-lucide="shopping-cart" class="w-4 h-4 group-hover/btn:scale-110 transition-transform"></i>
                         </button>
                     </div>
@@ -1165,8 +999,9 @@
         // ==========================================
         function setHero(index) {
             currentHeroIndex = index;
-            const targetGameId = heroSlideIds[index];
-            const game = GAMES_DATA.find(g => g.id === targetGameId);
+            if (heroSlideIds.length === 0) return;
+            const targetGameId = heroSlideIds[index % heroSlideIds.length];
+            const game = GAMES_DATA.find(g => String(g.id) === String(targetGameId));
             if (!game) return;
 
             // Cập nhật giao diện Slider
@@ -1180,11 +1015,11 @@
 
             if (bg && displayBg) bg.style.backgroundImage = `url('${displayBg}')`;
             if (title) title.textContent = game.title;
-            if (desc) desc.textContent = game.desc;
-            if (price) price.textContent = game.price === 0 ? "Miễn phí" : game.priceText;
+            if (desc) desc.textContent = game.description || game.desc || 'Đang cập nhật...';
+            if (price) price.textContent = game.price === 0 ? "Miễn phí" : (game.priceText || formatCurrency(game.price));
 
             if (viewBtn) {
-                viewBtn.setAttribute('onclick', `viewGameDetail(${game.id})`);
+                viewBtn.setAttribute('onclick', `viewGameDetail('${game.id}')`);
             }
 
             // Cập nhật các dấu chấm hiển thị
@@ -1202,24 +1037,25 @@
 
         // XEM CHI TIẾT GAME
         function viewGameDetail(gameId) {
-            const game = GAMES_DATA.find(g => g.id === gameId);
+            const game = GAMES_DATA.find(g => String(g.id) === String(gameId));
             if (!game) return;
 
-            currentGameId = gameId;
+            currentGameId = String(gameId);
 
             document.getElementById('detail-breadcrumb-name').textContent = game.title;
             document.getElementById('detail-title').textContent = game.title;
-            document.getElementById('detail-rating').textContent = game.rating;
+            document.getElementById('detail-rating').textContent = game.rating || "N/A";
 
             document.getElementById('detail-mini-logo').src = game.coverImage || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800';
             document.getElementById('detail-title-sidebar').textContent = game.title;
-            document.getElementById('detail-genre-tag').textContent = game.genre;
-            document.getElementById('detail-price').textContent = game.price === 0 ? "Miễn phí" : game.priceText;
+            document.getElementById('detail-genre-tag').textContent = game.genre || 'Game';
+            document.getElementById('detail-price').textContent = game.price === 0 ? "Miễn phí" : (game.priceText || formatCurrency(game.price));
 
-            document.getElementById('detail-publisher').textContent = game.publisher;
-            document.getElementById('detail-release-date').textContent = game.releaseDate;
+            document.getElementById('detail-publisher').textContent = game.publisher || 'Đang cập nhật';
+            document.getElementById('detail-developer').textContent = game.developer || 'Đang cập nhật';
+            document.getElementById('detail-release-date').textContent = game.releaseDate || 'Đang cập nhật';
 
-            document.getElementById('detail-long-desc').textContent = game.desc;
+            document.getElementById('detail-long-desc').textContent = game.description || game.desc || 'Đang cập nhật...';
 
             const mainMedia = document.getElementById('detail-main-media');
             const allImages = game.images && game.images.length > 0 ? game.images : [game.coverImage];
@@ -1247,13 +1083,13 @@
             updateWishlistButtonState();
             showPage('detail');
             // Kích hoạt nạp bình luận cho game này
-            listenToComments(gameId);
+            listenToComments(currentGameId);
 
 
             // Gán sự kiện click động kèm mã gameId chuẩn xác cho nút gửi
             const submitBtn = document.getElementById('submit-comment-btn');
             if (submitBtn) {
-                submitBtn.onclick = () => submitComment(gameId);
+                submitBtn.onclick = () => submitComment(currentGameId);
             }
         }
 
@@ -1272,10 +1108,13 @@
                 behavior: 'smooth'
             });
         }
+        
         // HERO SLIDER CONSOLE
         function setHeroConsole(index) {
             currentHeroConsoleIndex = index;
-            const item = CONSOLES_DATA.find(p => p.id === heroSlideIds[index]);
+            // Console vẫn dùng hardcoded DATA
+            const consoleSlideIds = [0, 1, 2];
+            const item = CONSOLES_DATA.find(p => p.id === consoleSlideIds[index]);
             if (!item) return;
 
             document.getElementById('hero-bg-console').style.backgroundImage = `url('${item.images[0] || item.coverImage}')`;
@@ -1298,6 +1137,7 @@
                 }
             }
         }
+
         // ==========================================
         // HIỆU ỨNG PUMPKIN & GIỎ HÀNG (MỚI)
         // ==========================================
@@ -1305,7 +1145,6 @@
             const pumpkin = document.getElementById('nav-pumpkin');
             if (!pumpkin) return;
 
-            // Xóa/Thêm lại class để tái khởi động animation nhảy nhót
             pumpkin.classList.remove('pumpkin-excited');
             void pumpkin.offsetWidth;
             pumpkin.classList.add('pumpkin-excited');
@@ -1324,10 +1163,10 @@
         }
 
         function quickAddToCart(gameId) {
-            const game = GAMES_DATA.find(g => g.id === gameId);
+            const game = GAMES_DATA.find(g => String(g.id) === String(gameId));
             if (!game) return;
 
-            if (!cart.some(item => item.id === game.id)) {
+            if (!cart.some(item => String(item.id) === String(game.id))) {
                 cart.push(game);
                 triggerPumpkinAnimation();
                 updateCartBadge();
@@ -1338,10 +1177,10 @@
         }
 
         function addToCartAndBuy() {
-            const game = GAMES_DATA.find(g => g.id === currentGameId);
+            const game = GAMES_DATA.find(g => String(g.id) === String(currentGameId));
             if (!game) return;
 
-            if (!cart.some(item => item.id === game.id)) {
+            if (!cart.some(item => String(item.id) === String(game.id))) {
                 cart.push(game);
                 triggerPumpkinAnimation();
                 updateCartBadge();
@@ -1380,13 +1219,13 @@
                         <div class="flex items-center gap-4">
                             <img src="${game.coverImage}" class="w-16 h-20 rounded-md object-cover shadow-md">
                             <div>
-                                <h4 class="font-bold text-white text-md hover:text-orange-400 cursor-pointer" onclick="viewGameDetail(${game.id})">${game.title}</h4>
-                                <span class="text-xs px-2 py-0.5 bg-[#25252b] text-gray-400 rounded mt-1 inline-block">${game.genre}</span>
+                                <h4 class="font-bold text-white text-md hover:text-orange-400 cursor-pointer" onclick="viewGameDetail('${game.id}')">${game.title}</h4>
+                                <span class="text-xs px-2 py-0.5 bg-[#25252b] text-gray-400 rounded mt-1 inline-block">${game.genre || 'Game'}</span>
                             </div>
                         </div>
                         <div class="flex items-center gap-4 md:gap-8">
-                            <span class="font-bold text-orange-400">${game.price === 0 ? "Miễn phí" : game.priceText}</span>
-                            <button onclick="removeFromCart(${game.id})" class="p-2 text-gray-500 bg-[#25252b] rounded-lg hover:text-red-500 hover:bg-red-500/10 transition-colors">
+                            <span class="font-bold text-orange-400">${game.price === 0 ? "Miễn phí" : (game.priceText || formatCurrency(game.price))}</span>
+                            <button onclick="removeFromCart('${game.id}')" class="p-2 text-gray-500 bg-[#25252b] rounded-lg hover:text-red-500 hover:bg-red-500/10 transition-colors">
                                 <i data-lucide="trash-2" class="w-5 h-5"></i>
                             </button>
                         </div>
@@ -1402,61 +1241,25 @@
         }
 
         function removeFromCart(gameId) {
-            cart = cart.filter(item => item.id !== gameId);
+            cart = cart.filter(item => String(item.id) !== String(gameId));
             updateCartBadge();
             showCart();
             showPumpkinAlert("Đã xóa", "Sản phẩm đã rời khỏi giỏ hàng.", 'error');
         }
+
         // ==========================================
         // COMMENTS: Quản lý bình luận thời gian thực
         // ==========================================
-        let currentCommentUnsubscribe = null; // Biến lưu trạng thái lắng nghe firebase
+        let currentCommentUnsubscribe = null; 
 
-        // 1. Hàm lắng nghe và tải bình luận theo gameId
         function listenToComments(gameId) {
-            // // Nếu có trình lắng nghe cũ đang chạy, tắt đi trước khi bật cái mới
-            // if (currentCommentUnsubscribe) {
-            //     currentCommentUnsubscribe();
-            // }
-
-            // const listContainer = document.getElementById('comments-list-container');
-            // const commentInput = document.getElementById('comment-input');
-            // const submitBtn = document.getElementById('submit-comment-btn');
-            // const statusText = document.getElementById('comment-status');
-
-            // // Kiểm tra trạng thái đăng nhập để bật/tắt khung chat
-            // if (!currentUser) {
-            //     if (commentInput) commentInput.disabled = true;
-            //     if (submitBtn) submitBtn.disabled = true;
-            //     if (statusText) statusText.innerHTML = `⚠️ Vui lòng <a href="login.html" class="text-brutalBlue underline font-black">ĐĂNG NHẬP</a> để bình luận.`;
-            // } else {
-            //     if (commentInput) commentInput.disabled = false;
-            //     if (submitBtn) submitBtn.disabled = false;
-            //     if (statusText) statusText.textContent = `Đang bình luận dưới tên: ${currentUser.displayName || 'Ẩn danh'}`;
-            // }
-
-            // // Nếu không kích hoạt Firebase hoặc thiếu DB -> Hiện bình luận giả (Mock Data) để test giao diện
-            // if (!isUsingFirebase || !db) {
-            //     console.log("Firebase offline: Đang hiển thị bình luận mẫu.");
-            //     const mockComments = [
-            //         { id: "m1", userName: "Wukong_Pro", userAvatar: "./img/account/wk.png", content: "Game này đồ họa đỉnh thực sự anh em ạ, đáng đồng tiền bát gạo!", createdAt: { toDate: () => new Date() } },
-            //         { id: "m2", userName: "Chúa Tể Săn Sale", userAvatar: "./img/account/wk.png", content: "Đợi đợt Halloween web sale thì mua luôn thể hihi.", createdAt: { toDate: () => new Date() } }
-            //     ];
-            //     renderComments(mockComments);
-            //     return;
-            // }
-
-            // Nếu Firebase hoạt động online -> Tạo query lấy dữ liệu thật
             try {
-                // const { collection, query, where, orderBy, onSnapshot } = FirebaseFirestore;
-
                 const q = query(
                     collection(db, "comments"),
                     where("gameId", "==", gameId),
                     orderBy("createdAt", "desc")
                 );
 
-                // Lắng nghe realtime từ Firestore
                 currentCommentUnsubscribe = onSnapshot(q, (snapshot) => {
                     const comments = [];
                     snapshot.forEach((doc) => {
@@ -1465,6 +1268,7 @@
                     renderComments(comments);
                 }, (error) => {
                     console.error("Lỗi lấy bình luận:", error);
+                    const listContainer = document.getElementById('comments-list-container');
                     if (listContainer) listContainer.innerHTML = `<p class="text-red-500 font-bold">Không thể tải bình luận lúc này.</p>`;
                 });
             } catch (err) {
@@ -1472,7 +1276,6 @@
             }
         }
 
-        // 2. Hàm hiển thị bình luận ra HTML (Chuẩn Brutalism UI)
         function renderComments(comments) {
             const listContainer = document.getElementById('comments-list-container');
             if (!listContainer) return;
@@ -1487,14 +1290,12 @@
             }
 
             listContainer.innerHTML = comments.map((c, index) => {
-                // Xử lý chuỗi thời gian sạch sẽ, thanh lịch theo chuẩn rank.html
                 let timeString = "Vừa xong";
                 if (c.createdAt && typeof c.createdAt.toDate === 'function') {
                     const date = c.createdAt.toDate();
                     timeString = date.toLocaleDateString('vi-VN') + " " + date.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
                 }
 
-                // Hệ thống Danh hiệu cao cấp, sử dụng màu dịu bọc nền mờ giống trang ASIER RANK
                 let badgeHTML = `<span class="px-2 py-0.5 text-[10px] font-bold rounded bg-white/5 border border-white/10 text-gray-300 tracking-wide">GAMER</span>`;
 
                 if (c.userId === 'admin_id_hoac_UID_cua_ban' || c.userName.toLowerCase().includes('admin')) {
@@ -1525,30 +1326,11 @@
         `;
             }).join('');
         }
-        // 3. Hàm gửi bình luận lên cơ sở dữ liệu
+        
         async function submitComment(gameId) {
             const commentInput = document.getElementById('comment-input');
-            // if (!commentInput) return;
-
-            // const content = commentInput.value.trim();
-            // if (!content) {
-            //     showPumpkinAlert("Lỗi", "Vui lòng nhập nội dung bình luận!", 'error');
-            //     return;
-            // }
-
-            // if (!currentUser) {
-            //     showPumpkinAlert("Lỗi", "Bạn cần đăng nhập trước!", 'error');
-            //     return;
-            // }
-
-            // if (!isUsingFirebase || !db) {
-            //     showPumpkinAlert("Offline Mode", "Bình luận giả lập thành công (Firebase đang tắt)!", 'success');
-            //     commentInput.value = '';
-            //     return;
-            // }
 
             try {
-                // const { collection, addDoc, serverTimestamp } = FirebaseFirestore;
                 const content = commentInput.value.trim();
                 if (!content) {
                     showPumpkinAlert("Lỗi", "Vui lòng nhập nội dung bình luận!", 'error');
@@ -1560,10 +1342,10 @@
                     userName: currentUser.displayName || "Người dùng ẩn danh",
                     userAvatar: currentUser.photoURL || "./img/account/wk.png",
                     content: content,
-                    createdAt: serverTimestamp() // Sử dụng thời gian chuẩn của server Google
+                    createdAt: serverTimestamp() 
                 });
 
-                commentInput.value = ''; // Xóa sạch ô nhập sau khi gửi thành công
+                commentInput.value = ''; 
                 showPumpkinAlert("Thành công", "Đã đăng bình luận của bạn! 🎃", 'success');
             } catch (error) {
                 console.error("Lỗi gửi bình luận:", error);
@@ -1573,22 +1355,18 @@
         async function checkout() {
             if (cart.length === 0) return;
 
-            // 1. Kiểm tra đăng nhập
             if (!currentUser) {
                 showPumpkinAlert("Lỗi", "Vui lòng đăng nhập để tiến hành thanh toán!", 'error');
                 return;
             }
 
-            // 2. Tính tổng tiền từ mảng giỏ hàng thực tế
             const totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
             const pointsToAdd = Math.floor(totalAmount / 10000);
 
-            // 3. FIX: Lưu dữ liệu đơn hàng vào public data để bảng rank đọc được
             const currentAppId = firebaseConfig.projectId;
             const userDocRef = doc(db, 'artifacts', currentAppId, 'public', 'data', 'profiles', currentUser.uid);
 
             try {
-                // 4. Kiểm tra và Cập nhật dữ liệu
                 const docSnap = await getDoc(userDocRef);
 
                 if (docSnap.exists()) {
@@ -1603,7 +1381,6 @@
                     });
                 }
 
-                // 5. Thành công: Xóa giỏ hàng và hiển thị UI
                 showPumpkinAlert("Thành công!", `Cảm ơn bạn đã mua sắm! Đã cộng ${formatCurrency(totalAmount)} và ${pointsToAdd} điểm.`, 'success');
                 cart = [];
                 updateCartBadge();
@@ -1628,7 +1405,6 @@
             msgEl.textContent = message;
             titleEl.textContent = title;
 
-            // Thiết lập màu sắc và icon tùy vào loại Alert
             if (type === 'success') {
                 wrapper.innerHTML = '🎃';
                 wrapper.className = "p-2 bg-orange-500/20 text-orange-500 rounded-lg text-2xl flex items-center justify-center w-12 h-12";
@@ -1665,19 +1441,20 @@
 
         // DANH SÁCH MONG MUỐN (Wishlist)
         function toggleWishlistSpecific(gameId) {
-            const game = GAMES_DATA.find(g => g.id === gameId);
+            const game = GAMES_DATA.find(g => String(g.id) === String(gameId));
             if (!game) return;
 
-            const idx = wishlist.indexOf(gameId);
+            const strId = String(gameId);
+            const idx = wishlist.indexOf(strId);
             if (idx === -1) {
-                wishlist.push(gameId);
+                wishlist.push(strId);
                 showPumpkinAlert("Wishlist", `Đã tim ${game.title} 💖`, 'success');
             } else {
                 wishlist.splice(idx, 1);
                 showPumpkinAlert("Wishlist", `Đã bỏ tim ${game.title} 💔`, 'error');
             }
-            renderGameList(GAMES_DATA); // Vẽ lại để cập nhật màu trái tim
-            if (currentGameId === gameId) updateWishlistButtonState();
+            renderGameList(GAMES_DATA); 
+            if (String(currentGameId) === strId) updateWishlistButtonState();
         }
 
         function toggleWishlist() {
@@ -1687,7 +1464,7 @@
         function updateWishlistButtonState() {
             const btn = document.getElementById('btn-wishlist');
             if (!btn) return;
-            if (wishlist.includes(currentGameId)) {
+            if (wishlist.includes(String(currentGameId))) {
                 btn.innerHTML = `<i data-lucide="heart" class="w-5 h-5 fill-current text-red-500"></i> ĐÃ THÍCH SẢN PHẨM`;
                 btn.classList.add('border-red-500/50', 'bg-red-500/10');
             } else {
@@ -1761,23 +1538,19 @@
             }
 
             const currentAppId = firebaseConfig.projectId;
-            // FIX: Update vào đúng đường dẫn public profiles có định ID uid
             const userDocRef = doc(db, 'artifacts', currentAppId, 'public', 'data', 'profiles', currentUser.uid);
 
             try {
-                // Cập nhật Firestore
                 await updateDoc(userDocRef, {
                     name: newName,
                     ...(newAvatar && { avatarUrl: newAvatar })
                 });
 
-                // Cập nhật Firebase Auth displayName & photoURL
                 await updateProfile(currentUser, {
                     displayName: newName,
                     ...(newAvatar && { photoURL: newAvatar })
                 });
 
-                // Cập nhật UI ngay lập tức
                 const navAvatar = document.getElementById('nav-avatar');
                 if (navAvatar && newAvatar) navAvatar.src = newAvatar;
                 const profilePreview = document.getElementById('profile-avatar-preview');

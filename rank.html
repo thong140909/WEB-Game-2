@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASIER RANK</title>
+    <!-- Tailwind CSS & Lucide Icons -->
+    <link class="rounded-full" rel="icon" type="image/png" href="./img/logo.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=VT323&family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0c0c0e;
+            color: #f5f5f5;
+        }
+
+        /* Hiệu ứng hào quang chữ Neon */
+        .neon-glow-orange {
+            text-shadow: 0 0 10px rgba(249, 115, 22, 0.6), 0 0 20px rgba(249, 115, 22, 0.3);
+        }
+
+        .neon-glow-gold {
+            text-shadow: 0 0 15px rgba(234, 179, 8, 0.7);
+        }
+
+        /* Hoạt ảnh lơ lửng cho Top 1 */
+        @keyframes floatPodium {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .animate-float-top1 {
+            animation: floatPodium 4s ease-in-out infinite;
+        }
+
+        /* Hiệu ứng chuyển động mượt mà khi đổi vị trí hàng */
+        .leaderboard-row {
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Hiệu ứng phát sáng đường viền khi rê chuột */
+        .hover-glow:hover {
+            box-shadow: 0 0 20px rgba(249, 115, 22, 0.2);
+            border-color: rgba(249, 115, 22, 0.4);
+            background-color: #1a1a22;
+        }
+
+        /* Thanh cuộn tùy chỉnh */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0c0c0e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #222;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f97316;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col selection:bg-orange-500 selection:text-white pb-12">
+
+    <!-- HEADER / NAVIGATION (Dynamic Island thu gọn hoàn hảo) -->
+    <nav id="dynamic-island"
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-[#1a1a1e]/90 backdrop-blur-xl border border-white/10 overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.5)] island-transition flex items-center justify-center w-[90%] md:w-[750px] h-[72px] rounded-5xl"
+        style="border-radius: 50px;">
+
+        <!-- Trạng thái MỞ RỘNG (Expanded) -->
+        <div id="expanded-content"
+            class="absolute w-full px-4 md:px-8 flex items-center justify-between content-transition opacity-100 scale-100">
+            <!-- Logo (Tích hợp bé Bí Ngô và ASIER) -->
+            <div onclick="showPage('home')"
+                class="flex items-center gap-2 text-2xl font-bold tracking-tight text-white cursor-pointer hover:opacity-80 transition-opacity select-none"
+                style="font-family: 'VT323', monospace;">
+                <span id="nav-pumpkin" class="text-3xl pumpkin-idle transition-transform inline-block">🎃</span>
+                ASIER
+            </div>
+
+            <!-- Menu (ẩn trên mobile) -->
+            <div class="hidden md:flex space-x-8 text-sm font-bold">
+                <a href="index.html" onclick="showPage('home')" class="hover:text-orange-400 transition-colors">HOME</a>
+                <a href="store.html" onclick="showPage('home')"
+                    class="hover:text-orange-400 transition-colors">STORE</a>
+                <a href="rank.html" class="hover:text-orange-400 transition-colors">RANK</a>
+                <a id="nav-login-btn" href="login.html" class="hover:text-orange-400 transition-colors">LOGIN</a>
+
+            </div>
+
+            <!-- Giỏ hàng & Avatar -->
+            <div class="flex items-center gap-4">
+                <!-- Giỏ hàng Icon -->
+                <button onclick="showPage('cart')"
+                    class="relative p-2 text-gray-300 hover:text-orange-500 transition-colors cursor-pointer group">
+                    <i data-lucide="shopping-cart" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+                    <!-- Chấm đỏ số lượng -->
+                    <span id="cart-badge"
+                        class="absolute top-0 right-0 w-4 h-4 bg-orange-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center hidden shadow-lg shadow-orange-500/50">0</span>
+                </button>
+
+                <!-- Avatar -->
+                <a href="store.html"
+                    class="inline-block w-10 h-10 rounded-full bg-white hover:shadow-[0_0_15px_rgba(249,115,22,0.5)] transition-all border-2 border-[#333] overflow-hidden">
+                    <img id="nav-avatar" src="./img/account/wk.png" class="w-full h-full object-cover" alt="Avatar"
+                        onerror="this.src='https://api.dicebear.com/7.x/adventurer/svg?seed=fallback'">
+                </a>
+            </div>
+        </div>
+
+        <!-- Trạng thái THU GỌN (Collapsed - Chỉ hiện 1 con pumpkin nhún nhảy) -->
+        <div id="collapsed-content"
+            class="absolute flex items-center justify-center content-transition opacity-0 scale-75 pointer-events-none invisible">
+            <span class="text-2xl animate-bounce">🎃</span>
+        </div>
+    </nav>
+
+
+    <!-- TIÊU ĐỀ TRANG CHÍNH -->
+    <div class="text-center mt-32 mb-8 space-y-2 px-4">
+        <span
+            class="px-3 py-1 bg-orange-500/10 text-orange-400 text-xs font-bold rounded-full border border-orange-500/20 uppercase tracking-widest">Đơn
+            hàng & Tích lũy</span>
+        <h1 class="text-3xl md:text-5xl font-black tracking-tight font-sans">
+            BẢNG VÀNG <span class="text-orange-500 neon-glow-orange">VIP ASIER</span>
+        </h1>
+        <p class="text-gray-400 text-sm max-w-md mx-auto">Xếp hạng dựa trên tổng số lượt mua hàng và điểm tích lũy Asier
+            Points (AP) .</p>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-4xl w-full mx-auto px-4 space-y-12">
+
+        <!-- ================= BỤC VINH QUANG (TOP 3 PODIUM) ================= -->
+        <section id="podium-container"
+            class="grid grid-cols-3 items-end gap-2 sm:gap-6 pt-10 max-w-2xl mx-auto min-h-[340px]">
+            <!-- Chạy render tự động bằng JS -->
+        </section>
+
+        <!-- ================= BẢNG DANH SÁCH CHI TIẾT (TOP 4+) ================= -->
+        <section class="bg-[#131316] border border-white/5 rounded-2xl overflow-hidden shadow-2xl">
+            <!-- Thanh đầu bảng -->
+            <div
+                class="grid grid-cols-12 px-6 py-4 bg-[#18181c] border-b border-white/5 text-xs font-bold uppercase tracking-wider text-gray-400">
+                <div class="col-span-2 text-center">Hạng</div>
+                <div class="col-span-5 sm:col-span-6">Khách hàng</div>
+                <div class="col-span-3 sm:col-span-2 text-center flex items-center justify-center gap-1">
+                    <i data-lucide="shopping-bag" class="w-3.5 h-3.5 text-orange-400"></i> Mua
+                </div>
+                <div class="col-span-2 text-right">Điểm (AP)</div>
+            </div>
+
+            <!-- Khối chứa danh sách dòng -->
+            <div id="leaderboard-list" class="divide-y divide-white/[0.03]">
+                <!-- Chạy render tự động từ Top 4 trở đi -->
+            </div>
+        </section>
+
+        <!-- ================= HỘP ĐIỀU KHIỂN THỜI GIAN THỰC / FIRESTORE MONITOR ================= -->
+        <!-- <section
+            class="p-6 bg-[#18181c] border border-orange-500/20 rounded-xl max-w-md mx-auto space-y-4 text-center shadow-[0_0_30px_rgba(249,115,22,0.05)]">
+            <div class="flex items-center justify-center gap-2 font-bold text-orange-400 text-sm">
+                <span id="connection-indicator" class="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse"></span>
+                <span id="connection-status">Đang sử dụng dữ liệu giả lập (Offline)</span>
+            </div>
+            <p class="text-xs text-gray-400">Bấm nút bên dưới để cộng điểm nhanh cho một thành viên. Khi kết nối thành
+                công với Firestore của bạn, dữ liệu trên Cloud sẽ được đồng bộ ngay tức khắc cho tất cả mọi người đang
+                xem trang!</p>
+            <button id="simulate-btn"
+                class="px-5 py-3 bg-orange-600 hover:bg-orange-500 text-white font-bold text-sm rounded-lg transition duration-200 transform active:scale-95 flex items-center justify-center gap-2 mx-auto shadow-lg shadow-orange-600/20">
+                <i data-lucide="zap" class="w-4 h-4 fill-current"></i> Nhận đơn hàng mới (+AP)
+            </button>
+        </section> -->
+
+    </main>
+
+    <!-- POPUP ALERT HALLOWEEN -->
+    <div id="custom-alert"
+        class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 max-w-sm w-full bg-[#1a0f0a] border border-orange-500 rounded-xl p-4 shadow-[0_5px_30px_rgba(249,115,22,0.3)] flex items-start gap-3">
+        <div
+            class="p-2 bg-orange-500/20 text-orange-500 rounded-lg text-2xl flex items-center justify-center w-12 h-12">
+            🎃
+        </div>
+        <div class="flex-grow space-y-1">
+            <h4 class="font-bold text-orange-400 text-base" id="alert-title">Thông báo</h4>
+            <p class="text-sm text-gray-300" id="alert-message">Đã thêm thành công sản phẩm.</p>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- JAVASCRIPT LOGIC - IMPORT FIREBASE Ở ĐÂY -->
+    <!-- ========================================================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import {
+            getFirestore,
+            collection,
+            onSnapshot,
+            query
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import {
+            getAuth,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // ==========================================
+        // CẤU HÌNH FIREBASE
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBf-zqRafienzl4BjMGOWbVcEcA81WbAOk",
+            authDomain: "asier-f2574.firebaseapp.com",
+            projectId: "asier-f2574",
+            storageBucket: "asier-f2574.firebasestorage.app",
+            messagingSenderId: "646116578464",
+            appId: "1:646116578464:web:8f49a7eba9ca7b236b65c5",
+            measurementId: "G-7Q8B97TLSS"
+        };
+
+        // Dữ liệu giả lập — hiển thị khi Firestore chưa có dữ liệu thật
+        let LEADERBOARD_DATA = [
+            { id: "user_1", name: "Nguyễn Tuấn Thông", purchases: 42, points: 8400, avatarUrl: "./img/account/wk.png" },
+            { id: "user_2", name: "Nguyễn Gia Huy", purchases: 38, points: 7600, avatarUrl: "https://api.dicebear.com/7.x/adventurer/svg?seed=Huy" },
+            { id: "user_3", name: "Khánh An", purchases: 31, points: 6200, avatarUrl: "https://api.dicebear.com/7.x/adventurer/svg?seed=An" },
+            { id: "user_4", name: "Thành Đạt", purchases: 25, points: 5000, avatarUrl: "https://api.dicebear.com/7.x/adventurer/svg?seed=Thandat" },
+            { id: "user_5", name: "Minh Ngân", purchases: 22, points: 4400, avatarUrl: "https://api.dicebear.com/7.x/adventurer/svg?seed=Ngan" },
+            { id: "user_6", name: "Cẩm Anh", purchases: 19, points: 3800, avatarUrl: "https://api.dicebear.com/7.x/adventurer/svg?seed=Camanh" },
+            { id: "user_7", name: "Thúy Kiều", purchases: 15, points: 3000, avatarUrl: "https://api.dicebear.com/7.x/adventurer/svg?seed=Kieu" },
+            { id: "user_8", name: "Hoàng Long", purchases: 12, points: 2400, avatarUrl: "https://api.dicebear.com/7.x/adventurer/svg?seed=Long" }
+        ];
+
+        let db = null;
+        let auth = null;
+
+        // ==========================================
+        // KHỞI TẠO FIREBASE
+        // ==========================================
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            console.log("✅ Firebase rank.html kết nối thành công!");
+        } catch (err) {
+            console.error("❌ Lỗi khởi tạo Firebase:", err);
+        }
+
+        // ==========================================
+        // NAVBAR: Đồng bộ trạng thái đăng nhập
+        // ==========================================
+        if (auth) {
+            onAuthStateChanged(auth, (user) => {
+                const loginBtn = document.getElementById('nav-login-btn');
+                const navAvatar = document.getElementById('nav-avatar');
+
+                if (user) {
+                    // Đổi LOGIN → PROFILE, dẫn về store.html#profile
+                    if (loginBtn) {
+                        loginBtn.textContent = 'PROFILE';
+                        loginBtn.href = 'store.html';
+                    }
+                    // Cập nhật avatar navbar nếu user có photoURL
+                    if (navAvatar && user.photoURL) {
+                        navAvatar.src = user.photoURL;
+                    }
+                } else {
+                    if (loginBtn) {
+                        loginBtn.textContent = 'LOGIN';
+                        loginBtn.href = 'login.html';
+                    }
+                    if (navAvatar) navAvatar.src = './img/account/wk.png';
+                }
+            });
+        }
+
+        // ==========================================
+        // KHỞI CHẠY KHI TRANG TẢI XONG
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            if (db) {
+                listenToFirestore(); // Đọc dữ liệu thật từ Firestore
+            } else {
+                updateAndRenderLeaderboard(); // Fallback: dùng dữ liệu giả lập
+            }
+        });
+
+        // ==========================================
+        // LẮNG NGHE FIRESTORE REALTIME
+        // Đọc toàn bộ document trong collection:
+        // artifacts/{projectId}/public/data/profiles
+        // ==========================================
+        function listenToFirestore() {
+            // Lắng nghe collection profiles tại đường dẫn chuẩn
+            // artifacts/{projectId}/public/data/profiles
+            const profilesRef = collection(db, 'artifacts', firebaseConfig.projectId, 'public', 'data', 'profiles');
+            const q = query(profilesRef);
+
+            onSnapshot(q, (snapshot) => {
+                if (snapshot.empty) {
+                    // Firestore chưa có user nào → giữ dữ liệu giả lập
+                    console.log("ℹ️ Firestore trống, dùng dữ liệu giả lập.");
+                    updateAndRenderLeaderboard();
+                    return;
+                }
+
+                LEADERBOARD_DATA = [];
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+
+                    // Bỏ qua những document không có điểm (không phải profile user)
+                    if (typeof data.points === 'undefined') return;
+
+                    LEADERBOARD_DATA.push({
+                        id: docSnap.id,
+                        // Đọc đúng field "name" và "avatarUrl" đã lưu trong store.html
+                        name: data.name || data.email?.split('@')[0] || 'Khách ẩn danh',
+                        purchases: data.purchases || 0,
+                        points: data.points || 0,
+                        avatarUrl: data.avatarUrl || `https://api.dicebear.com/7.x/adventurer/svg?seed=${docSnap.id}`
+                    });
+                });
+
+                console.log(`✅ Đã tải ${LEADERBOARD_DATA.length} user từ Firestore`);
+                updateAndRenderLeaderboard();
+
+            }, (error) => {
+                console.error("❌ Lỗi đồng bộ Firestore:", error);
+                // Nếu lỗi (vd: chưa có index) → vẫn render dữ liệu giả lập
+                updateAndRenderLeaderboard();
+            });
+        }
+
+        // ==========================================
+        // SẮP XẾP VÀ VẼ LEADERBOARD
+        // ==========================================
+        function updateAndRenderLeaderboard() {
+            LEADERBOARD_DATA.sort((a, b) => {
+                if (b.points !== a.points) return b.points - a.points;
+                return b.purchases - a.purchases;
+            });
+
+            renderPodium(LEADERBOARD_DATA.slice(0, 3));
+            renderListTable(LEADERBOARD_DATA.slice(3));
+            lucide.createIcons();
+        }
+
+        // VẼ BỤC VINH QUANG TOP 3
+        function renderPodium(top3Data) {
+            const podiumContainer = document.getElementById('podium-container');
+            if (!podiumContainer) return;
+            podiumContainer.innerHTML = '';
+
+            const podiumOrder = [];
+            if (top3Data[1]) podiumOrder.push({ rank: 2, data: top3Data[1] });
+            if (top3Data[0]) podiumOrder.push({ rank: 1, data: top3Data[0] });
+            if (top3Data[2]) podiumOrder.push({ rank: 3, data: top3Data[2] });
+
+            podiumOrder.forEach(item => {
+                const player = item.data;
+                const rank = item.rank;
+                const podiumCell = document.createElement('div');
+
+                if (rank === 1) {
+                    podiumCell.className = "flex flex-col items-center z-10 animate-float-top1 w-full";
+                    podiumCell.innerHTML = `
+                        <div class="relative mb-2 flex flex-col items-center">
+                            <span class="text-3xl absolute -top-7 select-none animate-bounce">👑</span>
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-yellow-500 via-orange-500 to-amber-300 shadow-[0_0_25px_rgba(234,179,8,0.5)]">
+                                <img src="${player.avatarUrl}" class="w-full h-full object-cover rounded-full bg-[#141417]">
+                            </div>
+                            <span class="absolute -bottom-2 bg-yellow-500 text-black font-extrabold text-xs px-2.5 py-0.5 rounded-full uppercase tracking-wider">TOP 1</span>
+                        </div>
+                        <div class="text-center w-full mt-2">
+                            <h3 class="font-bold text-sm sm:text-base text-white truncate max-w-[120px] mx-auto">${player.name}</h3>
+                            <p class="text-[11px] text-orange-400 font-medium">${player.purchases} lượt mua</p>
+                        </div>
+                        <div class="w-full bg-gradient-to-t from-orange-600 to-amber-500 h-32 sm:h-36 rounded-t-xl mt-3 flex flex-col items-center justify-center border border-amber-400/30 shadow-[0_10px_30px_rgba(249,115,22,0.3)]">
+                            <span class="text-4xl sm:text-5xl font-black text-black/40 font-retro tracking-tighter select-none">1</span>
+                            <span class="text-xs sm:text-sm font-bold text-white bg-black/30 px-2 py-0.5 rounded-md">${player.points} AP</span>
+                        </div>
+                    `;
+                } else if (rank === 2) {
+                    podiumCell.className = "flex flex-col items-center w-full";
+                    podiumCell.innerHTML = `
+                        <div class="relative mb-2 flex flex-col items-center">
+                            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5 bg-slate-400 shadow-[0_0_15px_rgba(148,163,184,0.3)]">
+                                <img src="${player.avatarUrl}" class="w-full h-full object-cover rounded-full bg-[#141417]">
+                            </div>
+                            <span class="absolute -bottom-2 bg-slate-400 text-black font-extrabold text-[10px] px-2 py-0.5 rounded-full tracking-wider">TOP 2</span>
+                        </div>
+                        <div class="text-center w-full mt-2">
+                            <h3 class="font-bold text-xs sm:text-sm text-gray-200 truncate max-w-[100px] mx-auto">${player.name}</h3>
+                            <p class="text-[10px] text-slate-400">${player.purchases} lượt mua</p>
+                        </div>
+                        <div class="w-full bg-[#202026] h-24 sm:h-28 rounded-t-lg mt-3 flex flex-col items-center justify-center border-t border-slate-500/20 shadow-lg">
+                            <span class="text-3xl sm:text-4xl font-black text-white/10 font-retro select-none">2</span>
+                            <span class="text-[11px] sm:text-xs font-bold text-slate-300 bg-white/5 px-1.5 py-0.5 rounded">${player.points} AP</span>
+                        </div>
+                    `;
+                } else {
+                    podiumCell.className = "flex flex-col items-center w-full";
+                    podiumCell.innerHTML = `
+                        <div class="relative mb-2 flex flex-col items-center">
+                            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5 bg-amber-700 shadow-[0_0_15px_rgba(180,83,9,0.3)]">
+                                <img src="${player.avatarUrl}" class="w-full h-full object-cover rounded-full bg-[#141417]">
+                            </div>
+                            <span class="absolute -bottom-2 bg-amber-700 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-full tracking-wider">TOP 3</span>
+                        </div>
+                        <div class="text-center w-full mt-2">
+                            <h3 class="font-bold text-xs sm:text-sm text-gray-200 truncate max-w-[100px] mx-auto">${player.name}</h3>
+                            <p class="text-[10px] text-amber-600">${player.purchases} lượt mua</p>
+                        </div>
+                        <div class="w-full bg-[#1a1a1f] h-18 sm:h-20 rounded-t-lg mt-3 flex flex-col items-center justify-center border-t border-amber-800/20 shadow-lg">
+                            <span class="text-3xl sm:text-4xl font-black text-white/5 font-retro select-none">3</span>
+                            <span class="text-[11px] sm:text-xs font-bold text-amber-500/80 bg-white/5 px-1.5 py-0.5 rounded">${player.points} AP</span>
+                        </div>
+                    `;
+                }
+                podiumContainer.appendChild(podiumCell);
+            });
+        }
+
+        // VẼ DANH SÁCH TOP 4+
+        function renderListTable(tableData) {
+            const listContainer = document.getElementById('leaderboard-list');
+            if (!listContainer) return;
+            listContainer.innerHTML = '';
+
+            tableData.forEach((player, index) => {
+                const trueRank = index + 4;
+                const row = document.createElement('div');
+                row.className = "grid grid-cols-12 px-6 py-4 items-center leaderboard-row hover-glow transition-all duration-300 bg-transparent";
+                row.setAttribute('data-user-id', player.id);
+
+                row.innerHTML = `
+                    <div class="col-span-2 text-center font-retro text-lg text-gray-400 font-bold">#${trueRank}</div>
+                    <div class="col-span-5 sm:col-span-6 flex items-center gap-3">
+                        <img src="${player.avatarUrl}" class="w-9 h-9 rounded-full bg-neutral-800 border border-white/10" onerror="this.src='https://api.dicebear.com/7.x/adventurer/svg?seed=fallback'">
+                        <span class="font-semibold text-sm text-gray-200 truncate max-w-[130px] sm:max-w-none">${player.name}</span>
+                    </div>
+                    <div class="col-span-3 sm:col-span-2 text-center font-bold text-sm text-gray-300">${player.purchases}</div>
+                    <div class="col-span-2 text-right font-bold text-sm text-orange-400 font-mono">${player.points.toLocaleString('vi-VN')}</div>
+                `;
+                listContainer.appendChild(row);
+            });
+        }
+
+        // THÔNG BÁO POPUP CUSTOM
+        let alertTimeout;
+        function showNotification(title, message, isSuccess = true) {
+            const alertBox = document.getElementById('custom-alert');
+            const titleEl = document.getElementById('alert-title');
+            const msgEl = document.getElementById('alert-message');
+
+            if (!alertBox) return;
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+
+            if (isSuccess) {
+                alertBox.className = "fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 max-w-sm w-full bg-[#1a0f0a] border border-orange-500 rounded-xl p-4 shadow-[0_5px_30px_rgba(249,115,22,0.3)] flex items-start gap-3";
+            } else {
+                alertBox.className = "fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 max-w-sm w-full bg-neutral-900 border border-red-500 rounded-xl p-4 shadow-2xl flex items-start gap-3";
+            }
+
+            clearTimeout(alertTimeout);
+            alertBox.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            alertBox.classList.add('translate-y-0', 'opacity-100');
+
+            alertTimeout = setTimeout(() => {
+                alertBox.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        // ĐỒNG BỘ DYNAMIC ISLAND KHI CUỘN CHUỘT
+        const expandedContent = document.getElementById('expanded-content');
+        const collapsedContent = document.getElementById('collapsed-content');
+        const island = document.getElementById('dynamic-island');
+        let isCollapsed = false;
+        let lastScrollY = window.scrollY;
+
+        function toggleIsland(collapse) {
+            if (collapse === isCollapsed) return;
+            isCollapsed = collapse;
+            if (collapse) {
+                island.classList.remove('w-[90%]', 'md:w-[750px]', 'h-[64px]', 'rounded-full');
+                island.classList.add('w-[110px]', 'h-[44px]', 'bg-[#141417]');
+                expandedContent.classList.add('opacity-0', 'scale-90', 'pointer-events-none', 'invisible');
+                expandedContent.classList.remove('opacity-100', 'scale-100');
+                collapsedContent.classList.remove('opacity-0', 'scale-75', 'pointer-events-none', 'invisible');
+                collapsedContent.classList.add('opacity-100', 'scale-100');
+            } else {
+                island.classList.remove('w-[110px]', 'h-[44px]');
+                island.classList.add('w-[90%]', 'md:w-[750px]', 'h-[64px]', 'bg-[#141417]/90');
+                expandedContent.classList.remove('opacity-0', 'scale-90', 'pointer-events-none', 'invisible');
+                expandedContent.classList.add('opacity-100', 'scale-100');
+                collapsedContent.classList.add('opacity-0', 'scale-75', 'pointer-events-none', 'invisible');
+                collapsedContent.classList.remove('opacity-100', 'scale-100');
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            toggleIsland(currentScrollY > 100 && currentScrollY > lastScrollY);
+            lastScrollY = currentScrollY;
+        });
+        island.addEventListener('mouseenter', () => toggleIsland(false));
+        island.addEventListener('mouseleave', () => {
+            if (window.scrollY > 100) toggleIsland(true);
+        });
+    </script>
+</body>
+
+</html>

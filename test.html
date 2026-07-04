@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASIER Admin - Quản lý Game</title>
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-card: #1e1e1e;
+            --bg-hover: #2a2a2a;
+            --primary-orange: #ff6b00;
+            --text-light: #ffffff;
+            --text-muted: #a0a0a0;
+            --danger: #ff4d4d;
+            --success: #00cc66;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--bg-card);
+            height: 100vh;
+            padding: 20px;
+            border-right: 1px solid #333;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            color: var(--text-light);
+        }
+
+        .logo span {
+            color: var(--primary-orange);
+        }
+
+        .menu-item {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .menu-item.active,
+        .menu-item:hover {
+            background-color: var(--primary-orange);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background-color: var(--text-light);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-orange);
+            color: white;
+        }
+
+        .btn-edit {
+            background-color: transparent;
+            color: var(--primary-orange);
+            border: 1px solid var(--primary-orange);
+            padding: 6px 12px;
+        }
+
+        .btn-edit:hover {
+            background-color: var(--primary-orange);
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: transparent;
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 6px 12px;
+            margin-left: 8px;
+        }
+
+        .btn-delete:hover {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        /* Table */
+        .table-container {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        td {
+            vertical-align: middle;
+        }
+
+        .game-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .game-img {
+            width: 60px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            background-color: #333;
+        }
+
+        .tag {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            background-color: #333;
+        }
+
+        .tag.hot {
+            color: var(--primary-orange);
+        }
+
+        .tag.new {
+            color: var(--success);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 16px;
+            width: 500px;
+            border: 1px solid #333;
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+            color: var(--primary-orange);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background-color: var(--bg-dark);
+            color: white;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary-orange);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .btn-cancel {
+            background-color: #444;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background-color: #555;
+        }
+
+        .btn-save {
+            background-color: var(--primary-orange);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            🎃 <span>ASIER</span>
+        </div>
+        <div class="menu-item active">🎮 Quản lý Game</div>
+        <div class="menu-item">🛒 Đơn hàng</div>
+        <div class="menu-item">👥 Người dùng</div>
+        <div class="menu-item">⚙️ Cài đặt</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h1>Danh sách Game</h1>
+            <button class="btn btn-primary" onclick="openModal()">+ Thêm Game Mới</button>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Game</th>
+                        <th>Nền tảng</th>
+                        <th>Phân loại</th>
+                        <th>Giá (VNĐ)</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="gameTableBody">
+                    <!-- Data will be rendered here by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Form (Thêm/Sửa) -->
+    <div class="modal-overlay" id="gameModal">
+        <div class="modal">
+            <h2 id="modalTitle">Thêm Game Mới</h2>
+            <form id="gameForm">
+                <input type="hidden" id="gameId">
+                <div class="form-group">
+                    <label>Tên Game</label>
+                    <input type="text" id="gameName" required placeholder="VD: Black Myth Wukong">
+                </div>
+                <div class="form-group">
+                    <label>Danh sách Ảnh (mỗi dòng 1 URL, ảnh đầu = ảnh bìa)</label>
+                    <textarea id="gameImages" rows="4" required
+                        placeholder="https://...jpg&#10;https://...jpg&#10;https://...jpg"
+                        style="width:100%;padding:10px;border-radius:8px;border:1px solid #444;background-color:var(--bg-dark);color:white;outline:none;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Nền tảng (Platform)</label>
+                    <select id="gamePlatform">
+                        <option value="PS5">PS5</option>
+                        <option value="STEAM">Steam</option>
+                        <option value="NINTENDO SWITCH">Nintendo Switch</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nhãn (Tag)</label>
+                    <select id="gameTag">
+                        <option value="Tiêu Điểm">Tiêu Điểm</option>
+                        <option value="Bán Chạy">Bán Chạy</option>
+                        <option value="Mới Nhất">Mới Nhất</option>
+                        <option value="Sắp Ra Mắt">Sắp Ra Mắt</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nhà phát hành (Publisher)</label>
+                    <input type="text" id="gamePublisher" placeholder="VD: Sony Interactive Entertainment">
+                </div>
+                <div class="form-group">
+                    <label>Nhà phát triển (Developer)</label>
+                    <input type="text" id="gameDeveloper" placeholder="VD: Game Science">
+                </div>
+                <div class="form-group">
+                    <label>Mô tả sản phẩm</label>
+                    <textarea id="gameDescription" rows="3" required
+                        placeholder="Mô tả ngắn về game..."
+                        style="width:100%;padding:10px;border-radius:8px;border:1px solid #444;background-color:var(--bg-dark);color:white;outline:none;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Giá (VNĐ)</label>
+                    <input type="text" id="gamePrice" required placeholder="1.390.000">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeModal()">Hủy</button>
+                    <button type="submit" class="btn btn-save">Lưu Lại</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        // 1. Import các hàm cần thiết từ Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import {
+            getFirestore, collection, getDocs, addDoc, updateDoc, doc, deleteDoc
+        } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // 2. DÁN CẤU HÌNH FIREBASE CỦA BẠN VÀO ĐÂY
+        const firebaseConfig = {
+            apiKey: "AIzaSyBf-zqRafienzl4BjMGOWbVcEcA81WbAOk",
+            authDomain: "asier-f2574.firebaseapp.com",
+            projectId: "asier-f2574",
+            storageBucket: "asier-f2574.firebasestorage.app",
+            messagingSenderId: "646116578464",
+            appId: "1:646116578464:web:8f49a7eba9ca7b236b65c5",
+            measurementId: "G-7Q8B97TLSS"
+        };
+
+        // Khởi tạo Firebase và Firestore
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const gamesCollection = collection(db, "games"); // 'games' là tên bảng dữ liệu
+
+        let games = []; // Mảng lưu trữ cục bộ để render
+
+        const tableBody = document.getElementById('gameTableBody');
+        const modal = document.getElementById('gameModal');
+        const form = document.getElementById('gameForm');
+        const modalTitle = document.getElementById('modalTitle');
+
+        // --- CÁC HÀM TƯƠNG TÁC VỚI FIREBASE ---
+
+        // 1. Lấy dữ liệu (Read)
+        async function fetchGames() {
+            tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Đang tải dữ liệu...</td></tr>';
+            try {
+                const querySnapshot = await getDocs(gamesCollection);
+                games = [];
+                querySnapshot.forEach((doc) => {
+                    games.push({ id: doc.id, ...doc.data() });
+                });
+                renderTable();
+            } catch (error) {
+                console.error("Lỗi khi tải dữ liệu: ", error);
+                alert("Không thể tải dữ liệu từ Firebase!");
+            }
+        }
+
+        // 2. Thêm và Sửa dữ liệu (Create & Update)
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const id = document.getElementById('gameId').value;
+
+            // Tách textarea ảnh thành mảng, loại bỏ dòng trống (hỗ trợ cả xuống dòng và dấu phẩy)
+            const imagesArr = document.getElementById('gameImages').value
+                .split(/\n|,/)
+                .map(s => s.trim())
+                .filter(s => s.length > 0);
+
+            const gameData = {
+                title: document.getElementById('gameName').value,
+                coverImage: imagesArr[0] || '',
+                images: imagesArr,
+                platform: document.getElementById('gamePlatform').value,
+                tag: document.getElementById('gameTag').value,
+                publisher: document.getElementById('gamePublisher').value,
+                developer: document.getElementById('gameDeveloper').value,
+                description: document.getElementById('gameDescription').value,
+                price: document.getElementById('gamePrice').value,
+                priceText: document.getElementById('gamePrice').value
+            };
+
+            const submitBtn = form.querySelector('.btn-save');
+            submitBtn.innerText = "Đang lưu...";
+            submitBtn.disabled = true;
+
+            try {
+                if (id) {
+                    // Sửa game (Update)
+                    const gameDoc = doc(db, "games", id);
+                    await updateDoc(gameDoc, gameData);
+                } else {
+                    // Thêm game mới (Create)
+                    await addDoc(gamesCollection, gameData);
+                }
+                closeModal();
+                fetchGames(); // Tải lại bảng sau khi lưu thành công
+            } catch (error) {
+                console.error("Lỗi khi lưu game: ", error);
+                alert("Đã xảy ra lỗi khi lưu!");
+            } finally {
+                submitBtn.innerText = "Lưu Lại";
+                submitBtn.disabled = false;
+            }
+        });
+
+        // 3. Xóa dữ liệu (Delete)
+        window.deleteGame = async function (id) {
+            if (confirm("Bạn có chắc chắn muốn xóa game này khỏi hệ thống?")) {
+                try {
+                    await deleteDoc(doc(db, "games", id));
+                    fetchGames(); // Tải lại bảng
+                } catch (error) {
+                    console.error("Lỗi khi xóa: ", error);
+                    alert("Không thể xóa game!");
+                }
+            }
+        }
+
+        // --- CÁC HÀM GIAO DIỆN CƠ BẢN ---
+
+        function renderTable() {
+            tableBody.innerHTML = '';
+            if (games.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Chưa có game nào. Hãy thêm mới!</td></tr>';
+                return;
+            }
+
+            games.forEach((game) => {
+                const tr = document.createElement('tr');
+                let tagClass = game.tag === 'Tiêu Điểm' || game.tag === 'Bán Chạy' ? 'hot' : 'new';
+                tr.innerHTML = `
+                <td>
+                    <div class="game-info">
+                        <img src="${game.coverImage || (game.images && game.images[0]) || ''}" alt="${game.title}" class="game-img" onerror="this.src='https://via.placeholder.com/60x80?text=No+Image'">
+                        <strong>${game.title}</strong>
+                    </div>
+                </td>
+                <td><span class="tag">${game.platform}</span></td>
+                <td><span class="tag ${tagClass}">${game.tag}</span></td>
+                <td><strong>${game.price} đ</strong></td>
+                <td>
+                    <button class="btn btn-edit" onclick="editGame('${game.id}')">Sửa</button>
+                    <button class="btn btn-delete" onclick="deleteGame('${game.id}')">Xóa</button>
+                </td>
+            `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        // Gắn hàm vào window để có thể gọi từ onclick trong HTML khi dùng type="module"
+        window.openModal = function (isEdit = false) {
+            modal.style.display = 'flex';
+            if (!isEdit) {
+                modalTitle.innerText = "Thêm Game Mới";
+                form.reset();
+                document.getElementById('gameId').value = '';
+            }
+        }
+
+        window.closeModal = function () {
+            modal.style.display = 'none';
+        }
+
+        window.editGame = function (id) {
+            const game = games.find(g => g.id === id);
+            if (game) {
+                document.getElementById('gameId').value = game.id;
+                document.getElementById('gameName').value = game.title || '';
+                document.getElementById('gameImages').value = (game.images && game.images.length > 0)
+                    ? game.images.join('\n')
+                    : (game.coverImage || '');
+                document.getElementById('gamePlatform').value = game.platform;
+                document.getElementById('gameTag').value = game.tag;
+                document.getElementById('gamePublisher').value = game.publisher || '';
+                document.getElementById('gameDeveloper').value = game.developer || '';
+                document.getElementById('gameDescription').value = game.description || '';
+                document.getElementById('gamePrice').value = game.price;
+                modalTitle.innerText = "Sửa Thông Tin Game";
+                window.openModal(true);
+            }
+        }
+
+        // Khởi chạy khi load trang
+        fetchGames();
+    </script>
+</body>
+
+</html>
